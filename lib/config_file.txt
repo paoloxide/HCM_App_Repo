@@ -1,0 +1,624 @@
+[Manage Data Role and Security Profiles]
+:Properties
+Sheetname | Data Role and Security Profiles
+Action | Search Task
+Recursive | True
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | //span[text()=' Create']/..
+Header | h1 | xpath | //h1[text()='Create Data Role: Select Role']
+:Fields
+Data Role | textbox | xpath | //label[text()='Data Role']/../../td/input
+Job Role | dropdown | xpath | //label[text()='Job Role']/../..//input
+Role Description | textbox | xpath | //label[text()='Role Description']/../..//textarea[not(@title='')]
+Delegation Allowed | checkbox | xpath | //input[@type='checkbox']
+Next | button | xpath | //button[contains(text(),'Ne')]
+Organization Security Profile | dropdown | xpath | //label[text()='Organization Security Profile']/../..//input
+Public Security Profile | dropdown | xpath | //h2[text()='Public Person']/../../../../../../..//label[text()='Person Security Profile']/../..//input
+Position Security Profile | dropdown | xpath | //label[text()='Position Security Profile']/../..//input
+Country Security Profile | dropdown | xpath | //label[text()='Country Security Profile']/../..//input
+LDG Security Profile | dropdown | xpath | //label[text()='LDG Security Profile']/../..//input
+Person Security Profile | dropdown | xpath | //h2[text()='Person']/../../../../../../..//label[text()='Person Security Profile']/../..//input
+Document Type Security Profile | dropdown | xpath | //label[text()='Document Type Security Profile']/../..//input
+Payroll Security Profile | dropdown | xpath | //label[text()='Payroll Security Profile']/../..//input
+Payroll Flow Security Profile | dropdown | xpath | //label[text()='Flow Pattern Security Profile']/../..//input
+:Post-Steps
+Review | button | xpath | //button[contains(text(),'Rev')]
+Submit | button | xpath | //button[contains(text(),'Sub') and not(@disabled)]
+Done | button | xpath | //span[contains(text(),'Done')] | wait 180 -c
+:Undo-Steps
+Cancel | button | xpath | //button[contains(text(),'ancel') and not(@disabled)]
+Yes | button | xpath | //button[text()='Yes']
+Header | h1 | xpath | //h1[text()='Manage Data Roles and Security Profiles']
+
+[Manage Common Lookups]
+:Properties
+Sheetname | Common Lookups
+Action | Search Task
+Recursive | True
+:Pre-Prep
+skip:
+:Pre-Steps
+New | button | xpath | //h2[contains(text(),'Search Results')]/../../../../../../../div//div[@class='xe8 p_AFIconOnly']/a/img[@title='New']
+:Fields
+Lookup Type | textbox | xpath | //tbody/tr[@_afrrk='0']/td/div/table/tbody/tr/td/span/label[contains(text(),'Lookup Type')]/../input | save
+Meaning | textbox | xpath | //tbody/tr[@_afrrk='0']/td/div/table/tbody/tr/td/span/label[contains(text(),'Meaning')]/../input | save
+Description | textbox | xpath | //tbody/tr[@_afrrk='0']/td/div/table/tbody/tr/td/span/label[contains(text(),'Description')]/../input
+Module | dropdown | xpath | //tbody/tr[@_afrrk='0']/td/div/table/tbody/tr/td/span/span/span/a[@title='Search']/../../input | save
+Save | button | xpath | //button[contains(text(),'Save')]
+array | 4
+New | button | xpath | //h2[contains(text(),'Lookup Codes')]/../../../../../../../div//div[@class='xe8 p_AFIconOnly']/a/img[@title='New']
+Lookup Code | textbox | xpath | //tbody/tr[@_afrrk='0']/td/span/label[contains(text(),'Lookup Code')]/../input[not(@title)] | save
+Display Sequence | textbox | xpath | //tbody/tr[@_afrrk='0']/td/span/label[contains(text(),'Display Sequence')]/../input
+Enabled | checkbox | xpath | //tbody/tr[@_afrrk='0']/td/span/span/span/input[@type='checkbox']
+Start Date | textbox | xpath | //tbody/tr[@_afrrk='0']/td/span/label[contains(text(),'Start Date')]/../input
+End Data | textbox | xpath | //tbody/tr[@_afrrk='0']/td/span/label[contains(text(),'End Date')]/../input
+Meaning | textbox | xpath | //tbody/tr[@_afrrk='0']/td/span/label[contains(text(),'Meaning')]/../input
+Description | textbox | xpath | //tbody/tr[@_afrrk='0']/td/span/label[contains(text(),'Description')]/../input
+Tag | textbox | xpath | //tbody/tr[@_afrrk='0']/td/span/label[contains(text(),'Tag')]/../input
+stop
+:Post-Steps
+Save and Close | button | xpath | //button[contains(text(),'and Close')]
+:Undo-Steps
+Cancel | button | xpath | //button[text()='ancel']
+Header | button | xpath | //h1[text()='Overview']
+case: Lookup Type
+Cancel | button | xpath | //button[text()='ancel']
+Header | button | xpath | //h1[text()='Overview']
+end esac
+case: Module
+Cancel | button | xpath | //button[text()='ancel']
+Header | button | xpath | //h1[text()='Overview']
+end esac
+case: Lookup Code
+Cancel | button | xpath | //button[text()='ancel']
+Header | button | xpath | //h1[text()='Overview']
+end esac
+
+[Manage Value Sets]
+:Properties
+Sheetname | Value Sets
+Action | Search Task
+Recursive | false
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | //img[@title='Create']/..
+:Fields
+Header | nullable | xpath | //h1[text()='Create Value Set']
+Value Set Code | textbox | xpath | //tr/td/label[contains(text(),'Value Set Code')]/../..//input | save
+Description | textbox | xpath | //tr/td/label[contains(text(),'Description')]/../..//input
+Module | dropdown | xpath | //label[contains(text(),'Module')]/../..//input | save
+Validation Type | select | xpath | //label[contains(text(),'Validation Type')]/../..//select | save,unstale,'case $.sValidation Type *'
+case: Table
+setExcelCol: FROM Clause*
+FROM Clause | textbox | xpath | //label[contains(text(),'FROM Clause')]/../..//input
+Value Column Name | textbox | xpath | //label[contains(text(),'Value Column Name')]/../..//input
+setExcelCol: Value Column Name*
+Value Column Name | textbox | xpath | //label[contains(text(),'Value Column Name')]/../..//input[not(@value)] | wait
+Value Column Length | nullable | xpath | //label[text()='Value Column Length']/../..//td[text()]
+Description Column Name | textbox | xpath | //label[contains(text(),'Description Column Name')]/../..//input[not(@value)]
+setExcelCol: Description Column Name
+Description Column Length | skippable | xpath | //label[contains(text(),'Description Column Length')]/../..//td[text()]
+ID Column Name | textbox | xpath | //label[contains(text(),'ID Column Name')]/../..//input[not(@value)]
+setExcelCol: ID Column Name
+ID Column Length | skippable | xpath | //label[contains(text(),'ID Column Length')]/../..//td[text()]
+Start Date Column Name | textbox | xpath | //label[contains(text(),'Start Date Column Name')]/../..//input
+End Date Column Name | textbox | xpath | //label[contains(text(),'End Date Column Name')]/../..//input
+WHERE Clause | textbox | xpath | //label[contains(text(),'WHERE Clause')]/../..//textarea
+resume esac
+case: Format Only
+setExcelCol: Minimum Value
+Minimum Value | textbox | xpath | //label[text()='Minimum Value']/../..//input
+Maximum Value | textbox | xpath | //label[text()='Maximum Value']/../..//input
+resume esac
+setExcelCol: Value Data Type*
+Value Data Type | select | xpath | //label[contains(text(),'Value Data Type')]/../..//select | save,unstale,'case $.sValue Data Type*'
+case: Number
+setExcelCol: Precision
+Precision | textbox | xpath | //label[text()='Precision']/../..//input
+Scale | textbox | xpath | //label[text()='Scale']/../..//input
+resume esac
+case: Date
+resume esac
+case: Character
+setExcelCol: Value Subtype
+Value Subtype | select | xpath | //label[text()='Value Subtype']/../..//select | unstale,'case $.sValue Subtype'
+case: Text
+setExcelCol: Maximum Length
+Maximum Length | textbox | xpath | //label[text()='Maximum Length']/../..//input
+Uppercase only | checkbox | xpath | //label[text()='Uppercase only']/..//input
+Zero fill | checkbox | xpath | //label[text()='Zero fill']/..//input
+resume esac
+case: Translated Text
+setExcelCol: Maximum Length
+Maximum Length | textbox | xpath | //label[text()='Maximum Length']/../..//input
+resume esac
+case: Numeric digits only
+setExcelCol: Maximum Length
+Maximum Length | textbox | xpath | //label[text()='Maximum Length']/../..//input
+resume esac
+case: Time(20:08)
+skip:
+resume esac
+case: Time(20:08:08)
+skip:
+resume esac
+resume esac
+:Post-Steps
+Save and Close | button | xpath | //button[contains(text(),'and Close')]
+Header | nullable | xpath | //h1[text()='Manage Value Sets']
+:Undo-Steps
+Cancel | button | xpath | //button[text()='ancel']
+Header | nullable | xpath | //h1[text()='Manage Value Sets']
+case: Value Set Code
+Cancel | button | xpath | //button[text()='ancel']
+Header | nullable | xpath | //h1[text()='Manage Value Sets']
+end esac
+case: Validation Type
+Cancel | button | xpath | //button[text()='ancel']
+Header | nullable | xpath | //h1[text()='Manage Value Sets']
+end esac
+case: Value Data Type
+Cancel | button | xpath | //button[text()='ancel']
+Header | nullable | xpath | //h1[text()='Manage Value Sets']
+end esac
+case: Value Subtype
+Cancel | button | xpath | //button[text()='ancel']
+Header | nullable | xpath | //h1[text()='Manage Value Sets']
+
+[Manage Descriptive Flexfields]
+:Properties
+Sheetname | Descriptive Flexfields
+Action | Search Task
+Recursive | True
+:Pre-Prep
+skip:
+:Pre-Steps
+:Fields
+Flexfield Code | textbox | xpath | //tr/td/span/label[contains(text(),' Flexfield Code')]/../input
+Search | button | xpath | //button[contains(text(),'Search')]
+Result | button | xpath | //td[text()='$.sFlexfield Code*']
+Edit | button | xpath | //td/div/a/img
+array | 1
+Create | button-enter | xpath | //img[@alt='Create']
+Name | textbox | xpath | //label[text()='Name']/../../td/input | save
+Code | textbox | xpath | //label[text()='Code']/../../td/input[@value]
+API Name | textbox | xpath | //label[text()='API Name']/../../td/input[@value]
+Description | textbox | xpath | //label[text()='Description']/../..//textarea
+Enabled | checkbox | xpath | //label[text()='Enabled']/../..//input[@type='checkbox']
+Data Type | select | xpath | //label[text()='Data Type']/../..//select | unstale
+Table Column | button | xpath | //a[@title='Search: Table Column']/../../input[@value]/../span/a
+Search | button | xpath | //table[contains(@id,'columnNameId')]//a[text()='Search...']
+Search and Select | nullable | xpath | //div[text()='Search and Select: Table Column']
+Search Table Column Name | textbox | xpath | //div[text()='Search and Select: Table Column']/../../../../../../..//label[text()=' Name']/..//input
+Search  | button | xpath | //div[text()='Search and Select: Table Column']/../../../../../../..//button[text()='Search']
+Search Result | button | xpath | //div[text()='Search and Select: Table Column']/../../../../../../..//td[text()='$.sTable Column'] | throws invalid Table Column
+OK | button | xpath | //div[text()='Search and Select: Table Column']/../../../../../../..//button[text()='OK']
+Value Set | button | xpath | //a[@title='Search: Value Set']/../../input/../span/a
+Search | button | xpath | //table[contains(@id,'valueSetCodeId')]//a[text()='Search...']
+Search and Select | nullable | xpath | //div[text()='Search and Select: Value Set']
+Search Value Set | textbox | xpath | //div[text()='Search and Select: Value Set']/../../../../../../..//label[text()=' Value Set']/..//input
+Search | button | xpath | //div[text()='Search and Select: Value Set']/../../../../../../..//button[text()='Search']
+Search Result | button | xpath | //div[text()='Search and Select: Value Set']/../../../../../../..//td[text()='$.sValue Set'] | throws invalid Value Set
+OK | button | xpath | //div[text()='Search and Select: Value Set']/../../../../../../..//button[text()='OK']
+Range Type | select | xpath | //label[text()='Range Type']/../..//select | unstale
+Required | checkbox | xpath | //label[text()='Required']/..//input[@type='checkbox']
+Default Type | select | xpath | //label[text()='Default Type']/../..//select | 'case $.sDefault Type'
+case: Constant
+Default Value | textbox | xpath | //label[text()='Default Value']/../../td/input
+resume esac
+case: SQL
+Default Value | textbox | xpath | //label[text()='Default Value']/../..//textarea
+resume esac
+case:
+resume esac
+setExcelCol: Prompt
+Prompt | textbox | xpath | //label[text()='Prompt']/../../td/input
+Display Type | select | xpath | //label[text()='Display Type']/../..//select
+Display Size | textbox | xpath | //label[text()='Display Size']/../..//input
+Display Height | textbox | xpath | //label[text()='Display Height']/../..//input
+Read-only | checkbox | xpath | //label[text()='Read-only']/..//input[@type='checkbox']
+Definition Help Text | textbox | xpath | //label[text()='Definition Help Text']/../..//textarea
+Instruction Help Text | textbox | xpath | //label[text()='Instruction Help Text']/../..//textarea
+BI Enabled | checkbox | xpath | //label[text()='BI Enabled']/..//input[@type='checkbox'] | trigger: -t 1:2 -e 1:2,
+BI Label | select | xpath | //label[text()='BI Label']/../..//select[not(@disabled)]
+Save and Close | button | xpath | //span[text()='S']/../../span[text()='ave and Close']
+stop
+:Post-Steps 
+Save and Close | button | xpath | //span[text()='S']/../../button[text()='ave and Close']
+Deploy Flexfield | button | xpath | //span[text()='Deploy Flexfield']
+OK | button | xpath | //span[contains(@id,'popupbar')]//button[text()='OK' and not(@disabled)] | wait 3600 -c
+:Undo-Steps
+Cancel | button | xpath | //button[text()='ancel']
+Header | h1 | xpath | //h1[contains(text(),'Edit Descriptive Flexfield')]
+Cancel | button | xpath | //button[text()='ancel']
+Header | button | xpath | //h1[contains(text(),'Manage Descriptive Flexfields')]
+case: Name
+Cancel | button | xpath | //button[text()='ancel']
+Header | h1 | xpath | //h1[contains(text(),'Edit Descriptive Flexfield')]
+Cancel | button | xpath | //button[text()='ancel']
+Header | button | xpath | //h1[contains(text(),'Manage Descriptive Flexfields')]
+end esac
+case: invalid Table Column
+Cancel Search | button | xpath | //div[text()='Search and Select: Table Column']/../../../../../../..//button[text()='Cancel']
+Cancel | button | xpath | //span[text()='C']/../..//button[text()='ancel']
+end esac
+case: invalid Value Set
+Cancel Search | button | xpath | //div[text()='Search and Select: Value Set']/../../../../../../..//button[text()='Cancel']
+Cancel | button | xpath | //span[text()='C']/../..//button[text()='ancel']
+end esac
+
+[Manage Divisions]
+:Properties
+Sheetname | Divisions
+Action | Search Task
+Recursive | False
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button-enter | xpath | //span[text()=' Create']/..
+:Fields
+Name | textbox | xpath | //tr/td/label[text()='Name']/../../td/input | save
+Effective Start Date | textbox | xpath | //td/a[@title='Select Date']/../input | save
+Internal Address Line | textbox | xpath | //tr/td/label[text()='Internal Address Line']/../../td/input
+Status | select | xpath | //label[text()='Status']/../../td/select | save,unstale
+Action Reason | checkbox | xpath | //tr[contains(@id,'actionReasonNameId')]//label[text()='Action Reason']/../..//input
+Internal/External | select | xpath | //label[text()='Internal or External']/../..//select | unstale
+Location | dropdown | xpath | //a[@title='Search: Location']/../..//input | unstale
+Header | button | xpath | //h1[contains(text(),'Create Division')]
+Next | button | xpath | //div[@title='Next']/a/span
+Reporting Name | textbox | xpath | //tbody/tr/td/label[text()='Reporting Name']/../../td/input
+Manager | dropdown | xpath | //tbody/tr/td/label[text()='Manager']/../../td/span/input
+:Post-Steps
+Submit | button | xpath | //div[@title='Submit']/a
+Yes | button | xpath | //button[@accesskey='Y']
+Ok | button | xpath | //button[@accesskey='K']
+:Undo-Steps
+Cancel | button | xpath | //span[text()='ancel']/..
+Yes | button | xpath | //td[contains(@id,'warningDialog')]//button[text()='es']
+Header | button | xpath | //h1[text()='Manage Divisions']
+case: Name
+Cancel | button | xpath | //span[text()='ancel']/..
+Yes | button | xpath | //td[contains(@id,'warningDialog')]//button[text()='es']
+Header | button | xpath | //h1[text()='Manage Divisions']
+end esac
+case: Effective Start Date
+Cancel | button | xpath | //span[text()='ancel']/..
+Yes | button | xpath | //td[contains(@id,'warningDialog')]//button[text()='es']
+Header | button | xpath | //h1[text()='Manage Divisions']
+end esac
+case: Status
+Cancel | button | xpath | //span[text()='ancel']/..
+Yes | button | xpath | //td[contains(@id,'warningDialog')]//button[text()='es']
+Header | button | xpath | //h1[text()='Manage Divisions']
+end esac
+
+[Manage Legislative Data Groups]
+:Properties
+Sheetname | LDG
+Action | Search Task
+Recursive | false
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button-enter | xpath | //span[contains(text(),' Create')]/../../a
+:Fields
+Name | textbox | xpath | //tr/td/label[text()='Name']/../../td/input | save
+Country | combobox | xpath | //tr[contains(@id,'territoryShortNameId')]//label[text()='Country']/../..//input
+Currency | dropdown | xpath | //tr/td/label[text()='Currency']/../..//input | save
+Cost Allocation Structure | textbox | xpath | //tr/td/label[text()='Cost Allocation Structure']/../..//input
+:Post-Steps
+Submit | button | xpath | //div[@title='Submit']/a
+Yes | button | xpath | //button[@accesskey='Y']
+Ok | button | xpath | //button[@accesskey='K']
+:Undo-Steps
+Cancel | button | xpath | //span[text()='ancel']/..
+Yes | button | xpath | //td//button[text()='es']
+Wait to disappear | button | xpath | //td//button[text()='es']
+Header | button | xpath | //h1[text()='Manage Legislative Data Groups']
+case: Name
+Yes | button | xpath | //td//button[text()='es']
+Wait to disappear | button | xpath | //td//button[text()='es']
+Header | button | xpath | //h1[text()='Manage Legislative Data Groups']
+end esac
+case: Country
+Yes | button | xpath | //td//button[text()='es']
+Wait to disappear | button | xpath | //td//button[text()='es']
+Header | button | xpath | //h1[text()='Manage Legislative Data Groups']
+end esac
+case: Location
+Yes | button | xpath | //td//button[text()='es']
+Wait to disappear | button | xpath | //td//button[text()='es']
+Header | button | xpath | //h1[text()='Manage Legislative Data Groups']
+end esac
+case: invalid Country
+Cancel Search | button | xpath | //div[text()='Search and Select: Country']/../../../../../../..//button[text()='Cancel']
+Cancel | button | xpath | Cancel | button | xpath | //span[text()='ancel']/..
+Wait to disappear | button | xpath | //td//button[text()='es']
+Header | button | xpath | //h1[text()='Manage Legislative Data Groups']
+end esac
+
+[Manage Legal Addresses]
+:Properties
+Sheetname | Legal Addresses
+Action | Search Task
+Recursive | False
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | //img[@title='Create']/..
+:Fields
+*Country | select | xpath | //select[contains(@id, 'LocationCountry')] | 'case $.sCountry*'
+case: United States
+Delivery Address | textbox | xpath | //td/input[contains(@id, 'inputText2')]
+Suite Number | textbox | xpath | //td/input[contains(@id, 'inputText3')]
+PO Box | textbox | xpath | //td/input[contains(@id, 'inputText4')]
+City | combobox | xpath | //tr[contains(@id,'inputComboboxListOfValues3')]//label[text()='City']/../..//input
+State | combobox | xpath | //tr[contains(@id,'inputComboboxListOfValues1')]//label[text()='State']/../..//input
+Postal Code | combobox | xpath | //tr[contains(@id,'inputComboboxListOfValues4')]//label[text()='Postal Code']/../..//input | parse number
+Time Zone | select | xpath | //select[contains(@id, 'soc1')]
+resume esac
+case: Philippines
+House Number - Street | nullable | xpath | //label[text()='House Number - Street']
+House Number - Street | textbox | xpath | //td/input[contains(@id, 'inputText2')]
+Village or District | textbox | xpath | //td/input[contains(@id, 'inputText3')]
+Additional Address Line | textbox | xpath | //td/input[contains(@id, 'inputText4')]
+City or Town | textbox | xpath | //td/input[contains(@id, 'inputText6')]
+State | textbox | xpath | //td/input[contains(@id, 'inputText8')]
+Postal Code | textbox | xpath | //td/input[contains(@id, 'inputText7')]
+Time Zone | select | xpath | //select[contains(@id, 'soc1')] | unstale
+resume esac	
+OK | button | xpath | //button[contains(@accesskey, 'K')]
+Wait to disappear | button | xpath | //table[contains(@id,'popup')]//div[text()='Location Create']
+:Post-Steps
+Save | button | xpath | //button[text()='Save']
+Save | nullable | xpath | //button[text()='Save' and not(contains(@class,'Disabled'))]
+:Undo-Steps
+Cancel | button | xpath | //table[contains(@id,'popup')]//button[text()='ancel']
+Wait to disappear | button | xpath | //table[contains(@id,'popup')]//div[text()='Location Create']
+Case: InvalidDelivery Address
+Cancel | button | xpath | //table[contains(@id,'popup')]//button[text()='ancel']
+Wait to disappear | button | xpath | //table[contains(@id,'popup')]//div[text()='Location Create']
+end esac
+
+[Manage Legal Entity]
+:Properties
+Sheetname | Legal Entity
+Action | Search Task
+Recursive | false
+:Pre-Prep
+skip:
+:Pre-Steps
+skip:
+:Fields
+Country | button-enter | xpath | //a[@title='Search: Country'] | throws WhiteScreen
+Find... | button | xpath | //table[contains(@id,'countryId')]//a[text()='Search...']
+PopUp Header | button | xpath | //td[contains(@id,'countryId')]//div[text()='Search and Select: Country']
+Country | textbox | xpath | //td[contains(@id,'countryId')]//label[text()=' Country']/..//input
+Find | button-enter | xpath | //div[contains(@id,'countryId')]//button[text()='Search']
+Pick | button | xpath | //div[contains(@id,'countryId')]//td[text()='$.sCountry*']/.. | wait 15 -c :throws InvalidCountry
+OK | button | xpath | //td[contains(@id,'countryId')]//button[text()='OK']
+Wait to disappear | button | xpath | //td[contains(@id,'countryId')]//div[text()='Search and Select: Country']
+setExcelCol: Name*
+Name | textbox | xpath | //label[text()='Name']/../..//input
+Legal Entity Identifier | textbox | xpath | //label[text()='Legal Entity Identifier']/../..//input
+Start Date | textbox | xpath | //label[text()='Start Date']/../..//input
+End Date | textbox | xpath | //label[text()='End Date']/../..//input
+Payroll Statutory Unit | checkbox | xpath | //label[text()='Payroll statutory unit']/..//input
+Legal Employer | checkbox | xpath | //label[text()='Legal employer']/..//input
+Legal Address | dropdown | xpath | //label[text()='Legal Address']/../..//input | save
+Cancel | button | xpath | //td[contains(@id,'legalAddress')]//button[text()='Cancel'] | missing,throws InvalidLegal Address
+EIN or TIN | textbox | xpath | //tr[contains(@id,'RegCodeLe')]//input
+Legal Reporting Unit Registration Number | textbox | xpath | //tr[contains(@id, 'RegCodeEtb')]//input
+Place of Registration | textbox | xpath | //label[text()='Place of Registration']/../..//input
+:Post-Steps
+Save and Close | button | xpath | //span[text()='ave and Close']/..
+Header | h1 | xpath | //h1[text()='Overview']
+Go to Task | button | xpath | //span[text()='Manage Legal Entity']/../../..//a[@title='Go to Task']
+:Undo-Steps
+Cancel | button | xpath | //button[text()='ancel']
+Go to Task | button | xpath | //span[text()='Manage Legal Entity']/../../..//a[@title='Go to Task']
+case: WhiteScreen
+Setup and Maintenance | button | xpath | //div[contains(@id,'UISpg')]//a[text()='Setup and Maintenance']
+Name | textbox-enter | xpath | //label[text()=' Name']/..//input | editTo:Manage Legal Entity
+Go to Task | button | xpath | //span[text()='Manage Legal Entity']/../../..//a[@title='Go to Task'
+end esac
+case: InvalidCountry
+Cancel | button | xpath | //td[contains(@id,'country')]//button[text()='Cancel']
+Cancel | button | xpath | //button[text()='ancel']
+Go to Task | button | xpath | //span[text()='Manage Legal Entity']/../../..//a[@title='Go to Task']
+end esac
+case: InvalidLegal Address
+Cancel | button | xpath | //td[contains(@id,'legalAddress')]//button[text()='Cancel']
+Cancel | button | xpath | //button[text()='ancel']
+Go to Task | button | xpath | //span[text()='Manage Legal Entity']/../../..//a[@title='Go to Task']
+end esac
+
+[Manage Business Unit]
+:Properties
+Sheetname | Business Unit
+Action | Search Task
+Recursive | True
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | //img[@title='Create'] | throws WhiteScreen
+:Fields
+Name | textbox | xpath | //label[text()='Name']/../../td/input | save
+Active | checkbox | xpath | //input[@type='checkbox']
+Location | dropdown | xpath | //label[text()='Location']/../input
+Manager | dropdown | xpath | //label[text()='Manager']/../../td/span/input
+Default Set | dropdown | xpath | //label[text()='Default Set']/../input | save
+:Post-Steps
+Save and Close | button | xpath | //span[text()='Save and Close']
+Header | button | xpath | //h1[text()='Overview']
+:Undo-Steps
+Cancel | button | xpath | //button[text()='ancel']
+Header | button | xpath | //h1[text()='Overview']
+case: WhiteScreen
+Setup and Maintenance | button | xpath | //div[contains(@id,'UISpg')]//a[text()='Setup and Maintenance']
+Name | textbox-enter | xpath | //label[text()=' Name']/..//input | editTo:Manage Legal Entity
+Go to Task | button | xpath | //span[text()='Manage Legal Entity']/../../..//a[@title='Go to Task'
+end esac
+case: Name
+Cancel | button | xpath | //button[text()='ancel']
+Header | button | xpath | //h1[text()='Overview']
+end esac
+case: Default Set
+Cancel | button | xpath | //button[text()='ancel']
+Header | button | xpath | //h1[text()='Overview']
+end esac
+
+[Manage Assignment Status]
+:Properties
+Sheetname | Assignment Status
+Action | Search Task
+Recursive | False
+:Pre-Prep
+skip:
+:Pre-Steps
+Header | nullable | xpath | //h1[text()='Manage Assignment Statuses']
+New | button-enter | xpath | //img[@title='New']/.. | wait
+:Fields
+User Status | textbox | xpath | //label[text()='User Status']/../input[not(@value)] | save,locate,
+Assignment Status Code | textbox | xpath | //label[text()='Assignment Status Code']/../..//input | wait,save
+HR Status | select2 | xpath | //label[text()='HR Status']/../select | save,unstale
+Pay Status | select2 | xpath | //label[text()='Pay Status']/../select | save,wait,unstale
+Start Date | textbox | xpath | //label[text()='Start Date']/../input
+End Date | textbox | xpath | //label[text()='End Date']/../input
+Header | button | xpath | //h1[text()='Manage Assignment Statuses']
+Default | select2 | xpath | //label[text()='Default']/../select | save,unstale
+Legislation | select2 | xpath | //label[text()='Legislation']/../select | unstale
+Original Assignment Status | select2 | xpath | //label[text()='Original Assignment Status']/../select | unstale
+:Post-Steps
+Save | button | xpath | //button[text()='Save']
+OK | button | xpath | //div[contains(@id,'pop')]//button[text()='O']
+WAIT TO DISAPPEAR | dialog | xpath | //div[contains(@id,'pop')]//button[text()='O']
+Label | button | xpath | //span[text()='HR Status']
+:Undo-Steps
+Cancel | jsbutton | xpath | //button[text()='ancel']
+OK | button | xpath | //td[contains(@id,'fce')]//button[text()='O']
+WAIT TO DISAPPEAR | dialog | xpath | //td[contains(@id,'fce')]//button[text()='O']
+case: User Status
+Cancel | jsbutton | xpath | //button[text()='ancel']
+OK | button | xpath | //td[contains(@id,'fce')]//button[text()='O']
+WAIT TO DISAPPEAR | dialog | xpath | //td[contains(@id,'fce')]//button[text()='O']
+end esac
+case: Assignment Status Code
+Cancel | jsbutton | xpath | //button[text()='ancel']
+OK | button | xpath | //td[contains(@id,'fce')]//button[text()='O']
+WAIT TO DISAPPEAR | dialog | xpath | //td[contains(@id,'fce')]//button[text()='O']
+end esac
+case: HR Status
+Cancel | jsbutton | xpath | //button[text()='ancel']
+OK | button | xpath | //td[contains(@id,'fce')]//button[text()='O']
+WAIT TO DISAPPEAR | dialog | xpath | //td[contains(@id,'fce')]//button[text()='O']
+end esac
+case: Pay Status
+Cancel | jsbutton | xpath | //button[text()='ancel']
+OK | button | xpath | //td[contains(@id,'fce')]//button[text()='O']
+WAIT TO DISAPPEAR | dialog | xpath | //td[contains(@id,'fce')]//button[text()='O']
+end esac
+
+[Manage HCM Role Provisioning Rules]
+:Properties
+Sheetname | HCM Role Provisioning Rules
+Action | Search Task
+Recursive | False
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | //img[@alt='Create']
+:Fields
+Mapping Name | textbox | xpath | //h1[text()='Create Role Mapping']/../../../../../../../..//label[text()='Mapping Name']/../..//input
+From Date | textbox | xpath | //label[text()='From Date']/../..//input
+To Date | textbox | xpath | //label[text()='To Date']/../..//input
+Legal Employer | dropdown | xpath | //label[text()='Legal Employer']/../..//input
+Business Unit | dropdown | xpath | //label[text()='Business Unit']/../..//input 
+Department | dropdown | xpath | //label[text()='Department']/../..//input
+Job | dropdown | xpath | //label[text()='Job']/../..//input
+Position | dropdown | xpath | //label[text()='Position']/../..//input
+Grade | dropdown | xpath | //label[text()='Grade']/../..//input 
+Location | dropdown | xpath | //label[text()='Location']/../..//input   
+Assignment Type | dropdown | xpath | //label[text()='Assignment Type']/../..//input  
+System Person Type | dropdown | xpath | //label[text()='System Person Type']/../..//input
+Cancel | button | xpath | //div[contains(@id, 'SystemPersonType')]//button[contains(text(),'Cancel')] | missing,throws invalidSystemPersonType
+User Person Type | dropdown | xpath | //label[text()='User Person Type']/../..//input
+HR Assignment Status | dropdown | xpath | //label[text()='HR Assignment Status']/../..//select
+Assignment Status | dropdown | xpath | //label[text()='Assignment Status']/../..//select
+Resource Role | dropdown | xpath | //label[text()='Resource Role']/../..//select
+Party Type Usage | dropdown | xpath | //label[text()='Party Type Usage']/../..//select
+Manager with Reports | dropdown | xpath | //label[text()='Manager with Reports']/../..//select
+Manager Type | dropdown | xpath | //label[text()='Manager Type']/../..//select
+array | 19
+Add Row | button | xpath | //img[@title='Add Row']
+Role Name | dropdown | xpath | //label[text()='Role Name']/..//input[@value='']
+Requestable | checkbox | xpath | //input[contains(@id,'chkRequestable')]
+Self-requestable | checkbox | xpath | //input[contains(@id,'chkSelfRequestable')]
+Autoprovision | checkbox | xpath | //input[contains(@id,'chkUseForAutoProvision')] 
+Save | button | xpath | //button[contains(text(),'Save')] 
+OK | button | xpath | //button[@accesskey='K'] | throws invalidRoleName
+stop
+:Post-Steps
+Save and Close | button | xpath | //span[text()='S']/../../button[text()='ave and Close']
+OK | button | xpath | //button[@accesskey='K']
+:Undo-Steps
+Cancel | button | xpath | //span[text()='C']/../../button[text()='ancel']
+Yes | button | xpath | //button[@accesskey='Y']
+case: invalidSystemPersonType
+Cancel | button | xpath | //div[contains(@id, 'SystemPersonType')]//button[contains(text(),'Cancel')]
+Cancel | button | xpath | //span[text()='C']/../../button[text()='ancel']
+Yes | button | xpath | //button[@accesskey='Y']
+end esac
+case: invalidRoleName
+Remove | button | xpath | //img[@title='Remove']/..
+resume esac
+
+[Manage Enterprise HCM Information]
+:Properties
+Sheetname | Enterprise HCM Information
+Action | Search Task
+Recursive | True
+:Pre-Prep
+skip:
+:Pre-Steps
+skip:
+:Fields
+Edit | button | xpath | //span[text()='Edit']
+Update | button | xpath | //td[text()='Update']
+Ok | button | xpath | //div[text()='Update Enterprise']/../../../../../../..//button[@accesskey='K']
+Header | button | xpath | //h1[contains(text(),'Edit Enterprise')]
+Effective Start Date | textbox | xpath | //label[text()='Effective Start Date']/../..//input
+Action Reason | dropdown | xpath | //label[text()='Action Reason']/../..//input | save
+Name | textbox | xpath | //label[text()='Name']/../..//input
+Status | select | xpath | //label[text()='Status']/../..//select
+Internal/External | select2 | xpath | //label[text()='Internal or External']/../..//select | unstale
+Location | dropdown | xpath | //a[@title='Search: Location']/../..//input | save
+Work Start Time | textbox | xpath | //label[text()='Work Start Time']/../..//input
+Work End Time | textbox | xpath | //label[text()='Work End Time']/../..//input
+Standard Working Hours | textbox | xpath | //label[text()='Standard Working Hours']/../..//input
+Standard Working Hours Frequency | dropdown | xpath | //label[text()='Standard Working Hours Frequency']/../..//input
+Worker Number Generation | dropdown | xpath | //label[text()='Worker Number Generation']/../..//input
+Employment Model | dropdown | xpath | //label[text()='Employment Model']/../..//input
+Allow Employment Terms Override at Assignment | dropdown | xpath | //label[text()='Allow Employment Terms Override at Assignment']/../..//input
+People Group Flexfield Structure | dropdown | xpath | //label[text()='People Group Flexfield Structure']/../..//input
+Salary Level | dropdown | xpath | //label[text()='Salary Level']/../..//input
+Global Person Name Language | dropdown | xpath | //label[text()='Global Person Name Language']/../..//input
+Person Number Generation Method | dropdown | xpath | //label[text()='Person Number Generation Method']/../..//input
+Initial Person Number | dropdown | xpath | //label[text()='Initial Person Number']/../..//input
+:Post-Steps
+Submit | button | xpath | //span[text()='m']/../../span
+Header | h1 | xpath | //h1[contains(text(),'Enterprise') and not(contains(text(),'Edit'))] | wait 180 -c
+:Undo-Steps
+Cancel | button | xpath | //span[text()='Cancel']
+Yes | button | xpath | //button[@accesskey='Y']
+case: Location
+Cancel | button | xpath | //span[text()='Cancel']
+Yes | button | xpath | //button[@accesskey='Y']
+end esac
+case: Action Reason
+Cancel | button | xpath | //span[text()='Cancel']
+Yes | button | xpath | //button[@accesskey='Y']
+end esac
