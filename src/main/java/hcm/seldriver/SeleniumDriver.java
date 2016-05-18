@@ -37,7 +37,8 @@ public class SeleniumDriver {
 	private static final long ELEMENT_APPEAR = 60L;
 	private static final int MAX_TIMEOUT = 60;
 	public static final int navRow = 1;
-	public static final int defaultLabelRow = 2;// 2 : Oracle 1 : Exelon
+	public static final int defaultLabelRow = 2;
+	public static int rowGroup = defaultLabelRow - 1;// 2 : Oracle 1 : Exelon
 	public static final int defaultInputRow = defaultLabelRow + 1;
 	public static final int defaulColNum = 0;
 
@@ -52,22 +53,23 @@ public class SeleniumDriver {
 	// Case-dependent variables
 	private int afrrkInt = 0;
 	// Dependency files
-	private String excelPath = "exelon-configurations_bak.xlsx";
-	private String configPath = "lib/config_file_hcm.txt";
+	private String excelPath = "Exelon-Configurations.xlsx";
+	// private String configPath = "lib/config_file_hcm.txt";
+	// //config_file_hcm_set4
+	private String configPath = "lib/config_file.txt";
 	private String screenShotPath = "target/screenshots/";
 
-	public void initializeDriver(String hubURL, String browser,String workspace, String excel) {
+	public void initializeDriver(String hubURL, String browser,	String workspace, String excel) {
 		try {
 			workspace_path = workspace + "/";
 			excel_path = excel + "/";
-
-			driver = new RemoteWebDriver(new URL(hubURL),getCapability(browser));
+			 driver = new RemoteWebDriver(new URL(hubURL),getCapability(browser));
 			//driver = new ExtendedFirefoxDriver(getCapability(browser));
 			// driver.manage().window().maximize();
 
 			// Set window size base on the remote server
 			driver.manage().window().setSize(new Dimension(1020, 737));
-			System.out.println("Browser size: "+ driver.manage().window().getSize());
+			System.out.println("Browser size: "	+ driver.manage().window().getSize());
 			augmentedDriver = new Augmenter().augment(driver);
 
 			// Read text file
@@ -152,23 +154,20 @@ public class SeleniumDriver {
 	public void searchTask(String key) {
 		// got to Setup and Maintenance
 		// driver.get("https://fs-aufsn4x0cba.oracleoutsourcing.com/setup/faces/TaskListManagerTop?fnd=%3B%3B%3B%3Bfalse%3B256%3B%3B%3B&_adf.no-new-window-redirect=true&_adf.ctrl-state=s6qt8bhoo_5&_afrLoop=1042465641683653&_afrWindowMode=2&_afrWindowId=1zd8d2b3t");
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//img[@title='Collapse Pane']")));
-		driver.findElement(By.xpath("//img[@title='Collapse Pane']")).click();
-		// All Task Tab
-		driver.findElement(By.xpath("//div/a[text()='All Tasks']")).click();
-
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span/label[text()='Search']/../input")));
 		// Search
-		driver.findElement(By.xpath("//span/label[text()=' Name']/../input")).clear();
-		driver.findElement(By.xpath("//span/label[text()=' Name']/../input")).sendKeys(key);
-		driver.findElement(By.xpath("//button[text()='Search']")).click();
+		driver.findElement(By.xpath("//span/label[text()='Search']/../input")).clear();
+		driver.findElement(By.xpath("//span/label[text()='Search']/../input")).sendKeys(key);
+		driver.findElement(By.xpath("//span/label[text()='Search']/../input")).sendKeys(Keys.ENTER);
 		System.out.println("Searching for task " + key + ".");
-		// takeScreenShot(caseName);
-
+		// takeScreenShot(caseName); 
 	}
 
 	public void goToTask(String key) {
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='" + key+ "']/../../../td/a/img[@title='Go to Task']"))).click();
-		System.out.println("Go to task " + key + ".");
+		//wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//span[text()='" + key+ "']/../../../td/a/img[@title='Go to Task']"))).click();
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[text()='" + key+ "']"))).click();
+		driver.findElement(By.xpath("//a[text()='" + key+ "']")).sendKeys(Keys.ENTER);;
+		System.out.println("Go to task " + key + "."); 
 	}
 
 	public void navigateToTask(String name) throws Exception {
@@ -181,12 +180,13 @@ public class SeleniumDriver {
 		String fullNavPath = excelReader.getCellData(navRow, defaulColNum);
 		System.out.println("Nav Path is..." + fullNavPath);
 		String[] navStep = fullNavPath.split(" > ");
-		
-		//Span Manage Implementation Project -- > Implementation Projects
-		//TaskUtilities.customWaitForElementVisibility("xpath", "//a[text()='"+ navStep[intLoc] + "']", MAX_TIMEOUT);
-		//TaskUtilities.jsFindThenClick("xpath", "//a[text()='" + navStep[intLoc]	+ "']");
+
+		// Span Manage Implementation Project -- > Implementation Projects
+		// TaskUtilities.customWaitForElementVisibility("xpath", "//a[text()='"+ navStep[intLoc] + "']", MAX_TIMEOUT);
+		// TaskUtilities.jsFindThenClick("xpath", "//a[text()='" + navStep[intLoc] + "']");
 		TaskUtilities.customWaitForElementVisibility("xpath", "//span[text()='"+ navStep[intLoc] + "']/..", MAX_TIMEOUT);
-		TaskUtilities.jsFindThenClick("xpath", "//span[text()='" + navStep[intLoc]	+ "']/..");
+		Thread.sleep(3500);
+		TaskUtilities.jsFindThenClick("xpath", "//span[text()='"+ navStep[intLoc] + "']/..");
 		TaskUtilities.customWaitForElementVisibility("xpath", "//h1[text()='"+ navStep[intLoc] + "']", MAX_TIMEOUT);
 		// Setting project name...
 		if (!name.contentEquals("Manage Implementation Project")) {
@@ -198,41 +198,45 @@ public class SeleniumDriver {
 			labelLocator = "Name";
 			labelLocatorPath = TaskUtilities.retryingSearchfromDupInput(labelLocator, "");
 
-			action(labelLocator, "textbox", "xpath", labelLocatorPath, searchData);
+			action(labelLocator, "textbox", "xpath", labelLocatorPath,searchData);
 			TaskUtilities.jsFindThenClick("xpath", "//button[text()='Search']");
 			Thread.sleep(3500);
 			TaskUtilities.customWaitForElementVisibility("xpath","//a[text()='" + searchData + "']", MAX_TIMEOUT);
-			TaskUtilities.jsFindThenClick("xpath", "//a[text()='" +searchData+ "']");
+			TaskUtilities.jsFindThenClick("xpath", "//a[text()='" + searchData+ "']");
 
 			TaskUtilities.customWaitForElementVisibility("xpath","//h1[contains(text(),'" + searchData + "')]", MAX_TIMEOUT);
 		}
 
 		intLoc += 1;
+		TaskUtilities.scrollDownToElement(false, "");
 		while (intLoc < navStep.length) {
 			currentLoc = navStep[intLoc].replace("HCM","Human Capital Management");
 			System.out.println("We are now at: " + currentLoc);
-			divPath = "//div[text()='"+ currentLoc +"']";
+			divPath = "//div[text()='" + currentLoc + "']";
 
 			TaskUtilities.customWaitForElementVisibility("xpath", divPath, MAX_TIMEOUT);
 			TaskUtilities.jsScrollIntoView("xpath", divPath);
 
 			if (TaskUtilities.is_element_visible("xpath", divPath+ "//a[@title='Expand']")) {
-				TaskUtilities.retryingFindClick(By.xpath(divPath+ "//a[@title='Expand']"));
-				TaskUtilities.customWaitForElementVisibility("xpath", divPath+ "//a[@title='Collapse']", MAX_TIMEOUT);
+				// TaskUtilities.retryingFindClick(By.xpath(divPath+
+				// "//a[@title='Expand']"));
+				driver.findElement(By.xpath(divPath + "//a[@title='Expand']")).sendKeys(Keys.ENTER);
+				TaskUtilities.customWaitForElementVisibility("xpath", divPath + "//a[@title='Collapse']", MAX_TIMEOUT);
 			}
 
-			if (TaskUtilities.is_element_visible("xpath", divPath+ "/../..//a[@title='Go to Task']")) {
+			if (TaskUtilities.is_element_visible("xpath", divPath + "/../..//a[@title='Go to Task']")) {
 				TaskUtilities.jsFindThenClick("xpath", divPath);
 
 				// Open for improvement...
 				String href = driver.findElement(By.xpath(divPath + "/../..//a[@title='Go to Task']")).getAttribute("href");
-				System.out.println("Obtained href is: "+href);
+				System.out.println("Obtained href is: " + href);
 				String isRedirecting = getPropertiesRedirect(name);
-				
-				//if (href.contentEquals("#")) {
-				if(isRedirecting.toLowerCase().contentEquals("false")){
-					TaskUtilities.jsFindThenClick("xpath", divPath+ "/../..//a[@title='Go to Task']");
-				//} else if (href.contains("http")) {
+
+				// if (href.contentEquals("#")) {
+				if (isRedirecting.toLowerCase().contentEquals("false")) {
+					TaskUtilities.jsFindThenClick("xpath", divPath
+							+ "/../..//a[@title='Go to Task']");
+					// } else if (href.contains("http")) {
 				} else if (isRedirecting.toLowerCase().contentEquals("true")) {
 					openAdminLink(href);
 				}
@@ -258,8 +262,7 @@ public class SeleniumDriver {
 
 	public void search(String data, String locatorType, String locator) {
 		driver.findElement(getLocator(locatorType, locator)).click();
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//h2[contains(text(),'Search Results')]/../../../../../../..//tbody/tr/td[text()='"+ data + "']"))).click();
-
+		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//h2[contains(text(),'Search Results')]/../../../../../../..//tbody/tr/td[text()='" + data + "']"))).click();
 	}
 
 	public void runServiceRequest(String sr) throws Exception {
@@ -271,14 +274,16 @@ public class SeleniumDriver {
 
 		} else if (getPropertiesAction(sr).contentEquals("Navigate")) {
 			// Code for Navigate
-			navigateToTask(sr);
-			getSheetName(sr);
+			// navigateToTask(sr);
+			// getSheetName(sr);
 		} else if (getPropertiesAction(sr).contentEquals(null)) {
-			System.out.print("No Action indicated in Properties. Please set the Action in the config_file.txt");
+			System.out
+					.print("No Action indicated in Properties. Please set the Action in the config_file.txt");
 			System.out.print("Terminating transaction..");
 			return;
 		} else {
-			System.out.print(" Action not available. Please set Search Task or Navigate only");
+			System.out
+					.print(" Action not available. Please set Search Task or Navigate only");
 			System.out.print("Terminating transaction..");
 			return;
 		}
@@ -298,18 +303,25 @@ public class SeleniumDriver {
 			rowNum = defaultInputRow;
 		if (getPropertiesAction(sr).contentEquals("Navigate"))
 			rowNum = defaultInputRow;
-		//int pivotRow = rowNum;
+		// int pivotRow = rowNum;
 		int pivotIndex = 1;
-		System.out.println("First Excel Entry: "+ excelReader.getCellData(rowNum, 0));
+		System.out.println("First Excel Entry: " + excelReader.getCellData(rowNum, 0));
 		readerloop: while (!excelReader.getCellData(rowNum, 0).isEmpty()) {
 
 			if (getPropertiesRecursive(sr).toLowerCase().contentEquals("true")) {
 				if (getPropertiesAction(sr).contentEquals("Search Task")) {
 					goToTask(sr);
+				} else if (getPropertiesAction(sr).contentEquals("Navigate")) {
+					navigateToTask(sr);
+					getSheetName(sr);
 				}
 			} else {
 				if (getPropertiesAction(sr).contentEquals("Search Task") && !hasRunGoToTask) {
 					goToTask(sr);
+					hasRunGoToTask = true;
+				} else if (getPropertiesAction(sr).contentEquals("Navigate") && !hasRunGoToTask) {
+					navigateToTask(sr);
+					getSheetName(sr);
 					hasRunGoToTask = true;
 				}
 			}
@@ -326,12 +338,15 @@ public class SeleniumDriver {
 
 			int fieldSize = fields.size();
 			int colNum = 0;
+			// int rowGroup = defaultLabelRow-1;
 			int iteration = 0;
 			int checkpoint = 0;
 			String arrayCol = null;
+			String arrayRow = null;
 			System.out.println("Field size: " + fieldSize);
-			fieldloop: 
-			//while (iteration != fieldSize) {
+			System.out.println("Pivot Index: " + pivotIndex);
+			fieldloop:
+			// while (iteration != fieldSize) {
 			while (iteration < fieldSize) {
 				System.out.println("Field Iteration is now currently at:"+ iteration);
 				String current = fields.elementAt(iteration);
@@ -350,7 +365,8 @@ public class SeleniumDriver {
 					while (!current.contains("esac")) {
 						iteration += 1;
 						current = fields.elementAt(iteration);
-						if ((iteration+1) < fieldSize && fields.elementAt(iteration + 1).startsWith("case:")) {
+						if ((iteration + 1) < fieldSize
+								&& fields.elementAt(iteration + 1).startsWith("case:")) {
 							iteration += 1;
 							current = fields.elementAt(iteration);
 						}
@@ -360,15 +376,22 @@ public class SeleniumDriver {
 				}
 				// Case Handler
 
-				if (step[0].contains("array")) {
+				//array handler
+				if (step[0].contains("array") && !step[0].contains("col")) {
 					arrayCol = step[1];
 					checkpoint = iteration + 1;
 					iteration++;
 					continue fieldloop;
-				} else if (step[0].contains("stop")) {
+				} else if (step[0].contains("stop") && !step[0].contains("col")) {
 					int nextRow = rowNum + 1;
 
 					if (excelReader.getCellData(rowNum, 0).contentEquals(excelReader.getCellData(nextRow, 0))) {
+						rowNum++;
+						colNum = Integer.valueOf(arrayCol);
+						iteration = checkpoint;
+						continue fieldloop;
+					}
+					if (excelReader.getCellData(nextRow, 0).length() > 0 && step[0].contains("non-identical")) {
 						rowNum++;
 						colNum = Integer.valueOf(arrayCol);
 						iteration = checkpoint;
@@ -378,22 +401,43 @@ public class SeleniumDriver {
 					iteration++;
 					continue fieldloop;
 				}
+				//array handler: Column version
+				if (step[0].contains("colArray")) {
+					//arrayRow = step[1];
+					checkpoint = iteration + 1;
+					iteration++;
+					continue fieldloop;
+				} else if (step[0].contains("colStop")) {
+					int nextCol = colNum+1;
 
+					if ((excelReader.getCellData(rowNum, nextCol)).length()>0) {
+						colNum++;
+						//rowNum = Integer.valueOf(arrayRow);
+						iteration = checkpoint;
+						continue fieldloop;
+					}
+					iteration += 1;
+					continue fieldloop;
+				}
+				
 				// Action Reader...
 				if (step[0].contains("setExcelRow:")) {
 					colNum = 0;
-					rowNum = ArgumentExecutor.executeSetExcelRow(current, excelReader, pivotIndex);
+					Map<String, String> cellProp = ArgumentExecutor.executeSetExcelRow(current, excelReader, pivotIndex);
+					rowNum = Integer.parseInt(cellProp.get("rowNum"));
+					rowGroup = Integer.parseInt(cellProp.get("rowGroup"));
 					iteration += 1;
 					continue fieldloop;
 				}
 				if (step[0].contains("setExcelCol:")) {
-					colNum = ArgumentExecutor.executeSetExcelColumn(current, excelReader);
+					colNum = ArgumentExecutor.executeSetExcelColumn(current, excelReader, rowGroup);
 					iteration += 1;
 					continue fieldloop;
 				}
-				if(step[0].contains("takeScreenshot:")){
+				if (step[0].contains("takeScreenshot:")) {
 					String sName = ArgumentExecutor.executeTakeScreenshot(step[0], caseName);
 					takeScreenShot(sName);
+					iteration += 1;
 					continue fieldloop;
 				}
 				// Table Inputs...
@@ -407,7 +451,7 @@ public class SeleniumDriver {
 				String data = "";
 				if (step[0].toLowerCase().contains("time") && !step[0].toLowerCase().contains("zone")) {
 					data = excelReader.getCellData(rowNum, colNum, "time");
-				} else if(step.length > 4 && step[4].toLowerCase().contains("parse number")){
+				} else if (step.length > 4 && step[4].toLowerCase().contains("parse number")) {
 					data = ArgumentExecutor.executeCellParser(step[4], excelReader, rowNum, colNum, data);
 				} else {
 					data = excelReader.getCellData(rowNum, colNum);
@@ -426,17 +470,18 @@ public class SeleniumDriver {
 					colNum--;
 				} else {
 
-					if ((data.isEmpty() || data.contains("blank")) && !step[1].contains("button") && !step[1].contains("skippable")) {
+					if ((data.isEmpty() || data.contains("blank"))&& !step[1].contains("button") 
+							&& !step[1].contains("skippable") && !current.contains("trigger:")) {
 						System.out.print(step[0] + " is empty.\n");
 					} else {
-						current = ArgumentHandler.executeArgumentConverter(current, excelReader, rowNum);
+						current = ArgumentHandler.executeArgumentConverter(current, excelReader, rowNum, rowGroup, colNum);
 						step = current.split(" \\| ");
-						
+
 						try {
 
 							if (step.length > 4) {// Fourth step handler...
 
-								Map<String, String> retrievingMap = ArgumentHandler.executeFourthArgument(current, excelReader, rowNum, colNum, data);
+								Map<String, String> retrievingMap = ArgumentHandler.executeFourthArgument(current,excelReader, rowNum, rowGroup,colNum, data);
 								sleepTime = Integer.parseInt(retrievingMap.get("sleepTime"));
 								waitImmunity = Boolean.parseBoolean(retrievingMap.get("waitImmunity"));
 								data = retrievingMap.get("data");
@@ -445,14 +490,19 @@ public class SeleniumDriver {
 								iteration += Integer.parseInt(retrievingMap.get("iteration"));
 								colNum = Integer.parseInt(retrievingMap.get("colNum"));
 								// Case Handler...
-								if (!caseId.isEmpty()&& !caseId.contentEquals("")) {
+								if (!caseId.isEmpty() && !caseId.contentEquals("")) {
 									System.out.println("Case Scenario: "+ caseId);
-									if (!step[1].contains("button")) colNum += 1;
-									if(!waitImmunity) action(step[0], step[1], step[2], step[3], data);
+									if (!step[1].contains("button"))
+										colNum += 1;
+									if (!waitImmunity) action(step[0], step[1], step[2],step[3], data);
 									while (!current.contentEquals("case: "+ caseId)) {
 										iteration += 1;
 										current = fields.elementAt(iteration);
 									}
+									iteration += 1;
+									continue fieldloop;
+								}
+								if (waitImmunity && step[4].contains(":") && step[4].contains("wait")) {// Recent change...
 									iteration += 1;
 									continue fieldloop;
 								}
@@ -466,13 +516,12 @@ public class SeleniumDriver {
 									}
 								}
 							}
-							
+
 							if (isFound) {
-									throw new TimeoutException();
-								} else{
-									TaskUtilities.jsCheckMessageContainer();
-									//TaskUtilities.jsCheckInputErrors();
-								}
+								throw new TimeoutException();
+							} else {
+								TaskUtilities.jsCheckMessageContainer();
+							}
 
 							Thread.sleep(sleepTime);
 							action(step[0], step[1], step[2], step[3], data);
@@ -485,25 +534,26 @@ public class SeleniumDriver {
 							e.printStackTrace();
 							takeScreenShot(caseName);
 							// String errMsg = ""+e;
-							String errKey = InputErrorHandler.identifyInputErrors(textReader, excelReader, sr, rowNum);
+							String errKey = InputErrorHandler.identifyInputErrors(textReader,excelReader, sr, rowNum);
 							String caseType = ":Undo-Steps";
 							System.out.println("Input has errors on: " + errKey);
 
 							if (step.length > 4) {
 								if (step[4].contains("throws")) {
-									if((""+e).contains("\"throws")){
-										String[] throwSet = (""+e).split("\"");
-										for(String throwCase : throwSet){
-											if(throwCase.contains("throws ")){
+									if (("" + e).contains("\"throws")) {
+										String[] throwSet = ("" + e)
+												.split("\"");
+										for (String throwCase : throwSet) {
+											if (throwCase.contains("throws ")) {
 												step[4] = throwCase;
 											}
 										}
 									}
 									String caseItem = ArgumentExecutor.executeThrower(step[4]);
-									boolean isResuming = runUndoCaseSteps(sr, caseItem, caseType ,savedEntry.get(caseItem),rowNum);
+									boolean isResuming = runUndoCaseSteps(sr,caseItem, caseType, savedEntry.get(caseItem), rowNum);
 									if (!isResuming) {
 										rowNum += 1;
-										pivotIndex = 1;
+										pivotIndex += 1;
 										continue readerloop;
 									} else {
 										colNum += 1;
@@ -513,20 +563,24 @@ public class SeleniumDriver {
 								}
 							}
 
-							sentryloop: 
 							for (String key : savedEntry.keySet()) {
 								String newKey = key.toLowerCase().replaceAll("\\*", "");
 								System.out.println("newKey is now " + newKey);
 								// if((""+e).toLowerCase().contains(newKey)){
 								if (errKey.toLowerCase().contentEquals(newKey)) {
 									System.out.println("Exception Found.. running case: "+ key);
-									boolean isResuming = runUndoCaseSteps(sr, key, caseType, savedEntry.get(key), rowNum);
+									boolean isResuming = runUndoCaseSteps(sr,key, caseType, savedEntry.get(key),rowNum);
 
 									if (!isResuming) {
 										rowNum += 1;
+										pivotIndex += 1;
 										continue readerloop;
+									} else {
+										colNum += 1;
+										iteration += 1;
+										continue fieldloop;
 									}
-									break sentryloop;
+									// break sentryloop;
 								}
 							}
 
@@ -587,7 +641,7 @@ public class SeleniumDriver {
 		String action = null;
 		while (elements.hasMoreElements()) {
 			String current = elements.nextElement();
-			if (current.contains("Action")) {
+			if (current.contains("Action") && !current.contains("Sheetname")) {
 				String[] Action = current.split(" \\| ");
 				action = Action[1];
 				break;
@@ -612,7 +666,7 @@ public class SeleniumDriver {
 			recursive = "false";
 		return recursive;
 	}
-	
+
 	private String getPropertiesRedirect(String name) {// returns false by default
 		Vector<String> properties = textReader.getCollection(name, "Properties");
 		Enumeration<String> elements = properties.elements();
@@ -631,7 +685,8 @@ public class SeleniumDriver {
 	}
 
 	// Runs the Pre-Steps or Post-Steps set in the config_file.text
-	private void runSteps(String name, String steps, int curRowNum)throws Exception {
+	private void runSteps(String name, String steps, int curRowNum)
+			throws Exception {
 		Vector<String> Steps = textReader.getCollection(name, steps);
 		Enumeration<String> elements = Steps.elements();
 		int STEP_TIMEOUT = MAX_TIMEOUT;
@@ -650,23 +705,22 @@ public class SeleniumDriver {
 			}
 
 			if (current.contains("execute:")) {
-				String rs = ArgumentExecutor.executeArithmetic(current,afrrkInt);
+				String rs = ArgumentExecutor.executeArithmetic(current, afrrkInt);
 				afrrkInt = Integer.parseInt(rs);
 				System.out.println("Arithmetic has been executed successfully...");
 				continue stepsloop;
 			}
 
-			current = ArgumentHandler.executeArgumentConverter(current, excelReader, curRowNum);
+			current = ArgumentHandler.executeArgumentConverter(current, excelReader, curRowNum, rowGroup, colNum);
 			step = current.split(" \\| ");
-			/*if (step[3].contains("$String")) {
-				inputloop: while (excelReader.getCellData(defaultLabelRow,colNum).length() > 0) {
-					if (excelReader.getCellData(defaultLabelRow, colNum).contentEquals(step[0])) {
-						step[3] = step[3].replace("$String",excelReader.getCellData(curRowNum, colNum));
-						break inputloop;
-					}
-					colNum += 1;
-				}
-			}*/
+			/*
+			 * if (step[3].contains("$String")) { inputloop: while
+			 * (excelReader.getCellData(defaultLabelRow,colNum).length() > 0) {
+			 * if (excelReader.getCellData(defaultLabelRow,
+			 * colNum).contentEquals(step[0])) { step[3] =
+			 * step[3].replace("$String",excelReader.getCellData(curRowNum,
+			 * colNum)); break inputloop; } colNum += 1; } }
+			 */
 			// Third step checker..
 			if (step[3].contains("$afrrkInt")) {
 				step[3] = step[3].replace("$afrrkInt", "" + afrrkInt);
@@ -683,7 +737,7 @@ public class SeleniumDriver {
 			}
 
 			if (step[0].toUpperCase().contains("WAIT TO DISAPPEAR")) {
-				System.out.println("Waiting for " + step[1]+ " to dissappear...");
+				System.out.println("Waiting for " + step[1] + " to dissappear...");
 				wait.until(ExpectedConditions.invisibilityOfElementLocated(getLocator(step[2],step[3])));
 				continue stepsloop;
 			}
@@ -696,7 +750,7 @@ public class SeleniumDriver {
 					}
 				}
 			}
-			TaskUtilities.customWaitForElementVisibility(step[2], step[3],STEP_TIMEOUT, new CustomRunnable() {
+			TaskUtilities.customWaitForElementVisibility(step[2], step[3], STEP_TIMEOUT, new CustomRunnable() {
 
 						public void customRun() throws Exception {
 							// TODO Auto-generated method stub
@@ -717,7 +771,11 @@ public class SeleniumDriver {
 			 * coordinate.onPage(); coordinate.inViewPort();
 			 */
 
-			TaskUtilities.retryingFindClick(getLocator(step[2], step[3]));
+			if (step[1].contains("js")) {
+				TaskUtilities.jsFindThenClick(step[2], step[3]);
+			} else {
+				TaskUtilities.retryingFindClick(getLocator(step[2], step[3]));
+			}
 			if (step[1].contains("enter")) {
 				we.sendKeys(Keys.ENTER);
 			}
@@ -731,7 +789,7 @@ public class SeleniumDriver {
 			// executor.executeScript("arguments[0].click();", elmnt);
 
 			// Display console
-			System.out.println(step[0] + " " + step[1] + " "+ " is clicked using " + step[2] + " = " + step[3]);
+			System.out.println(step[0] + " " + step[1] + " is clicked using " + step[2] + " = " + step[3]);
 
 			// Take screenshot
 			takeScreenShot(caseName);
@@ -766,41 +824,45 @@ public class SeleniumDriver {
 				// step[3].indexOf("//tr"))+"/..";
 				System.out.println("locator path is now: " + step[3]);
 				// wait.until(ExpectedConditions.elementToBeClickable(getLocator(step[2],step[3])));
-				TaskUtilities.customWaitForElementVisibility(step[2], dummy, MAX_TIMEOUT);
+				TaskUtilities.customWaitForElementVisibility(step[2], dummy,MAX_TIMEOUT);
 				TaskUtilities.retryingFindClick(getLocator(step[2], dummy));
 				afrrkInt = TaskUtilities.surveyCurrentTableInputs(step[3]);
 			}
 
 			if (!step[0].contentEquals("table")) {
-				TaskUtilities.customWaitForElementVisibility(step[2], step[3],MAX_TIMEOUT);
+				TaskUtilities.customWaitForElementVisibility(step[2], step[3], MAX_TIMEOUT);
 				// wait.until(ExpectedConditions.elementToBeClickable(getLocator(step[2],step[3]))).click();
-				TaskUtilities.retryingFindClick(getLocator(step[2], step[3]));
+				if(step[1].contains("js")){
+					TaskUtilities.jsFindThenClick(step[2], step[3]);
+				} else{
+					TaskUtilities.retryingFindClick(getLocator(step[2], step[3]));
+				}
+				if(step[1].contains("enter")){
+					driver.findElement(getLocator(step[2], step[3]));
+				}
 			}
 		}
 		System.out.print("Preparation steps has been done...");
 	}
 
-	// Determine the appropriate actions based on the type of element set in the
-	// config_file.txt
-	public void action(String name, String type, String locatorType,String locator, String data) throws Exception {
+	// Determine the appropriate actions based on the type of element set in the config_file.txt
+	public void action(String name, String type, String locatorType, String locator, String data) throws Exception {
 		System.out.println("Performing actions...");
 		int TIME_OUT = MAX_TIMEOUT;
 		int attempts = 0;
 
 		if (type.contentEquals("skippable")) {
-			if (data.isEmpty()) {
+			if (data.isEmpty() || data.contains("blank")) {
 				return;
 			} else {
 				// Skips
 			}
 		}
-		actionloop: 
-		while (attempts < 3) {
+		actionloop: while (attempts < 3) {
 			try {
 
 				if (name.contentEquals("Cancel"))
 					TIME_OUT = 10;
-
 				System.out.println("Waiting for element to be found...");
 				TaskUtilities.customWaitForElementVisibility(locatorType,locator, TIME_OUT, new CustomRunnable() {
 
@@ -828,15 +890,16 @@ public class SeleniumDriver {
 					element.click();
 					element.clear();
 					element.click();
-					System.out.println(name + " " + type + " "+ " is clicked using " + locatorType + " = "+ locator);
+					System.out.println(name + " " + type + " "+ " is clicked using " + locatorType + " = " + locator);
 					if (data.toLowerCase().contains("yes,")) {
 						data = data.substring(data.indexOf(",") + 1);
 						data = data.trim();
+					}else if(data.contains("blank")){
+						data = "";
 					}
 					element.sendKeys(data);
 					System.out.println(name + " = " + data);
-					if (type.contentEquals("dropdown"))
-						element.sendKeys(Keys.ENTER);
+					if (type.contentEquals("dropdown")) element.sendKeys(Keys.ENTER);
 					element.sendKeys(Keys.TAB);
 
 				}/*
@@ -851,7 +914,7 @@ public class SeleniumDriver {
 				 */else if (type.contains("select")) {
 					// wait.until(ExpectedConditions.elementToBeClickable(getLocator(locatorType,locator)));
 					int curOps = 0;
-					WebElement option = getElement(locatorType, locator	+ "/option[@title='" + data + "']");
+					WebElement option = getElement(locatorType, locator + "/option[@title='" + data + "']");
 					int opsValue = Integer.parseInt(option.getAttribute("value"));
 					if (type.contentEquals("select")) {
 						new Select(element).selectByVisibleText(data);
@@ -874,7 +937,7 @@ public class SeleniumDriver {
 					} else {
 						element.click();
 					}
-					System.out.println(name + " " + type + " "+ " is clicked using " + locatorType + " = "+ locator);
+					System.out.println(name + " " + type + " "+ " is clicked using " + locatorType + " = " + locator);
 					Thread.sleep(1000);
 
 				} else if (type.contentEquals("radio")) {
@@ -882,26 +945,24 @@ public class SeleniumDriver {
 
 				} else if (type.contentEquals("checkbox")) {
 					// wait.until(ExpectedConditions.presenceOfElementLocated(getLocator(locatorType,locator)));
-					boolean isChecked = TaskUtilities.jsGetCheckboxTickStatus(
-							locatorType, locator);
-
+					boolean isChecked = TaskUtilities.jsGetCheckboxTickStatus(locatorType, locator);
 					// if(element.isSelected()) {
-					if ((data.toUpperCase().contentEquals("FALSE") || data
-							.toUpperCase().contains("NO")) && isChecked) {
+					if ((data.toUpperCase().contentEquals("FALSE") || data.toUpperCase().contains("NO")) && isChecked) {
 						element.click();
 						System.out.println(name + " " + type + " "+ " is clicked using " + locatorType + " = "+ locator);
 						System.out.println(name + " = " + data);
 					}
-					// } else
-					if ((data.toUpperCase().contentEquals("TRUE") || data
-							.toUpperCase().contains("YES")) && !isChecked) {
-						element.click();
-
-						System.out.println(name + " " + type + " "+ " is clicked using " + locatorType + " = "+ locator);
-						System.out.println(name + " = " + data);
+					else if ((data.toUpperCase().contentEquals("TRUE") || data.toUpperCase().contains("YES") || !data.isEmpty()) && !isChecked) {
+						if(!data.isEmpty() && (data.toUpperCase().contentEquals("FALSE") || data.toUpperCase().contentEquals("NO"))){
+							//Skips since data is No or false...
+						}else{
+							element.click();
+							System.out.println(name + " " + type + " "+ " is clicked using " + locatorType + " = "+ locator);
+							System.out.println(name + " = " + data);
+						}
 					}
 				} else if (type.contentEquals("combobox")) {
-					List<String> actions = ArgumentExecutor.parseCombobox(name, locator, data);
+					List<String> actions = ArgumentExecutor.parseCombobox(name,locator, data);
 					for (String act : actions) {
 						System.out.println("Will now process..." + act);
 						String[] step = act.split(" \\| ");
@@ -937,7 +998,7 @@ public class SeleniumDriver {
 				attempts += 1;
 				if (attempts == 3)
 					throw we;
-			} 
+			}
 		}
 	}
 
@@ -961,38 +1022,36 @@ public class SeleniumDriver {
 			}
 
 			if (step[0].toUpperCase().contains("WAIT TO DISAPPEAR")) {
-				System.out.println("Waiting for " + step[1]+ " to dissappear...");
-				wait.until(ExpectedConditions.invisibilityOfElementLocated(getLocator(step[2], step[3])));
+				System.out.println("Waiting for " + step[1]	+ " to dissappear...");
+				wait.until(ExpectedConditions.invisibilityOfElementLocated(getLocator(step[2],step[3])));
 				continue unsloop;
 			}
+
+			TaskUtilities.customWaitForElementVisibility(step[2], step[3],MAX_TIMEOUT);
 			
-			TaskUtilities.customWaitForElementVisibility(step[2], step[3], MAX_TIMEOUT);
+			if (step[1].contentEquals("clear")) {
+				driver.findElement(getLocator(step[2], step[3])).clear();
+			}
+			
 			TaskUtilities.jsScrollIntoView(step[2], step[3]);
 			TaskUtilities.jsFindThenClick(step[2], step[3]);
 
-			/*
-			 * while(isShown && step[0].contentEquals("OK")){ try{
-			 * TaskUtilities.jsFindThenClick(step[2], step[3]);
-			 * driver.findElement(By.xpath(step[3])).click(); isShown = true; }
-			 * catch(Exception e){ isShown = false; } }
-			 */
-
-			System.out.println(step[0] + " " + step[1] + " is clicked using "+ step[2] + " = " + step[3]);
+			System.out.println(step[0] + " " + step[1] + " is clicked using " + step[2] + " = " + step[3]);
 		}
 
 		System.out.println("Fallback steps has been executed...");
 	}
 
 	// Supports Fallback methods for Exception Cases
-	private boolean runUndoCaseSteps(String name, String caseItem, String caseType, String data, int curRowNum) throws Exception {
+	private boolean runUndoCaseSteps(String name, String caseItem,
+			String caseType, String data, int curRowNum) throws Exception {
 		int colNum = 0;
 		System.out.print("Setting Case elements");
-		Vector<String> undoCaseSteps = textReader.getCaseCollection(name, caseItem, caseType);
+		Vector<String> undoCaseSteps = textReader.getCaseCollection(name,caseItem, caseType);
 		Enumeration<String> elements = undoCaseSteps.elements();
 		System.out.println(" ...DONE.");
 
-		uncaseloop: 
-		while (elements.hasMoreElements()) {
+		uncaseloop: while (elements.hasMoreElements()) {
 			String current = elements.nextElement();
 			System.out.println("Starting the loop for: " + current);
 			// current = current.replace("\t", "");
@@ -1010,37 +1069,40 @@ public class SeleniumDriver {
 			}
 
 			if (step[0].toUpperCase().contains("WAIT TO DISAPPEAR")) {
-				System.out.println("Waiting for " + step[1]+ " to dissappear...");
-				wait.until(ExpectedConditions.invisibilityOfElementLocated(getLocator(step[2],
-								step[3])));
+				System.out.println("Waiting for " + step[1]
+						+ " to dissappear...");
+				wait.until(ExpectedConditions.invisibilityOfElementLocated(getLocator(step[2],step[3])));
 				continue uncaseloop;
 			}
-			
-			if(step.length>4){
-				if(step[4].contains("encode")){
+
+			// Validation actions...
+			current = ArgumentHandler.executeArgumentConverter(current, excelReader, curRowNum, rowGroup, colNum);
+			step = current.split(" \\| ");
+
+			if (step.length > 4) {
+				if (step[4].contains("encode")) {
 					String[] read = step[4].split(":");
 					data = read[1];
 				}
 			}
-			
 			// pseudo perform actions...
 			if (step[1].contentEquals("textbox")) {
 				action(step[0], step[1], step[2], step[3], data);
+			} else if (step[1].contentEquals("clear")) {
+				driver.findElement(getLocator(step[2], step[3])).clear();
 			}
 
-			// Validation actions...
-			current = ArgumentHandler.executeArgumentConverter(current, excelReader, curRowNum);
-			step = current.split(" \\| ");
-			
 			// Execute entry...
 			if (current.contains("execute:")) {
-				String rs = ArgumentExecutor.executeArithmetic(current,afrrkInt);
+				String rs = ArgumentExecutor.executeArithmetic(current,
+						afrrkInt);
 				afrrkInt = Integer.parseInt(rs);
-				System.out.println("Arithmetic has been executed successfully...");
+				System.out
+						.println("Arithmetic has been executed successfully...");
 				continue uncaseloop;
 			}
-			
-			TaskUtilities.customWaitForElementVisibility(step[2], step[3],MAX_TIMEOUT);
+
+			TaskUtilities.customWaitForElementVisibility(step[2], step[3], MAX_TIMEOUT);
 			TaskUtilities.jsScrollIntoView(step[2], step[3]);
 			try {
 				if (step[1].contains("js")) {
@@ -1053,7 +1115,8 @@ public class SeleniumDriver {
 				Thread.sleep(1000);
 				TaskUtilities.retryingFindClick(getLocator(step[2], step[3]));
 			}
-			System.out.println(step[0] + " " + step[1] + " "+ " is clicked using " + step[2] + " = " + step[3]);
+			System.out.println(step[0] + " " + step[1] + " "
+					+ " is clicked using " + step[2] + " = " + step[3]);
 		}
 
 		return true;
@@ -1073,14 +1136,22 @@ public class SeleniumDriver {
 	}
 
 	public By getLocator(String type, String value) {
-		if (type.contentEquals("id"))return By.id(value);
-		else if (type.contentEquals("xpath"))return By.xpath(value);
-		else if (type.contentEquals("tagname"))return By.xpath(value);
-		else if (type.contentEquals("classname"))return By.className(value);
-		else if (type.contentEquals("cssselector"))return By.cssSelector(value);
-		else if (type.contentEquals("name"))return By.name(value);
-		else if (type.contentEquals("linktext"))return By.linkText(value);
-		else return By.partialLinkText(value);
+		if (type.contentEquals("id"))
+			return By.id(value);
+		else if (type.contentEquals("xpath"))
+			return By.xpath(value);
+		else if (type.contentEquals("tagname"))
+			return By.xpath(value);
+		else if (type.contentEquals("classname"))
+			return By.className(value);
+		else if (type.contentEquals("cssselector"))
+			return By.cssSelector(value);
+		else if (type.contentEquals("name"))
+			return By.name(value);
+		else if (type.contentEquals("linktext"))
+			return By.linkText(value);
+		else
+			return By.partialLinkText(value);
 	}
 
 	// Screenshot
@@ -1090,7 +1161,8 @@ public class SeleniumDriver {
 		String ssPath = workspace_path + screenShotPath;
 		try {
 			File ssDir = new File(ssPath);
-			if (!ssDir.exists()) ssDir.mkdir();
+			if (!ssDir.exists())
+				ssDir.mkdir();
 			File dir = new File(path);
 			if (!dir.exists()) {
 				System.out.println("The location " + path + " does not exist.");
@@ -1107,8 +1179,7 @@ public class SeleniumDriver {
 			FileOutputStream outputStream = new FileOutputStream(screenshotFile);
 			try {
 				outputStream.write(screenshot);
-				System.out.println("Screen shot "
-						+ screenshotFile.toString().substring(path.length() + 1) + " saved in "+ path);
+				System.out.println("Screen shot "+ screenshotFile.toString().substring(path.length() + 1) + " saved in "+ path);
 			} finally {
 				outputStream.close();
 			}

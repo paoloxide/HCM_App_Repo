@@ -370,8 +370,11 @@ public class TaskUtilities{
 		}
 		//System.out.println("Last container value: '"+container+"'\nafter "+attempts+" tries.");
 		String tempMsg = driver.findElement(By.id("d1::msgDlg")).getText();
+		if(tempMsg.contains("oracle.apps.flex.fnd.applcore")){
+			TaskUtilities.jsFindThenClick("xpath", "//button[contains(@id,'msgDlg') and text()='OK']");
+		}
 		
-		if((container.isEmpty() || container.contentEquals("")) && tempMsg.contains("Error")){
+		if((container.isEmpty() || container.contentEquals("")) && tempMsg.contains("Error") && !tempMsg.contains("oracle.apps.flex.fnd.applcore")){
 			errMsg = driver.findElement(By.id("d1::msgDlg")).getText().replaceAll("OK", "").replace("Error", "");
 			throw new DuplicateEntryException("Error FOUND: \n"+errMsg);
 
@@ -383,7 +386,6 @@ public class TaskUtilities{
 	public static void jsCheckInputErrors() throws Exception{
 		int attempts = 0;		
 		String label = "";
-		Thread.sleep(5000);
 		String knownErrPath, modifiedPath;
 		knownErrPath = "//*[contains(@class,'Error')]";
 		
@@ -391,12 +393,6 @@ public class TaskUtilities{
 
 		System.out.print("Inspecting error on input");	
 		while(attempts < 3 && (label.isEmpty() || label.contentEquals(""))){
-			try{
-
-					TaskUtilities.customWaitForElementVisibility("xpath", knownErrPath, 1/10);
-				} catch(TimeoutException te){
-					//Skips...
-				}
 			
 			modifiedPath = knownErrPath+"//label";
 			if(TaskUtilities.is_element_visible("xpath", knownErrPath+"//label")){

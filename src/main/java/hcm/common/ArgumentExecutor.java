@@ -53,7 +53,7 @@ public class ArgumentExecutor {
 		
 		return result;
 	}
-	public static Map<String, String> executeTrigger(String statement, ExcelReader excelReader, String label, int rowNum) throws Exception{
+	public static Map<String, String> executeTrigger(String statement, ExcelReader excelReader, String label, int rowNum, String data) throws Exception{
 		int defaultLabelRow = SeleniumDriver.defaultLabelRow;
 		int colNum = 0;
 		int i = 0;
@@ -83,15 +83,23 @@ public class ArgumentExecutor {
 			i += 1;
 		}
 		
-		while(excelReader.getCellData(defaultLabelRow, colNum).length()>0){
+		if(data.toLowerCase().trim().contains("yes") || data.toLowerCase().trim().contains("true")){
+				System.out.println("Non-skippable task...");
+				return trueArray;
+			}else if(excelReader.getCellData(rowNum, colNum).toLowerCase().contains("no")
+					|| data.isEmpty() || data.contains("blank")	|| data.toLowerCase().contains("false")){
+				System.out.println("Skippable task found...");
+				return falseArray;
+			}
+		
+		/*while(excelReader.getCellData(defaultLabelRow, colNum).length()>0){
 			
 			if(excelReader.getCellData(defaultLabelRow, colNum).trim().contentEquals(label)){
 				if(excelReader.getCellData(rowNum, colNum).toLowerCase().contains("yes")
 						|| excelReader.getCellData(rowNum, colNum).toLowerCase().contains("true")){
-						System.out.println("Non-skippable task...");
-						return trueArray;
 					}else if(excelReader.getCellData(rowNum, colNum).toLowerCase().contains("no")
 							|| excelReader.getCellData(rowNum, colNum).isEmpty()
+							|| excelReader.getCellData(rowNum, colNum).contains("blank")
 							|| excelReader.getCellData(rowNum, colNum).toLowerCase().contains("false")){
 						System.out.println("Skippable task found...");
 						return falseArray;
@@ -99,7 +107,7 @@ public class ArgumentExecutor {
 			}
 			
 			colNum += 1;
-		}
+		}*/
 		return falseArray;
 	}
 	public static String executeThrower(String statement) throws Exception{
@@ -120,9 +128,11 @@ public class ArgumentExecutor {
 								.replace("NotFound", "");
 		return statement;
 	}
-	public static int executeSetExcelRow(String statement, ExcelReader excelReader, int pivotIndex) throws Exception{
+	public static Map<String, String> executeSetExcelRow(String statement, ExcelReader excelReader, int pivotIndex) throws Exception{
 		System.out.println("Resetting Excel Row...");
 		int rowNum = 0;
+		int rowGroup = 0;
+		Map<String, String> cellProp = new HashMap<String, String>();
 		statement = statement.replaceAll("setExcelRow:", "");
 		String group = statement.trim();
 		
@@ -131,27 +141,37 @@ public class ArgumentExecutor {
 			System.out.print(".");
 			if(excelReader.getCellData(rowNum, SeleniumDriver.defaulColNum).contentEquals(group)){
 					System.out.println("DONE");
-					return rowNum + 2 + pivotIndex - 1;
+					rowGroup = rowNum;
+					rowNum = rowNum + 2 + pivotIndex - 1;
+					cellProp.put("rowGroup", ""+rowGroup);
+					cellProp.put("rowNum", ""+rowNum);
+					return cellProp;
+					//return rowNum + 2 + pivotIndex - 1;
 				}
 			
 			rowNum += 1;
 		}
 	}
-	public static int executeSetExcelColumn(String statement, ExcelReader excelReader) throws Exception{
+	public static int executeSetExcelColumn(String statement, ExcelReader excelReader, int rowGroup) throws Exception{
 		System.out.println("Resetting Excel Column...");
-		int rowNum = SeleniumDriver.defaultLabelRow;
+		//int rowNum = SeleniumDriver.defaultLabelRow;
+		int rowNum = rowGroup + 1;
 		statement = statement.replaceAll("setExcelCol:", "");
-		String label = statement.trim();	
+		String label = statement.trim();
 
 		int colNum = 0;
 		System.out.print("Locating label");
 		while(excelReader.getCellData(rowNum, colNum).length()>0){
 			System.out.print(".");
-			if(excelReader.getCellData(rowNum, colNum).contentEquals(label)){
+			if(excelReader.getCellData(rowNum, colNum).trim().contentEquals(label)){
 					System.out.println("DONE");
 					return colNum;
 				}
-			
+			if(excelReader.getCellData(rowNum, colNum+1).isEmpty()){
+				if(excelReader.getCellData(rowNum, colNum+2).length()>0){
+					colNum += 1;
+				}
+			}
 			colNum += 1;
 		}
 		return colNum+1;
@@ -188,11 +208,14 @@ public class ArgumentExecutor {
 			if(parts[1].startsWith("c")){
 				if(parts[1].contains(":")){
 					String[] caseParts = parts[1].replace("c ", "").trim().split(":");
-					trueCase = caseParts[0].replace("case ", "").trim();
-					falseCase = caseParts[1].replace("case ", "").trim();
+					if(caseParts.length>0 && !caseParts[0].isEmpty()) trueCase = caseParts[0].replace("case ", "").trim();
+					if(caseParts.length>1 && !caseParts[1].isEmpty()) falseCase = caseParts[1].replace("case ", "").trim();
 				}else{
 					trueCase = ""+parts[1].replace("c ","").replace("case ", "");
-					if(!trueCase.isEmpty()) trueCase = trueCase.trim();
+					if(!trueCase.isEmpty()) {
+						if(trueCase.contentEquals("c")) trueCase = "";
+						trueCase = trueCase.trim();
+					}
 				}
 			}
 		
@@ -278,7 +301,8 @@ public class ArgumentExecutor {
 		actionSet.add(name+" | button | xpath | //tr["+id+"]//label[text()='"+name+"']");
 		actionSet.add(name+" | button-enter | xpath | //tr["+id+"]//a[contains(@title,'"+name+"')]");
 		actionSet.add("Find... | button | xpath | //div["+id+"]//a[text()='Search...']");
-		actionSet.add(name+" | textbox-enter | xpath | //table["+id+"]//label[text()=' "+name+"']/..//input");
+		//actionSet.add(name+" | textbox-enter | xpath | //table["+id+"]//label[text()=' "+name+"']/..//input");
+		actionSet.add(name+" | textbox-enter | xpath | //table["+id+"]//label/..//input");
 		//actionSet.add("Find | button-enter | xpath | //table["+id+"]//button[text()='Search'] | wait");
 		actionSet.add("Pick | button | xpath | //table["+id+"]//td[text()='"+data+"'] | unstale");
 		actionSet.add("OK | button | xpath | //table["+id+"]//button[text()='OK']");
