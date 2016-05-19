@@ -752,6 +752,7 @@ resume esac
 Label Finder | button | xpath | //label[text()='Manage Legal Entity Registrations']
 Select and Add | select | xpath | //label[text()='Legal Entity']/../..//select | unstale,encode: Select and Add
 Apply and Go to Task | button-enter | xpath | //button[text()='Apply and Go to Task']
+setExcelCol: Name
 Name | textbox-enter | xpath | //label[text()='Name']/../..//input
 Header | button | xpath | //label[text()='Name']/../..//input | wait 5
 Pick | button | xpath | //a[text()='$.sName'] | wait 12 -c :throws InvalidLegalEntity
@@ -809,11 +810,7 @@ Header | h1 | xpath | //h1[text()='Search']
 end esac
 
 
-
-
-
 :SET # 4
-
 [Manage Legal Reporting Unit]
 :Properties
 Sheetname | Legal Reporting Unit
@@ -829,16 +826,17 @@ Legal Reporting Unit | button | xpath | //div[text()='Manage Legal Reporting Uni
 Verify Select... | jsbutton | xpath | //div[text()='Manage Legal Reporting Unit']/../..//a[contains(@id,'cl2')][text()='Select...'] | wait 12 -c :case RemoveAttachment
 case: RemoveAttachment
 Verify Select... | jsbutton | xpath | //div[text()='Manage Legal Reporting Unit']/../..//a[contains(@id,'cl2')][text()]
-Edit button | button | xpath | //label[text()='Legal Entity']/../..//select | unstale
-Modify List | button-enter | xpath | //label[text()='Legal Entity']/../..//select/option[@title='Edit This List']
+Label Finder | button | xpath | //label[text()='Manage Legal Reporting Unit']
+Edit this List | select | xpath | //label[text()='Legal Entity']/../..//select | wait 5,unstale,encode: Edit This List
 Remove | button | xpath | //td[contains(@id,'contentContainer')]//img[@title='Delete']
 Header | nullable | xpath | //div[contains(text(),'No data to display')]
 Save and Close | button | xpath | //button[text()='ave and Close']
 Go to Task | button | xpath | //div[text()='Manage Legal Reporting Unit']/../..//a[@title='Go to Task']
 resume esac
-Select | button | xpath | //label[text()='Legal Entity']/../..//select
-and Add | button-enter | xpath | //label[text()='Legal Entity']/../..//select/option[@title='Select and Add'] | unstale
+Label Finder | button | xpath | //label[text()='Manage Legal Reporting Unit']
+Select and Add | select | xpath | //label[text()='Legal Entity']/../..//select | wait 5,unstale,encode: Select and Add
 Apply and Go to Task | button | xpath | //button[text()='Apply and Go to Task'] | unstale
+setExcelCol: *Legal Entity
 Name | textbox-enter | xpath | //label[text()='Name']/../..//input
 Header | button | xpath | //label[text()='Name']/../..//input | wait 5
 Pick | button | xpath | //a[text()='$.s*Legal Entity'] | wait 12 -c :throws InvalidLegalEntity
@@ -873,6 +871,7 @@ Setup and Maintenance | button-enter | xpath | //a[text()='Setup and Maintenance
 case: InvalidLegalEntity
 Cancel | jsbutton | xpath | //button[text()='ancel']
 Done | jsbutton | xpath | //button[text()='D']
+Header | h1 | xpath | //h1[text()='Implementation Projects']
 Done | jsbutton | xpath | //button[text()='D'][not(@disabled)]
 end esac
 case: RequiredTeritory
@@ -912,25 +911,23 @@ skip:
 Verify Select... | jsbutton | xpath | //div[text()='Manage Legal Reporting Unit Registrations']/../..//a[contains(@id,'cl2')][text()='Select...'] | wait 12 -c :case RemoveAttachment
 case: RemoveAttachment
 Verify Select... | button | xpath | //div[text()='Manage Legal Reporting Unit Registrations']/../..//a[contains(@id,'cl2')][text()]
-Label Finder | radio | xpath | //label[text()='Manage Legal Reporting Unit Registrations']
+Label Finder | button | xpath | //label[text()='Manage Legal Reporting Unit Registrations']
 Edit this List | select | xpath | //label[text()='Legal Entity']/../..//select | wait 5,unstale,encode: Edit This List
 Remove | button | xpath | //td[contains(@id,'contentContainer')]//img[@title='Delete']
 Header | nullable | xpath | //div[contains(text(),'No data to display')]
 Save and Close | button | xpath | //button[text()='ave and Close']
 Go to Task | button | xpath | //div[text()='Manage Legal Reporting Unit Registrations']/../..//a[@title='Go to Task']
 resume esac
-takeScreenshot: -name "Before"
-Select | select | xpath | //label[text()='Legal Entity']/../..//select | wait 5,unstale,encode: Select and Add
-takeScreenshot: -name "Test"
-Label Finder | radio | xpath | //label[text()='Manage Legal Reporting Unit Registrations']
-takeScreenshot: -name "Done"
+Label Finder | button | xpath | //label[text()='Manage Legal Reporting Unit Registrations']
+Select and Add | select | xpath | //label[text()='Legal Entity']/../..//select | wait 5,unstale,encode: Select and Add
 setExcelCol: *Legal Entity
 Apply and Go to Task | button | xpath | //button[text()='Apply and Go to Task']
 Name | textbox-enter | xpath | //label[text()='Name']/../..//input
 Header | button | xpath | //label[text()='Name']/../..//input | wait 5
 Pick | button | xpath | //a[text()='$.s*Legal Entity']/../..//td[2] | wait 12 -c :throws InvalidLegalEntity
 Save and Close | button | xpath | //button[text()='ave and Close']
-Select | select | xpath | //label[text()='Legal Reporting Unit']/../..//select[not(@disabled)] | unstale,encode: Select and Add
+Label Finder | button | xpath | //label[text()='Manage Legal Reporting Unit Registrations']
+Select and Add | select | xpath | //label[text()='Legal Reporting Unit']/../..//select | unstale,encode: Select and Add
 Apply and Go to Task | button | xpath | //button[text()='Apply and Go to Task']
 Reporting Unit | button | xpath | //a[text()='$.s*Legal Reporting Unit']/../..//td[2] | wait 12 -c :throws InvalidReportingUnit
 :Post-Steps
@@ -972,14 +969,14 @@ Save and Close | button | xpath | //button[text()='ave and Close']
 Go to Task | button | xpath | //div[text()='Manage Legal Reporting Unit HCM Information']/../..//a[@title='Go to Task']
 resume esac
 Label Finder | button | xpath | //label[text()='Manage Legal Reporting Unit HCM Information']
-Select | select | xpath | //label[text()='Legal Entity']/../..//select | wait 5,unstale,encode: Select and Add
+Select and Add | select | xpath | //label[text()='Legal Entity']/../..//select | unstale,encode: Select and Add
 setExcelCol: *Legal Entity
 Apply and Go to Task | button-enter | xpath | //button[text()='Apply and Go to Task']
 Name | textbox-enter | xpath | //label[text()='Name']/../..//input
 Header | button | xpath | //label[text()='Name']/../..//input | wait 5
 Pick | button | xpath | //a[text()='$.sName']/../..//td[2] | wait 12 -c :throws InvalidLegalEntity
 Save and Close | button | xpath | //button[text()='ave and Close']
-Select | select | xpath | //label[text()='Legal Reporting Unit']/../..//select[not(@disabled)] | unstale,encode: Select and Add
+Select and Add | select | xpath | //label[text()='Legal Reporting Unit']/../..//select | unstale,encode: Select and Add
 Apply and Go to Task | button-enter | xpath | //button[text()='Apply and Go to Task']
 Reporting Unit | button | xpath | //a[text()='$.sName']/../..//td[2] | wait 12 -c :throws InvalidReportingUnit
 Save and Close | button | xpath | //button[text()='ave and Close']
@@ -1015,47 +1012,6 @@ end esac
 case: ReportingUnitAlreadyExists
 Done | button | xpath | //span[text()='D']/..
 wait to disappear | button | xpath | //span[text()='D'][not(@disabled)]/..
-end esac
-
-[Manage Legal Entity Registration]
-:Properties
-Sheetname | Legal Entity Registrations
-Action | Navigate
-Recursive | false
-Redirect-Enabled | false
-:Pre-Prep
-skip:
-:Pre-Steps
-skip:
-:Fields
-Legal Entity Registration | button | xpath | //div[text()='Manage Legal Entity Registrations'] | locate
-Verify Select... | jsbutton | xpath | //div[text()='Manage Legal Entity Registrations']/../..//a[contains(@id,'cl2')][text()='Select...'] | wait 12 -c :case RemoveAttachment
-case: RemoveAttachment
-Verify Select... | jsbutton | xpath | //div[text()='Manage Legal Entity Registrations']/../..//a[contains(@id,'cl2')][text()]
-Edit button | button | xpath | //label[text()='Legal Entity']/../..//select | unstale
-Modify List | button-enter | xpath | //label[text()='Legal Entity']/../..//select/option[@title='Edit This List']
-Remove | button | xpath | //td[contains(@id,'contentContainer')]//img[@title='Delete']
-Header | nullable | xpath | //div[contains(text(),'No data to display')]
-Save and Close | button | xpath | //button[text()='ave and Close']
-Go to Task | button | xpath | //div[text()='Manage Legal Entity Registrations']/../..//a[@title='Go to Task']
-resume esac
-Select | button | xpath | //label[text()='Legal Entity']/../..//select | unstale
-and Add | button-enter | xpath | //label[text()='Legal Entity']/../..//select/option[@title='Select and Add']
-Apply and Go to Task | button-enter | xpath | //button[text()='Apply and Go to Task']
-Name | textbox-enter | xpath | //label[text()='Name']/../..//input
-Header | button | xpath | //label[text()='Name']/../..//input | wait 5
-Pick | button | xpath | //a[text()='$.sName'] | wait 12 -c :throws InvalidLegalEntity
-Save and Close | button | xpath | //button[text()='ave and Close']
-Header | button | xpath | //h1[contains(text(),'Manage Registrations')]
-:Post-Steps
-Done | jsbutton | xpath | //span[text()='D']/..
-wait to disappear | jsbutton | xpath | //span[text()='D'][@disabled]/..
-Legal Entity Registration | button | xpath | //div[text()='Manage Legal Entity Registrations']
-:Undo-Steps
-case: InvalidLegalEntity
-Cancel | jsbutton | xpath | //div[contains(@id,'ps')]//button[text()='ancel']
-wait to disappear | button | xpath | //div[contains(@id,'ps')]//button[text()='ancel']
-Cancel | button | xpath | //div[contains(@id,'PanelForm')]//button[text()='ancel']
 end esac
 
 

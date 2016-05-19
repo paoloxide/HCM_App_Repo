@@ -30,9 +30,6 @@ public class ArgumentHandler {
 		if(step[4].contains("save")){
 				savedEntry = step[0]+","+data;
 			}
-		if(step[4].contains("label")){
-				data = excelReader.getCellData(SeleniumDriver.defaultLabelRow, colNum);
-			}
 		if(step[4].contains("trigger")){
 				String label = excelReader.getCellData(SeleniumDriver.defaultLabelRow, colNum);
 				Map<String, String> nextStep = ArgumentExecutor.executeTrigger(step[4], excelReader, label, rowNum, data);
@@ -41,7 +38,9 @@ public class ArgumentHandler {
 				if(!nextStep.get("t").isEmpty()) iteration += Integer.parseInt(nextStep.get("t"))-1;
 				System.out.println("Skips on text: "+Integer.parseInt(nextStep.get("t")));
 			}
-		
+		if(step[4].contains("label")){
+			data = excelReader.getCellData(SeleniumDriver.defaultLabelRow, colNum);
+		}
 		if(step[4].contains("missing")){
 				isFound = ArgumentExecutor.executeMissing(step[2], step[3]);
 				if(!isFound){

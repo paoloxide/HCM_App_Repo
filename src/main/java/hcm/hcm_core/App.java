@@ -1,4 +1,4 @@
-package hcm.exelon;
+package hcm.hcm_core;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -50,7 +50,6 @@ public class App
 			e.printStackTrace();
 		}
     	
-    	
     	//String businessObject = "Manage Data Role and Security Profiles";
     	//String businessObject = "Manage Common Lookups";    
     	//String businessObject = "Manage Value Sets";  
@@ -64,7 +63,6 @@ public class App
     	System.out.println("Initializing drivers...");
     	sel.initializeDriver("http://selenium-hub:4444/wd/hub", "firefox", workspace, excel);
 		System.out.println("Running Test in FireFox");
-		
 		
     	//sel.initializeDriver("http://10.251.120.22:4444/wd/hub", "firefox", workspace, excel);
     	//sel.initializeDriver("http://192.168.1.11:4444/wd/hub", "firefox", workspace, excel);

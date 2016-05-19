@@ -1,4 +1,4 @@
-package hcm.exelon;
+package hcm.hcm_core;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
