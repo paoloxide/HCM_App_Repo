@@ -2517,12 +2517,15 @@ WAIT TO DISAPPEAR | button | xpath | //button[text()='Save'][contains(@class,'Di
 stop non-identical
 :Post-Steps
 Save and Close | button | xpath | //button[@accesskey='S']
+WAIT TO DISAPPEAR | button | xpath | //button[@accesskey='S']
 Header | h1 | xpath | //h1[text()='Search']
 :Undo-Steps
 Cancel | button | xpath | //button[@accesskey='C']
+WAIT TO DISAPPEAR | button | xpath | //button[@accesskey='C']
 Header | h1 | xpath | //h1[text()='Search']
 case: UserNameNotFound
 Close | button | xpath | //table[contains(@id,'userLevelValue')]//a[@title='Close']
+WAIT TO DISAPPEAR | button | xpath | //button[@accesskey='C']
 Cancel | button | xpath | //button[@accesskey='C']
 Header | h1 | xpath | //h1[text()='Search']
 end esac
