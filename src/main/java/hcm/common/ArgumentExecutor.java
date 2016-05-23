@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import hcm.seldriver.SeleniumDriver;
 import hcm.utilities.ExcelReader;
@@ -30,6 +31,22 @@ public class ArgumentExecutor {
 			}
 			i+=1;
 		}
+		return "";
+	}
+	public static String getCaseStatement(Vector<String> fields, String caseId) throws Exception{
+		
+		for(String caseFinder: fields){
+			if(caseFinder.startsWith("case: ")){
+				String newCase = caseFinder.replace("case: ", "");
+				String[] caseSet = newCase.split(",");
+				for(String sCase : caseSet){
+					if(sCase.contentEquals(caseId)){
+						return caseFinder;
+					}
+				}
+			}
+		}
+		
 		return "";
 	}
 	public static String executeArithmetic(String statement, int intArgument) throws Exception{
@@ -91,26 +108,19 @@ public class ArgumentExecutor {
 				System.out.println("Skippable task found...");
 				return falseArray;
 			}
-		
-		/*while(excelReader.getCellData(defaultLabelRow, colNum).length()>0){
-			
-			if(excelReader.getCellData(defaultLabelRow, colNum).trim().contentEquals(label)){
-				if(excelReader.getCellData(rowNum, colNum).toLowerCase().contains("yes")
-						|| excelReader.getCellData(rowNum, colNum).toLowerCase().contains("true")){
-					}else if(excelReader.getCellData(rowNum, colNum).toLowerCase().contains("no")
-							|| excelReader.getCellData(rowNum, colNum).isEmpty()
-							|| excelReader.getCellData(rowNum, colNum).contains("blank")
-							|| excelReader.getCellData(rowNum, colNum).toLowerCase().contains("false")){
-						System.out.println("Skippable task found...");
-						return falseArray;
-					}
-			}
-			
-			colNum += 1;
-		}*/
 		return falseArray;
 	}
-	public static String executeThrower(String statement) throws Exception{
+	public static String executeThrower(Exception e, String statement) throws Exception{
+		
+		if (("" + e).contains("\"throws")) {
+			String[] throwSet = ("" + e).split("\"");
+			for (String throwCase : throwSet) {
+				if (throwCase.contains("throws ")) {
+					statement = throwCase;
+				}
+			}
+		}
+		
 		statement = getArgumentStatement(statement, "throws");
 		if(statement.indexOf(":") != -1){
 			String[] throwSet = statement.split(":");
@@ -123,9 +133,9 @@ public class ArgumentExecutor {
 		}
 		
 		statement = statement.substring(statement.indexOf("throws ")+7);
-		statement = statement	.replace("Invalid", "")
-								.replace("Duplicate", "")
-								.replace("NotFound", "");
+		//statement = statement	.replace("Invalid", "")
+		//						.replace("Duplicate", "")
+		//						.replace("NotFound", "");
 		return statement;
 	}
 	public static Map<String, String> executeSetExcelRow(String statement, ExcelReader excelReader, int pivotIndex) throws Exception{
@@ -137,7 +147,7 @@ public class ArgumentExecutor {
 		String group = statement.trim();
 		
 		System.out.print("locating target row");
-		while(true){
+		while(excelReader.getCellData(rowNum, SeleniumDriver.defaulColNum).length()>0){
 			System.out.print(".");
 			if(excelReader.getCellData(rowNum, SeleniumDriver.defaulColNum).contentEquals(group)){
 					System.out.println("DONE");
@@ -148,9 +158,18 @@ public class ArgumentExecutor {
 					return cellProp;
 					//return rowNum + 2 + pivotIndex - 1;
 				}
+			if(excelReader.getCellData(rowNum+1, SeleniumDriver.defaulColNum).isEmpty()){
+				if(excelReader.getCellData(rowNum+2, SeleniumDriver.defaulColNum).length()>0){
+					rowNum += 1;
+				}
+			}
 			
 			rowNum += 1;
 		}
+
+		cellProp.put("rowGroup", ""+rowGroup);
+		cellProp.put("rowNum", ""+rowNum);
+		return cellProp;
 	}
 	public static int executeSetExcelColumn(String statement, ExcelReader excelReader, int rowGroup) throws Exception{
 		System.out.println("Resetting Excel Column...");
@@ -240,11 +259,15 @@ public class ArgumentExecutor {
 						}
 					});
 					if(!trueCase.contains("throws")) caseId = trueCase;
-					if(trueCase.contains("throws")) throw new TimeoutException("Exception \""+trueCase+"\" ");
+					if(trueCase.contains("throws")) throw new WaitTimeoutException();
+				}catch(WaitTimeoutException wte){
+					throw new WaitTimeoutException("Exception \""+trueCase+"\" ");
 				}catch(Exception e){
 					caseId = falseCase;
 					waitImmunity = true;
-					if(falseCase.contains("throws")) throw new TimeoutException("Exception \""+caseId+"\" "+e.getMessage());
+					if(falseCase.contains("throws")) throw new TimeoutException("Exception \""+caseId+"\" ");
+					if(!statement.contains(":") && trueCase.isEmpty() && falseCase.isEmpty()) 
+						throw new WaitTimeoutException(step[2]+" "+step[3]+" is cannot be found after "+waitTime/1000+" seconds.");
 				}
 			waitTime = 0;
 		}

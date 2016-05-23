@@ -1613,3 +1613,1162 @@ Cancel | button | xpath | //span[text()='ancel']/..
 Yes | button | xpath | //td[contains(@id,'warningDialog')]//button[text()='es']
 Header | button | xpath | //h1[text()='Manage Divisions']
 end esac
+
+:SET # 7
+[Manage Organization Trees]
+:Properties
+Sheetname | Manage Organization Trees
+Action | Navigate
+Recursive | False
+Redirect-Enabled | false
+:Pre-Prep
+Header | h1 | xpath | //h1[text()='Manage Organization Trees']
+:Pre-Steps
+Create | button | xpath | //img[@title='Create Tree']/..
+Header | h1 | xpath | //h1[contains(text(),'Specify Definition')]
+:Fields
+Name | textbox | xpath | //label[text()='Name']/../..//input
+Code | textbox | xpath | //label[text()='Code']/../..//input
+Tree Structure | default | xpath | //label[text()='Tree Structure']
+Description | textbox | xpath | //label[text()='Description']/../..//textarea
+Icon Image | textbox | xpath | //label[text()='Icon Image']/../..//input
+Name | skippable | xpath | //span[text()='Name']/..
+Base Value | skippable | xpath | //span[text()='Base Value']/..
+Value | skippable | xpath | //span[text()='Value']/..
+Next | button | xpath | //button[text()='Ne']
+Header | button | xpath | //h1[contains(text(),'Specify Labels')]
+Next | button | xpath | //button[text()='Ne']
+Submit | button | xpath | //span[text()='Submit']/..
+setExcelRow: Specify Definition
+Tree Name | textbox-enter | xpath | //label[text()='Tree Name']/../..//input
+Pick Org Tree | button | xpath | //a[text()='$.sTree Name']/../../../..//td[2] | wait 5
+Pick Dept Tree | button | xpath | //a[text()='$.sTree Name']/../../../..//td[2] | wait 5
+Action | button-enter | xpath | //div[contains(@_afrac,'fndTreeSearchVCQueryResult')]//a[text()='Actions']
+Create Tree Version | js-button | xpath | //tr[contains(@id,'commandMenuItem')]//td[text()='Create Tree Version']
+Header | button | xpath | //h1[contains(text(),'Specify Definition')]
+setExcelCol: *Name
+Name | textbox | xpath | //label[text()='Name']/../..//input
+Description | textbox | xpath | //label[text()='Description']/../..//textarea
+Note | textbox | xpath | //label[text()='Note']/../..//textarea
+*Effective Start Date | textbox | xpath | //label[text()='Effective Start Date']/../..//input
+Effective End Date | textbox | xpath | //label[text()='Effective End Date']/../..//input
+Status | h1 | xpath | //label[text()='Status']
+Next | button | xpath | //button[text()='Ne']
+OK | button | xpath | //div[contains(@id,'OrderManager')]//button[text()='OK']
+Header | button | xpath | //h1[contains(text(),'Specify Nodes')]
+colArray
+Add Row | button | xpath | //img[@title='Add']/..
+Tree Node Type | radio | xpath | //label[contains(text(),'$.sTree Node[i]')]
+Data Source1 | button | xpath | //label[text()='Data Source']/../..//select | unstale
+Data Source2 | radio | xpath | //label[text()='Data Source']/../..//select/option[@title='$.s*Data Source']
+Search | button | xpath | //div[contains(@id,'addView')]//button[text()='Search']
+Header | button | xpath | //div[text()='Search Node']
+Name | textbox-enter | xpath | //label[text()='Name']/../..//input[contains(@id,'addView')]
+Pick Dept | button | xpath | //table[@summary='Search Results']//td[text()='$.sAdd Tree Node[i]'] | wait 12 -c : throws DeptNotFound
+Add Tree Node | button | xpath | //div[contains(@id,'addView')]//button[text()='Add Tree Node']
+wait to disappear | button | xpath | //div[text()='Search Node']
+Verify Node | button | xpath | //table[@summary='Tree Node Details']//div[contains(text(),'$.sAdd Tree Node[i]')] | wait 8 -c :
+Pick Node | radio | xpath | //table[@summary='Tree Node Details']//div[contains(text(),'$.sAdd Tree Node[i]')] | wait 4 -c :
+colStop
+Header | button | xpath | //h1[contains(text(),'Specify Nodes')]
+setExcelRow: Setup and Maintenance > Implementation Projects > Workforce Deployment > Define Common Applications Configuration for HCM > Define Enterprise Structures for Human Capital Management > Define Workforce Structures > Define Organization Structures > Manage Organization Trees
+:Post-Steps
+Submit | button | xpath | //button[text()='Sub']
+wait to disappear | button | xpath | //button[text()='Sub']
+OK | button | xpath | //div[contains(@id,'OrderManager')]//button[text()='OK']
+:Undo-Steps
+Cancel | button | xpath | //button[text()='ancel']
+Header | h1 | xpath | //h1[text()='Manage Organization Trees']
+case: DeptNotFound
+Close Node | button | xpath | //div[contains(@id,'addView')]//a[@title='Close' and contains(@id,'pnWnd')]
+Close Add Tree Node | button | xpath | //div[contains(@id,'addView')]//a[@title='Close' and contains(@id,'addDiag')]
+wait to disappear | button | xpath | //div[contains(@id,'addView')]//a[@title='Close' and contains(@id,'addDiag')]
+Cancel | button | xpath | //button[text()='ancel']
+Header | h1 | xpath | //h1[text()='Manage Organization Trees']
+end esac
+
+
+[Manage Job Families]
+:Properties
+Sheetname | Manage Job Families
+Action | Search Task
+Recursive | false
+Redirect-Enabled | false
+:Pre-Prep
+skip:
+:Pre-Steps
+Header | h1 | xpath | //h1[text()='Manage Job Families'] | wait
+Create | button | xpath | //span[text()=' Create']
+:Fields
+*Effective Start Date | textbox | xpath | //label[text()='Effective Start Date']/../..//input
+*Name | textbox | xpath | //label[text()='Name']/../..//input
+Action Reason | textbox | xpath | //label[text()='Action Reason']/../..//input
+Status | select | xpath | //label[text()='Status']/../..//select | unstale
+Context Value | select | xpath | //label[text()='Context Value']/../..//select | unstale
+Attachments | button | xpath | //label[text()='Attachments']/../..
+:Post-Steps
+Submit | button | xpath | //span[text()='m']/../../span | wait
+Continue | button | xpath | //span[text()='Y'] | wait
+OK | button | xpath | //span[text()='K']
+:Undo-Steps
+Cancel | button | xpath | //span[text()='ancel']/..
+Confirm Cancel | button | xpath | //span[text()='Y']/.. | wait 
+
+
+[Manage Disability Organizations]
+:Properties
+Sheetname | Manage Disability Organizations
+Action | Search Task
+Recursive | false
+:Pre-Prep
+skip:
+:Pre-Steps
+Header | h1 | xpath | //h1[text()='Manage Disability Organizations']
+Create | button | xpath | //span[text()=' Create']/.. | wait 5
+Header | h1 | xpath | //h1[text()='Create Disability Organization: Description']
+:Fields
+*Effective Start Date | textbox | xpath | //input[contains(@name,'InputDate')]
+*Name | textbox | xpath | //label[text()='Name']/../..//input
+setExcelCol: *Status
+*Status | select | xpath | //label[text()='Status']/../..//select | unstale
+Active Reason | textbox | xpath | //label[text()='Action Reason']/../..//input
+setExcelCol: Location
+Location | textbox | xpath | //label[text()='Location']/../..//input
+Next | button | xpath | //div[@title='Next']
+:Post-Steps
+Header | h1 | xpath | //h1[text()='Create Disability Organization: Review'] | wait
+Submit | button | xpath | //span[text()='Submit']/.. | wait
+YES | button | xpath | //span[text()='Y']/.. | wait 8
+OK | button | xpath | //button[text()='O'] | wait 6
+:Undo-Steps
+Cancel | button | xpath | //span[text()='ancel']/..
+Confirm Cancel | button | xpath | //span[text()='Y']/.. | wait
+
+
+[Manage Positions]
+:Properties
+Sheetname | Manage Positions
+Action | Search Task
+Recursive | false
+:Pre-Prep
+skip:
+:Pre-Steps
+HeaderMP | h1 | xpath | //h1[text()='Manage Positions']
+Create | button | xpath | //span[text()=' Create'] | wait 5
+HeaderBD | h1 | xpath | //h1[text()='Create Position: Basic Details']
+:Fields
+*Effective Start Date | textbox | xpath | //label[text()='Effective Start Date']/../..//input 
+*Business Unit | textbox | xpath | //label[text()='Business Unit']/../..//input
+*Name | textbox | xpath | //label[text()='Name']/../..//input | wait
+*Code | textbox | xpath | //label[text()='Code']/../..//input | wait
+Action Reason | textbox | xpath | //label[text()='Action Reason']/../..//input | wait
+Next | button | xpath | //span[text()='Ne']
+HeaderPD | button | xpath | //h1[text()='Create Position: Position Details']
+*Status | select | xpath | //label[text()='Status']/../..//select | wait 5,unstale
+*Department | textbox | xpath | //label[text()='Department']/../..//input | wait
+*Job | textbox | xpath | //label[text()='Job']/../..//input | wait
+Close Job | button | xpath | //a[contains(@id,'NameFromJob')][contains(@title,'Close')] | wait 12 -c :
+*Location | textbox-enter | xpath | //label[text()='Location']/../..//input | wait
+OK | button | xpath | //button[contains(text(),'OK')][contains(@id,'locationCodeId')] | wait 12 -c :
+Manager | textbox-enter | xpath | //label[text()='Manager']/../..//input | wait 5
+Close Manager | button | xpath | //a[contains(@id,'ListName')][contains(@title,'Close')] | wait 12 -c :
+FPT | select2 | xpath | //label[text()='Full Time or Part Time']/../..//select | unstale
+RT | select2 | xpath | //label[text()='Regular or Temporary']/../..//select | unstale
+Attachments | skippable | xpath | //label[text()='Attachments']/../..//td[contains(text(),'None')] | wait 5 -c :
+*Hiring Status | select | xpath | //label[text()='Hiring Status']/../..//select | wait,unstale
+Type | select | xpath | //label[text()='Type']/../..//select[contains(@id,'selectOne')] | wait,unstale
+FTE | textbox | xpath | //label[text()='FTE']/../..//input | wait
+Head Count | textbox | xpath | //label[text()='Head Count']/../..//input | wait
+Security Clearance | select | xpath | //label[text()='Security Clearance']/../..//select | wait,unstale
+Probation Period | textbox | xpath | //label[text()='Probation Period']/../..//input | wait
+Probation Period2 | select2 | xpath | //label[text()='Probation Period']/../..//select | wait,unstale
+Bargaining Unit | select | xpath | //label[text()='Bargaining Unit']/../..//select | wait,unstale
+Overlap (Y/N) | button | xpath | //label[text()='Overlap Allowed']/../..//label[contains(text(),'$String')]
+HeaderExcel | h1 | xpath | //h2[text()='Hiring Information']
+Seasonal (Y/N) | button | xpath | //label[text()='Seasonal']/../..//label[contains(text(),'$String')] | wait
+HeaderExcel | h1 | xpath | //h2[text()='Hiring Information']
+Entry Grade | textbox-enter | xpath | //label[text()='Entry Grade']/../..//input
+Close | button | xpath | //a[contains(@title,'Close')][contains(@id,'EntryGrdNameId')] | wait 12 -c :
+Entry Grade Value | nullable | xpath | //label[text()='Entry Grade']/../..//input[not(@title='')] | wait 12 -c case enterEntryStep:
+case: enterEntryStep
+setExcelCol: Entry Step
+Entry Step | textbox-enter | xpath | //label[text()='Entry Step']/../..//input[not(@disabled)] | wait 30 -c :
+Close | button | xpath | //a[contains(@id,'GradeStepNameId')][contains(@title,'Close')] | wait 12 -c :
+resume esac
+setExcelCol: Working Hours
+Working Hours | textbox | xpath | //label[text()='Working Hours']/../..//input | wait 5
+Frequency | select2 | xpath | //label[text()='Frequency']/../..//select | wait,unstale
+Start Time | textbox | xpath | //label[text()='Start Time']/../..//input
+End Time | textbox | xpath | //label[text()='End Time']/../..//input
+Next | button | xpath | //span[text()='Ne']
+HeaderEC | button | xpath | //h1[text()='Create Position: Evaluation Criteria'] | wait 5
+Evaluation System | select2 | xpath | //label[text()='Evaluation System']/../..//select | wait,unstale
+Evaluation Date | textbox-enter | xpath | //label[text()='Evaluation Date']/../..//input
+Measurement Unit | select2 | xpath | //label[text()='Measurement Unit']/../..//select | wait,unstale
+Next | button | xpath | //span[text()='Ne']
+HeaderCP | button | xpath | //h1[text()='Create Position: Profiles'] | wait 5
+Next | button | xpath | //span[text()='Ne']
+HeaderR | button | xpath | //h1[text()='Create Position: Review'] | wait 5
+:Post-Steps
+Submit | button | xpath | //span[text()='Sub'] | wait 10
+Yes | button | xpath | //button[contains(@accesskey,'Y')][contains(@id,'okWarningDialog')]
+OK | button | xpath | //button[@accesskey='K'][contains(@id,'okConfirmationDialog')]
+:Undo-Steps
+Cancel | button | xpath | //span[text()='ancel']
+Yes | button | xpath | //button[text()='es'][contains(@id,'WarningDialog')]
+
+[Manage Grades]
+:Properties
+Sheetname | Manage Grades
+Action | Search Task
+Recursive | false
+:Pre-Prep
+skip:
+:Pre-Steps
+Header | h1 | xpath | //h1[text()='Manage Grades']
+Create | button | xpath | //span[text()=' Create']/..
+Header | h1 | xpath | //h1[text()='Create Grade: Grade Details']
+:Fields
+*Name | textbox | xpath | //label[text()='Name']/../..//input
+*Code | textbox | xpath | //label[text()='Code']/../..//input
+*Effective Start Date | textbox | xpath | //label[text()='Effective Start Date']/../..//input
+*Grade Set | textbox | xpath | //label[text()='Grade Set']/../..//input
+*Status | select | xpath | //label[text()='Status']/../..//select | unstale
+Action Reason | textbox | xpath | //label[text()='Action Reason']/../..//input
+Next | button | xpath | //div[@title='Next'] | wait 6
+Header | button | xpath | //h1[text()='Create Grade: Grade Steps']
+Header | h1 | xpath | //h1[text()='Create Grade: Grade Steps']
+Header | h1 | xpath | //h1[text()='Create Grade: Grade Steps']
+array | 8
+Add Row | button | xpath | //span[text()=' Add Row']/../.. | wait 16
+Step Number | textbox | xpath | //input[not(@value)]/../../..//label[text()='Step Number']/../..//input | wait 12
+Step Name | textbox | xpath | //input[not(@value)]/../../..//label[text()='Step Name']/../..//input
+stop
+Next | button | xpath | //div[@title='Next'] | wait 6
+Header | h1 | xpath | //h1[text()='Create Grade: Grade Rates'] | wait 8
+Header | button | xpath | //h1[text()='Create Grade: Grade Rates']
+*Legislative Data Group | select | xpath | //label[text()='Legislative Data Group']/../..//select | unstale
+Create New Rate | button | xpath | //span[text()=' Create New Rate']/../.. | wait
+Name | textbox | xpath | //label[text()='Name']/../..//input | wait 5
+OK | button | xpath | //span[text()='K']/.. | wait 6
+Minimum | textbox | xpath | //label[text()='Minimum']/..//input | wait 8
+Maximum | textbox | xpath | //label[text()='Maximum']/..//input | wait 8
+Next | button | xpath | //div[@title='Next'] | wait 6
+Header | button | xpath | //h1[text()='Create Grade: Review']
+Header | h1 | xpath | //h1[text()='Create Grade: Review']
+Header | h1 | xpath | //h1[text()='Create Grade: Review']
+:Post-Steps
+Submit | button | xpath | //span[text()='m']/../.. | wait 5
+Yes | button | xpath | //span[text()='Y']/.. | wait 5
+OK | button | xpath | //span[text()='K']/.. | wait 5
+:Undo-Steps
+Cancel | button | xpath | //span[text()='C']/../../..
+Yes | button | xpath | //span[text()='Y']/..[contains(@id,'okWarningDialog')]
+
+[Manage Grade Rates]
+:Properties
+Sheetname | Manage Grade Rates
+Action | Search Task
+Recursive | False
+:Pre-Prep
+skip:
+:Pre-Steps
+Header | h1 | xpath | //h1[text()='Manage Grade Rates']
+Create | button | xpath | //span[text()=' Create']/..
+:Fields
+WAIT UNTIL CLICKABLE | button | xpath | //div[text()='Select Legislative Data Group']
+*Legislative Data Group | textbox-enter | xpath | //label[text()='Legislative Data Group']/../..//td//span[contains(@id,'legislativeDataGroupName')]//input
+Close LDG | button | xpath | //a[@title='Close'][contains(@id,'legislativeDataGroupName')] | wait 12 -c :
+wait to disappear | button | xpath | //a[@title='Close'][contains(@id,'legislativeDataGroupName')]
+OK | button | xpath | //button[contains(@id,'commandButton2')][@accesskey='K'] | throws invalidLegeslativeDataGroup
+Header | h1 | xpath | //h2[text()='Grade Rate Details'] | wait 12 -c :throws invalidLegeslativeDataGroup
+* Effective Start Date | textbox | xpath | //label[text()='Effective Start Date']/../..//input
+* Name | textbox | xpath | //label[text()='Name']/../..//input
+* Rate Type | select | xpath | //label[text()='Rate Type']/../..//td//select | wait,unstale
+* Status | select | xpath | //label[text()='Status']/../..//td//select | wait,unstale
+* Frequency | select | xpath | //label[text()='Frequency']/../..//td//select | wait,unstale
+Annualization Factor | textbox | xpath | //label[text()='Annualization Factor']/../..//input
+ButtonCurrency | button | xpath | //a[@title='Search: Currency']
+FindCurrency | button | xpath | //a[text()='Search...']
+ValueCurrency | textbox-enter | xpath | //label[text()='Currency Name']/../..//input | wait
+*Currency | button-enter | xpath | //div[contains(@id,'LovInternalTable')]/table/tbody/tr[1]/td[2]/div/table/tbody/tr/td[text()='$String']
+Action Reason | textbox | xpath | //label[text()='Action Reason']/../..//input | wait,unstale
+Context | select | xpath | //label[text()='Context']/../..//select | wait,unstale
+array | 10
+Add Row | button | xpath | //span[text()=' Add Row']
+ButtonGrade | button | xpath | //a[@title='Search: Grade'] | wait 10
+FindGrade | button | xpath | //a[contains(@id,'GrdRateValues') and text()='Search...']
+ValueGrade | textbox-enter | xpath | //label[contains(@for,'GrdRateValues') and text()='Name']/../..//input
+*Grade | button-enter | xpath | //div[contains(@id,'GrdRateValues')]/table/tbody/tr/td[2]/div/table/tbody/tr/td[text()='$.s*Grade'] | wait 12 -c :throws invalidGrade
+Minimum | textbox | xpath | //label[text()='Minimum']/../..//input[not(@value)]
+Maximum | textbox | xpath | //label[text()='Maximum']/../..//input[not(@value)] | wait 5
+Midpoint | textbox | xpath | //label[text()='Midpoint']/../..//input | wait 10
+Value | textbox | xpath | //input[@value='$.s*Grade']/../../../..//label[text()='Value']/../input[not(@value)]
+stop
+:Post-Steps
+Header | h1 | xpath | //h1[text()='Create Grade Rate'] | wait 5
+Review | button | xpath | //span[text()='Review']/..
+Header | h1 | xpath | //h1[text()='Create Grade Rate: Review']
+Submit | button | xpath | //span[text()='it']/..
+Yes | button | xpath | //button[@accesskey='Y']
+OK | button | xpath | //button[text()='O']
+:Undo-Steps
+Cancel | button | xpath | //span[text()='ancel']/..
+Yes | button | xpath | //button[@accesskey='Y']
+case: invalidGrade
+Close Grade | jsbutton | xpath | //a[contains(@id,'GrdRateValues')][@title='Close']
+wait to disappear | button | xpath | //a[contains(@id,'GrdRateValues')][@title='Close']
+Cancel | jsbutton | xpath | //span[text()='ancel']/..
+Yes | jsbutton | xpath | //button[@accesskey='Y']
+end esac
+case: invalidLegeslativeDataGroup
+wait to disappear | button | xpath | //button[contains(@id,'commandButton2')][@accesskey='K']
+end esac
+
+[Manage Job]
+:Properties
+Sheetname | Manage Job
+Action | Search Task
+Recursive | false
+:Pre-Prep
+skip:
+:Pre-Steps
+Header | h1 | xpath | //h1[text()='Manage Jobs']
+Create | button | xpath | //span[text()=' Create']/../../..
+Header | h1 | xpath | //h1[text()='Create Job: Basic Details']
+:Fields
+*Effective Start Date | textbox | xpath | //label[text()='Effective Start Date']/../..//input
+*Job Set | textbox | xpath | //label[text()='Job Set']/../..//input
+Action Reason | skippable | xpath | //label[text()='Action Reason']/../..//input
+*Name | textbox | xpath | //label[text()='Name']/../..//input
+*Code Reason | textbox | xpath | //label[text()='Code']/../..//input
+Next | button | xpath | //span[text()='Ne']/..
+Expected Error Element | button | xpath | //td[contains(@id,'msgDlg')]//div[contains(text(),'SQL: Bind_ValidationDate')] | wait 12 -c throws IgnoreError:
+Header | button | xpath | //h1[text()='Create Job: Job Details']
+*Status | select | xpath | //label[text()='Status']/../..//select | unstale
+FoP | select | xpath | //label[text()='Full Time or Part Time']/../..//select | unstale
+RoT | select | xpath | //label[text()='Regular or Temporary']/../..//select | unstale
+Job Family | textbox | xpath | //label[text()='Job Family']/../..//input | unstale
+Job Function | select | xpath | //label[text()='Job Function']/../..//select | unstale
+Level | textbox | xpath | //label[text()='Level']/../..//input
+Location Buffer | h1 | xpath | //h1[text()='Create Job: Job Details']
+Management Level | select | xpath | //label[text()='Management Level']/../..//select | unstale
+Medical Chekup Required | button | xpath | //label[text()='Medical Checkup Required']/../..//label[text()='$String']
+Benchmark | radio | xpath | //label[text()='Benchmark']/../..//label[text()='$String']
+Benchmark Job | textbox | xpath | //label[text()='Benchmark Job']/../..//input
+Close Benchmark Job | button | xpath | //a[contains(@id,'benchmarkJobName')][@title='Close'] | wait 12 -c :
+Progression Job | textbox | xpath | //label[text()='Progression Job']/../..//input
+Close Progression Job | button | xpath | //a[contains(@id,'progressionJob')][@title='Close'] | wait 12 -c :
+Attachments | label | xpath | //label[text()='Attachments']
+Line of Progression | textbox | xpath | //label[text()='Line Of Progression']/../..//input
+FLSA Status | textbox | xpath | //label[text()='FLSA Status']/../..//input
+EEO1-Category | textbox | xpath | //label[text()='EEO-1 Category']/../..//input
+Job Group | textbox | xpath | //label[text()='Job Group']/../..//input
+INSEE PCS Code | textbox | xpath | //label[text()='INSEE PCS Code']/../..//input
+Extension to PCS Code | textbox | xpath | //label[text()='Extension to PCS Code']/../..//input
+Particular Job Buffer | h1 | xpath | //label[text()='Extension to PCS Code']
+EEOG | textbox | xpath | //label[text()='EEOG']/../..//input
+Close EEOG | button | xpath | //a[contains(@id,'EEOG')][@title='Close'] | wait 12 -c :
+NOC Code | textbox | xpath | //label[text()='NOC Code']/../..//input
+Next | button | xpath | //span[text()='Ne']/..
+Evaluation System | select | xpath | //label[text()='Evaluation System']/../..//select | unstale
+Evaluation Date | textbox | xpath | //label[text()='Evaluation Date']/../..//input | wait 10
+Measurement Unit | select | xpath | //label[text()='Measurement Unit']/../..//select | unstale
+Add Profile | button | xpath | //span[text()=' Add Existing Profile']/.. | trigger: -t 1:4 -e 1:4,
+Profile | button | xpath | //label[text()='Profile']/../input
+Search... | button | xpath | //div[contains(@id,'jobProfPnl')]//a[text()='Search...']
+Profile Code | textbox-enter | xpath | //table[contains(@id,'jobProfPnl')]//label[text()='Code']/../..//input
+Pick PC | button-enter | xpath | //table[contains(@id,'jobProfPnl')]//td[(text()='$.s*Profile')]
+wait to disappear | h1 | xpath | //table[contains(@id,'jobProfPnl')]//td[(text()='$.s*Profile')]
+*Effective Start Date | textbox | xpath | //label[text()='Effective Start Date']/../..//input
+*Effective End Date | textbox | xpath | //label[text()='Effective End Date']/../..//input
+Next | button | xpath | //span[text()='Ne']/..
+Header | button | xpath | //h1[text()='Create Job: Profiles']
+Next | button | xpath | //span[text()='Ne']/..
+Header | button | xpath | //h1[text()='Create Job: Review']
+Details | button | xpath | //a[text()='Details']
+Header | button | xpath | //h1[text()='Create Job: Job Details']
+:Post-Steps
+Submit | button | xpath | //span[text()='m']/../..
+Yes | button | xpath | //span[text()='Y']/..
+OK | button | xpath | //span[text()='K']/..
+:Undo-Steps
+Cancel | button | xpath | //span[text()='C']/../../..
+Yes | button | xpath | //span[text()='Y']/..
+case: IgnoreError
+OK | button | xpath | //button[contains(@id,'msgDlg')][contains(@id,'cancel')][text()='OK']
+resume esac
+
+:SET#11
+[Manage Person Name Formats]
+:Properties
+Sheetname | Person Name Formats
+Action | Search Task
+Recursive | False
+Data Name | Country
+:Pre-Prep
+skip:
+:Pre-Steps
+Header | h1 | xpath | //h1[text()='Manage Name Formats']
+Create | button-enter | xpath | //span[text()=' Create']/..
+:Fields
+Header | nullable | xpath | //h1[text()='Create Name Format']
+Country | textbox | xpath | //label[text()='Country']/../..//input
+Close Country | button | xpath | //a[contains(@id,'territoryShortName')][@title='Close'] | wait 12 -c :
+Format Type | select | xpath | //label[text()='Format Type']/../..//select | unstale
+Scope | select | xpath | //label[text()='Scope']/../..//select | unstale
+array | 3
+Available Name Components | td | xpath | //table[@summary='Available Name Components']//span[text()='$.sAvailable Name Components'] | wait 12 -c :
+stop
+array | 4
+Selected Name Components | radio | xpath | //table[@summary='Available Name Components']//span[text()='$.sSelected Name Components'] | wait 12 -c
+Move Components | button | xpath | //img[@title='Move to Other List']/..
+Confirm | button | xpath | //table[@summary='Selected Name Components']//td[text()='$.sSelected Name Components']
+stop
+:Post-Steps
+Save and Close | button | xpath | //a[@accesskey='S']
+OK | button | xpath | //a[@accesskey='K']
+Header | h1 | xpath | //h1[text()='Manage Name Formats']
+:Undo-Steps
+Cancel | button | xpath | //span[text()='C']/..
+Yes | button | xpath | //span[text()='Y']/..
+Header | h1 | xpath | //h1[text()='Manage Name Formats']
+
+[Manage Person Types]
+:Properties
+Sheetname | Manage Person Types
+Action | Search Task
+Recursive | false
+Data Name | *Assignment Person Type
+:Pre-Prep
+skip:
+:Pre-Steps
+skip:
+:Fields
+setExcelCol: *Assignment Person Type
+Add | button | xpath | //span[text()='Add']/..
+Assignment Person Type | button | xpath | //table[@summary='User Person Types']//td/span[not(contains(@id,'sbc'))]/span[not(text())]/../.. | locate
+Assignment Person Type | textbox | xpath | //label[text()='Assignment Person Type']/../input[not(@value)] | locate
+Status | select | xpath | //label[text()='Status']/../select | unstale
+Default | checkbox | xpath | //input[@title='$.s*Assignment Person Type']/../../..//input[contains(@id,'sbc')]
+:Post-Steps
+Save | button | xpath | //button[text()='Save']
+Disabled Save | button | xpath | //button[text()='Save'][contains(@class,'Disabled')]
+WAIT TO DISAPPEAR | button | xpath | //button[text()='Save'][contains(@class,'Disabled')]
+:Undo-Steps
+Cancel | button | xpath | //button[@accesskey='C']
+Yes | button | xpath | //button[@accesskey='Y']
+WAIT TO DISAPPEAR | button | xpath | //button[@accesskey='Y']
+
+[Manage Document Types]
+:Properties
+Sheetname | Manage Documents Type
+Action | Search Task
+Recursive | false
+Data Name | *Type
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | //span[text()=' Create']/..
+Header | h1 | xpath | //h1[text()='Create Document Type ']
+:Fields
+*Type | textbox | xpath | //label[text()='Type']/../..//input
+Description | textbox | xpath | //label[text()='Description']/../..//textarea
+Expiration Notification Period | textbox | xpath | //label[text()='Expiration Notification Period']/../..//input
+*Category | select | xpath | //label[text()='Category']/../..//select | unstale
+Subcategory | select | xpath | //label[text()='Subcategory']/../..//select | unstale
+Country | textbox | xpath | //label[text()='Country']/../..//input
+Close Country | button | xpath | //a[contains(@id,'territoryShortName')][@title='Close'] | wait 12 -c : 
+*Approval Required | radio | xpath | //label[text()='Approval Required']/../..//label[text()='$.s*Approval Required']
+*Allow Multiple Occurrences | radio | xpath | //label[text()='Allow Multiple Occurrences']/../..//label[text()='$.s*Allow Multiple Occurrences']
+Status | select | xpath | //label[text()='Status']/../..//select | unstale
+Enable Document Delivery Preference | radio | textbox | //label[text()='Enable Document Delivery Preferences']/../..//label[text()='$.sEnable Document Delivery Preference'][not(@disabled)] | wait 12 -c :
+setExcelCol: Document Name
+Document Name | button | xpath | //span[text()='Document Name'] | 'case $.sDocument Name'
+case: Relevant
+Document Name | checkbox | xpath | //span[text()='Document Name']/../../..//input[contains(@id,'Relevant')]
+resume esac
+case: Required
+Document Name | checkbox | xpath | //span[text()='Document Name']/../../..//input[contains(@id,'Mandatory')]
+resume esac
+Document Number Relevant / Required | button | xpath | //span[text()='Document Number'] | 'case $.sDocument Number Relevant / Required'
+case: Relevant
+Document Number Relevant / Required | checkbox | xpath | //span[text()='Document Number']/../../..//input[contains(@id,'Relevant')]
+resume esac
+case: Required
+Document Number Relevant / Required | checkbox | xpath | //span[text()='Document Number']/../../..//input[contains(@id,'Mandatory')]
+resume esac
+From Date | button | xpath | //span[text()='From Date'] | 'case $.sFrom Date'
+case: Relevant
+From Date | checkbox | xpath | //span[text()='From Date']/../../..//input[contains(@id,'Relevant')]
+resume esac
+case: Required
+From Date | checkbox | xpath | //span[text()='From Date']/../../..//input[contains(@id,'Mandatory')]
+resume esac
+To Date | button | xpath | //span[text()='To Date'] | 'case $.sTo Date'
+case: Relevant
+To Date | checkbox | xpath | //span[text()='To Date']/../../..//input[contains(@id,'Relevant')]
+resume esac
+case: Required
+To Date | checkbox | xpath | //span[text()='To Date']/../../..//input[contains(@id,'Mandatory')]
+resume esac
+Issuing Country | button | xpath | //span[text()='Issuing Country'] | 'case $.sIssuing Country'
+case: Relevant
+Issuing Country | checkbox | xpath | //span[text()='Issuing Country']/../../..//input[contains(@id,'Relevant')]
+resume esac
+case: Required
+Issuing Country | checkbox | xpath | //span[text()='Issuing Country']/../../..//input[contains(@id,'Mandatory')]
+resume esac
+Issuing Location | button | xpath | //span[text()='Issuing Location'] | 'case $.sIssuing Location'
+case: Relevant
+Issuing Location | checkbox | xpath | //span[text()='Issuing Location']/../../..//input[contains(@id,'Relevant')]
+resume esac
+case: Required
+Issuing Country | checkbox | xpath | //span[text()='Issuing Location']/../../..//input[contains(@id,'Mandatory')]
+resume esac
+Issuing Authority | button | xpath | //span[text()='Issuing Authority'] | 'case $.sIssuing Authority'
+case: Relevant
+Issuing Location | checkbox | xpath | //span[text()='Issuing Authority']/../../..//input[contains(@id,'Relevant')]
+resume esac
+case: Required
+Issuing Country | checkbox | xpath | //span[text()='Issuing Authority']/../../..//input[contains(@id,'Mandatory')]
+resume esac
+Issued On | button | xpath | //span[text()='Issued On'] | 'case $.sIssued On'
+case: Relevant
+Issued On | checkbox | xpath | //span[text()='Issued On']/../../..//input[contains(@id,'Relevant')]
+resume esac
+case: Required
+Issued On | checkbox | xpath | //span[text()='Issued On']/../../..//input[contains(@id,'Mandatory')]
+resume esac
+Issuing Comments | button | xpath | //span[text()='Issuing Comments'] | 'case $.sIssuing Comments'
+case: Relevant
+Issuing Comments | checkbox | xpath | //span[text()='Issuing Comments']/../../..//input[contains(@id,'Relevant')]
+resume esac
+case: Required
+Issuing Comments | checkbox | xpath | //span[text()='Issuing Comments']/../../..//input[contains(@id,'Mandatory')]
+resume esac
+case: 
+Issuing Comments | button | xpath | //span[text()='Issuing Comments']
+resume esac
+:Post-Steps
+Submit | button | xpath | //span[text()='Sub']/..
+Yes | button | xpath | //button[@accesskey='Y'][contains(@id,'arningDialog')]
+OK | button | xpath | //button[@accesskey='K'][contains(@id,'okConfirmationDialog')]
+Header | button | xpath | //h1[text()='Manage Document Types']
+:Undo-Steps
+Cancel | button | xpath | //span[text()='C']/../..
+Yes | button | xpath | //button[@accesskey='Y'][contains(@id,'arningDialog')]
+Header | button | xpath | //h1[text()='Manage Document Types']
+
+[Manage Eligibility Profiles]
+:Properties
+Sheetname | Eligibility Profile
+Action | Search Task
+Recursive | false
+Data Name | *Name
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | //span[text()=' Create']/../../..//div/a
+Create Participant | jsbutton | xpath | //td[text()='Create Participant Profile']
+Header | h1 | xpath | //h1[text()='Create Participant Eligibility Profile ']
+:Fields
+setExcelRow: Setup and Maintenance > Implementation Projects > Workforce Deployment > Define Common HCM Configuration > Define Workforce Records
+Name | textbox | xpath | //label[text()='Name']/../..//input
+Profile Type | label | xpath | //label[text()='Profile Type']
+Profile Usage | select | xpath | //label[text()='Profile Usage']/../..//select | unstale
+Description | textbox | xpath |  //label[text()='Description']/../..//input
+*Assignment to Use | select | xpath | //label[text()='Assignment to Use']/../..//select | unstale
+*Status | select | xpath | //label[text()='Status']/../..//select | unstale
+setExcelRow: Personal - Gender (Add +)
+Switch to Personal | button | xpath | //a[text()='Personal']
+Personal | nullable | xpath | //a[text()='Personal'][contains(@class,'Selected')] | wait 20 -c :
+Create New Gender | button | xpath | //div[contains(@id,'Gende')]//img[@title='Create']/..
+Sequence | textbox | xpath | //table[@summary='Eligibility Criteria: Gender']//label[text()='Sequence']/../input[not(@value)]
+Gender | select | xpath | //table[@summary='Eligibility Criteria: Gender']//label[text()='Gender']/../select[not(@title)]
+Exclude | checkbox | xpath | //input[@type='checkbox']
+Start Date | textbox | xpath | //label[text()='Start Date']/../input
+End Date | textbox | xpath | //label[text()='End Date']/../input
+setExcelRow: Employment -Assignment Status (Add +)
+Switch to Employment | button | xpath | //a[text()='Employment']
+Employment | nullable | xpath | //a[text()='Employment'][contains(@class,'Selected')] | wait 20 -c :
+Create New Emp Assignment | button | xpath | //div[contains(@id,'Assig')]//img[@title='Create']/..
+Sequence | textbox | xpath | //table[@summary='Eligibility Criteria: Assignment Status']//label[text()='Sequence']/../input[not(@value)]
+Assignment Status | select | xpath | //table[@summary='Eligibility Criteria: Assignment Status']//label[text()='Assignment Status']/../select[@title='']
+Exclude | checkbox | xpath | //input[@type='checkbox']
+Start Date | textbox | xpath | //label[text()='Start Date']/../input
+End Date | textbox | xpath | //label[text()='End Date']/../input
+:Post-Steps
+Save and Close | button | xpath | //span[text()='S']/../..
+Header | button | xpath | //h1[text()='Manage Eligibility Profiles']
+:Undo-Steps
+Cancel | button | xpath | //a[@accesskey='C']
+Yes | button | xpath | //button[@accesskey='Y']
+Header | button | xpath | //h1[text()='Manage Eligibility Profiles']
+
+[Manage Checklist Template]
+:Properties
+Sheetname | Checklist Template
+Action | Search Task
+Recursive | false
+Data Name | Description
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | //span[text()=' Create']/..
+Header | button | xpath | //h1[text()='Create Checklist Template']
+:Fields
+setExcelRow: Setup and Maintenance > Implementation Projects > Workforce Deployment > Define Common Applications Configuration for HCM > Define Workforce Business Processes and Events > Define Checklists > Manage Checklist Template
+*Name | textbox | xpath | //label[text()='Name']/../..//input
+Country | textbox | xpath | //label[text()='Country']/../..//input
+Close Country | button | xpath | //a[contains(@id,'countryName')][@title='Close'] | wait 12 -c :
+Category | select | xpath | //label[text()='Category']/../..//select | unstale
+Action Name | textbox | xpath | //label[text()='Action Name']/../..//input
+Close Action Name | button | xpath | //a[contains(@id,'actionName')][@title='Close'] | wait 12 -c :
+Description | textbox | xpath | //label[text()='Description']/../..//input
+setExcelRow: Checklist Template
+*Name | textbox | xpath | //label[text()='Name']/../..//input
+Category | select | xpath | //label[text()='Category']/../..//select | unstale
+Action Name | textbox | xpath | //label[text()='Action Name']/../..//input
+Close Action Name | button | xpath | //a[contains(@id,'actionName')][@title='Close'] | wait 12 -c :
+Description | textbox | xpath | //label[text()='Description']/../..//input
+array | 4
+Create | button | xpath | //div[not(contains(@class,'Disabled'))][@title='Create']/a
+Name | textbox | xpath | //table[contains(@id,'create')]//label[text()='Name']/../..//input
+Description | textbox | xpath | //table[contains(@id,'create')]//label[text()='Description']/../..//input
+Required | radio | xpath | //table[contains(@id,'create')]//label[text()='Required']/../..//label[text()='$.sRequired']
+Target Duration | textbox | xpath | //table[contains(@id,'create')]//label[text()='Target Duration']/../..//input
+TD Length | select | xpath | //table[contains(@id,'create')]//label[text()='Target Duration']/../..//select | unstale
+Delay Duration | textbox | xpath | //table[contains(@id,'create')]//label[text()='Delay Duration']/../..//input
+DD Length | select | xpath | //table[contains(@id,'create')]//label[text()='Delay Duration']/../..//select | unstale
+Eligibility Profile | select | xpath | //table[contains(@id,'create')]//label[text()='Eligibility Profile']/../..//select | unstale
+Action URL | textbox | xpath | //table[contains(@id,'create')]//label[text()='Action URL']/../..//input
+Performer | radio | xpath | //table[contains(@id,'create')]//label[text()='Performer']/../..//label[text()='$.sPerformer']
+OK | button | xpath | //table[contains(@id,'create')]//button[@accesskey='K']
+WAIT TO DISAPPEAR | button | xpath | //table[contains(@id,'create')]//div[text()='Create Task']
+stop
+:Post-Steps
+Submit | button | xpath | //span[text()='m']/../..
+Yes | button | xpath | //button[@accesskey='Y'][contains(@id,'arningDialog')]
+OK | button | xpath | //button[@accesskey='K'][contains(@id,'okConfirmationDialog')]
+Header | button | xpath | //h1[text()='Manage Checklist Templates']
+:Undo-Steps
+Cancel | button | xpath | //span[text()='C']/../..
+Yes | button | xpath | //button[@accesskey='Y'][contains(@id,'arningDialog')]
+Header | button | xpath | //h1[text()='Manage Checklist Templates']
+
+[Manage Assignment Status]
+:Properties
+Sheetname | Assignment Status
+Action | Search Task
+Recursive | False
+Data Name | *Assignment Status Code
+:Pre-Prep
+skip:
+:Pre-Steps
+Header | nullable | xpath | //h1[text()='Manage Assignment Statuses']
+New | button-enter | xpath | //img[@title='New']/.. | wait
+:Fields
+User Status | textbox | xpath | //label[text()='User Status']/../input[not(@value)] | save,locate,
+Assignment Status Code | textbox | xpath | //label[text()='Assignment Status Code']/../..//input | wait,save
+HR Status | select2 | xpath | //label[text()='HR Status']/../select | save,unstale
+Pay Status | select2 | xpath | //label[text()='Pay Status']/../select | save,wait,unstale
+Start Date | textbox | xpath | //label[text()='Start Date']/../input
+End Date | textbox | xpath | //label[text()='End Date']/../input
+Header | button | xpath | //h1[text()='Manage Assignment Statuses']
+Default | select2 | xpath | //label[text()='Default']/../select | save,unstale
+Legislation | select2 | xpath | //label[text()='Legislation']/../select | unstale
+Original Assignment Status | select2 | xpath | //label[text()='Original Assignment Status']/../select | unstale
+:Post-Steps
+Save | button | xpath | //button[text()='Save']
+OK | button | xpath | //div[contains(@id,'pop')]//button[text()='O']
+WAIT TO DISAPPEAR | dialog | xpath | //div[contains(@id,'pop')]//button[text()='O']
+Label | button | xpath | //span[text()='HR Status']
+:Undo-Steps
+Cancel | jsbutton | xpath | //button[text()='ancel']
+OK | button | xpath | //td[contains(@id,'fce')]//button[text()='O']
+WAIT TO DISAPPEAR | dialog | xpath | //td[contains(@id,'fce')]//button[text()='O']
+case: User Status,Pay Status,Assignment Status Code,HR Status
+Cancel | jsbutton | xpath | //button[text()='ancel']
+OK | button | xpath | //td[contains(@id,'fce')]//button[text()='O']
+WAIT TO DISAPPEAR | dialog | xpath | //td[contains(@id,'fce')]//button[text()='O']
+end esac
+
+[Manage Work Workday Patterns]
+:Properties
+Sheetname | Work Workday Patterns
+Action | Search Task
+Recursive | False
+Data Name | * Name
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | //img[@title='Create Workday Pattern']/..
+:Fields
+WAIT UNTIL CLICKABLE | div | xpath | //td[contains(@id,'dialog')]//div[text()='Create Time Workday Pattern']
+* Name | textbox | xpath | //td[contains(@id,'dialog')]//label[text()='Name']/../..//input
+Description | textbox | xpath | //td[contains(@id,'dialog')]//label[text()='Description']/../..//textarea
+* Length In Days | textbox | xpath | //td[contains(@id,'dialog')]//label[text()='Length In Days']/../..//input
+Add Row | button | xpath | //td[contains(@id,'dialog')]//img[@title='Add Row']/..
+Start Day | textbox | xpath | //td[contains(@id,'dialog')]//label[text()='Start Day']/../input[not(@value)]
+End Day | textbox | xpath | //td[contains(@id,'dialog')]//label[text()='End Day']/../input[not(@value)]
+Shift Name | textbox | xpath | //td[contains(@id,'dialog')]//label[text()='Shift Name']/../input
+Shift Type | span | xpath | //td[contains(@id,'dialog')]//span[contains(@id,'soc1')]/span[text()='$.sShift Type'] | wait 12 -c :
+//Shift Period Type | span | xpath | //td[contains(@id,'dialog')]//span[contains(@id,'soc2')]/span[text()='$.sShift Period Type'] | wait 3 -c :
+//Shift Category | span | xpath | //td[contains(@id,'dialog')]//span[contains(@id,'soc3')]/span[text()='$.sShift Period Type'] | wait 3 -c :
+//Shift Description | span | xpath | //td[contains(@id,'dialog')]//span[contains(@id,'Shift Description')]/span[text()='$.sShift Period Type'] | wait 3 -c :
+//Start Time | span | xpath | //td[contains(@id,'dialog')]//span[contains(@id,'it2')]/span[text()='$.sStart Time'] | wait 3 -c :
+//End Time | span | xpath | //td[contains(@id,'dialog')]//span[contains(@id,'it3')]/span[text()='$.End Time'] | wait 3 -c :
+//Duration | span | xpath | //td[contains(@id,'dialog')]//span[contains(@id,'soc4')]/span[text()='$.sShift Period Type'] | wait 3 -c :
+:Post-Steps
+Cancel | button | xpath | //td[contains(@id,'dialog')]//button[@accesskey='S']
+WAIT UNTIL CLICKABLE | h1 | xpath | //h1[text()='Manage Work Workday Patterns']
+:Undo-Steps
+Cancel | button | xpath | //td[contains(@id,'dialog')]//button[@accesskey='C']
+WAIT UNTIL CLICKABLE | h1 | xpath | //h1[text()='Manage Work Workday Patterns']
+
+[Manage Work Schedules]
+:Properties
+Sheetname | Work Schedules
+Action | Search Task
+Recursive | False
+Data Name | * Name
+:Pre-Prep
+skip:
+:Pre-Steps
+Header | nullable | xpath | //h1[text()='Manage Work Schedules']
+Create | button-enter | xpath | //span[text()=' Create']/../img
+:Fields
+Create Work Schedules | nullable | xpath | //h1[text()='Create Work Schedule '] | wait 5 -c :
+setExcelCol: * Name
+Name | textbox | xpath | //div[contains(@id, 'appspanel')]//label[text()='Name']/../..//input
+Type | select | xpath | //label[text()='Type']/../..//select
+Start Date | textbox | xpath | //label[text()='Effective from Date']/../..//input
+End Date | textbox | xpath | //label[text()='Effective to Date']/../..//input
+Category | select | xpath | //label[text()='Category']/../..//select | unstale
+Description | textbox | xpath | //label[text()='Description']/../..//textarea 
+Add Row | button | xpath | //div[contains(@id, 'aTab1')]/a//img[contains(@id, 'create')]
+Sequence | textbox | xpath | //label[text()='Sequence']/../input | wait 15 -c :
+Name | textbox | xpath | //label[text()='Name']/../../span[contains(@id, 'tab1')]/input
+Search and Select | nullable | xpath | //div[text()='Search and Select: Name'] | wait 15 -c case Search Pattern :
+case: Search Pattern
+setExcelCol: Pattern Name
+Name | textbox | xpath | //label[text()=' Name']/../../span[contains(@id, 'InternalQuery')]/input
+setExcelCol: Length in Days
+Days length | textbox | xpath | //label[text()=' Length In Days']/../../span[contains(@id, 'InternalQuery')]/input
+Search | button | xpath | //button[contains(@id, 'InternalQuery') and (text()='Search')]
+Result | button | xpath | //div[contains(@id, 'InternalTable')]//td[text()='$.sPattern Name'] | wait 15 -c case record found : case record not found
+case: record found
+OK | button | xpath | //button[contains(@id, 'DialogId') and (text()='OK')]
+resume esac
+case: record not found
+Cancel | button | xpath | //button[contains(@id, 'DialogId') and (text()='Cancel')]
+resume esac
+resume esac
+Add Row | button | xpath | //div[contains(@id, 'applicationsTable3')]//img[@title='Add Row']
+setExcelCol: Exception Type
+Exception Type | select | xpath | //label[text()='Type']/../select | 'case $.sException Type' , unstale
+case: Calendar event
+Exception Name | textbox | xpath | //input[contains(@id, 'table3')] | wait 15 -c :
+resume esac
+case: Resource exception
+Exception Name | textbox | xpath | //input[contains(@id, 'table3')] | wait 15 -c :
+resume esac
+Search and Select Header | nullable | xpath | //div[text()='Search and Select: CalendarEvent'] | wait 15 -c case Search Exception :
+case: Search Exception
+setExcelCol: Name
+Name | textbox | xpath | //label[text()=' Name']/../../span[contains(@id, 'InternalQuery')]/input
+Start Date | textbox | xpath | //label[text()=' Start Date']/../../span[contains(@id, 'Table3')]/input
+End Date | textbox | xpath | //label[text()=' End Date']/../../span[contains(@id, 'Table3')]/input
+Search | button | xpath | //button[contains(@id, 'table3') and (text()='Search')]
+Result | button | xpath | //div[contains(@id, 'InternalTable')]//td[text()='$.sName'] | wait 10 -c case with record : throws record KO
+case: with record
+OK | button | xpath | //button[contains(@id, 'DialogId') and (text()='OK')]
+resume esac
+resume esac
+case: Calendar event category
+Exception Name | select | xpath | //label[text()='Name']/../../span[contains(@id, 'table3')]/select | unstale
+resume esac
+Add Row | button | xpath | //div[contains(@id, 'AT2')]/a/img
+setExcelCol: Profile Name
+Name | textbox | xpath | //div[contains(@id, 'nameId')]/../input
+Search and Select Header | nullable | xpath | //div[text()='Search and Select: Name'] | wait 10 -c Search Profile :
+case: Search Profile
+setExcelCol: Profile Name
+Name | textbox | xpath | //label[text()=' Name']/../../span[contains(@id, 'table2')]/input
+setExcelCol: Description
+Description | textbox | xpath | //label[text()=' Description']/../../span[contains(@id, 'table2')]/input
+Search | button | xpath | //button[contains(@id, 'table2') and (text()='Search')] 
+Result | button | xpath | //div[contains(@id, 'InternalTable')]//td[text()='$.sProfile Name'] | wait 10 -c case record OK : throws record KO
+case: record OK
+OK | button | xpath | //button[contains(@id, 'DialogId') and (text()='OK')]
+resume esac
+resume esac
+:Post-Steps
+Submit | button-enter | xpath | //a[@accesskey='m']
+Confirm OK | button | xpath | //button[contains(@id, 'confirm') and (text()='OK')]
+:Undo-Steps
+Cancel | button | xpath | //span[text()='C']/../..
+Cancel OK | button | xpath | //button[@accesskey='Y']
+case: record KO
+Cancel | button | xpath | //button[contains(@id, 'DialogId') and (text()='Cancel')]
+Cancel | button | xpath | //span[text()='C']/../..
+Cancel OK | button | xpath | //button[@accesskey='Y']
+end esac
+
+[Manage Work Schedule Assignment Administration]
+:Properties
+Sheetname | Work Schedule Assignment Admin
+Action | Search Task
+Recursive | False
+Data Name | Work Schedule Name
+:Pre-Prep
+skip:
+:Pre-Steps
+skip:
+:Fields
+Header | nullable | xpath | //h1[text()='Manage Work Schedule Assignment Administration'] | wait 10 -c :
+Note window | nullable | xpath | //td[contains(text(), 'Error: At least one is required.')] | wait 5 -c :
+setExcelCol: Work Schedule Name
+Work Schedule Name | textbox-enter | xpath | //label[text()=' Name']/../input
+//Search | button | xpath | //button[text()='Search']
+Result | button | xpath | //td/a[text()='$.sWork Schedule Name'] | wait 15 -c : throws ScheduleNotFound
+Edit Header | nullable | xpath | //h1[contains(text(), 'Edit Work Schedule Assignment Administration')]
+Add Resource | button-enter | xpath | //div[contains(@id, 'AT1')]/a/img
+Resource Type | select | xpath | //label[text()='Resource Type']/../select | 'case $.sResource Type' , unstale
+case: Assignment,Department,Employment term,Job,Legal employer,Location,Position
+resume esac
+Search Resource | button-enter | xpath | //a[contains(@id , 'table1') and (@title='Search')] | wait 20 -c :
+Search | button | xpath | //a[contains(@id, 'table1') and (text()='Search...')] | wait 15 -c :
+Resource Header | nullable | xpath | //div[contains(text(),'Search and Select:')] | wait 15 -c :
+Resource Name | textbox-enter | xpath | //label[text()=' Name']/../../span[contains(@id, 'InternalQuery')]/input
+//Search | button | xpath | //button[contains(@id, 'InternalQuery') and (text()='Search')]
+Result | button | xpath | //div[contains(@id, 'InternalTable')]//td[text()='$.sName'] | wait 15 -c case record OK : throws record KO
+case: record OK
+OK | button | xpath | //button[contains(@id, 'table') and text()='OK']
+resume esac
+case: Enterprise
+setExcelCol: Start Date
+resume esac
+Start Date | textbox | xpath | //label[text()='Start Date']/../input[contains(@id, 'table1')]
+End Date | textbox | xpath | //label[text()='End Date']/../input[contains(@id, 'table1')]
+Primary | select | xpath | //label[text()='Primary']/../select[contains(@id, 'table1')] | unstale
+Add Exception | button-enter | xpath | //div[contains(@id, 'AT2')]/a/img
+Exception Type | select | xpath | //label[text()='Type']/../select[contains(@id, 'table2')] | 'case $.sException Type' , unstale
+case: Calendar event
+Exception Name | textbox | xpath | //span[contains(@id, 'table2')]/input
+resume esac
+case: Resource exception
+Exception Name | textbox | xpath | //span[contains(@id, 'table2')]/input
+resume esac
+Search and Select | nullable | xpath | //div[text()='Search and Select: Name'] | wait 15 -c case Search Exception :
+case: Search Exception
+setExcelCol: Exception Name
+Exception Name | textbox | xpath | //label[text()=' Name']/../input[contains(@id, 'InternalQuery')]
+Start Date | textbox | xpath | //label[text()=' Start Date']/../input[contains(@id, 'InternalQuery')]
+End Date | textbox | xpath | //label[text()=' End Date']/../input[contains(@id, 'InternalQuery')]
+Search | button | xpath | //button[contains(@id, 'InternalQuery') and (text()='Search')]
+Result | button | xpath | //div[contains(@id, 'InternalTable')]//td[text()='$.sException Name'] | wait 15 -c record found : throws record KO
+case: record found
+OK | button | xpath | //button[contains(@id, 'table') and text()='OK']
+resume esac
+case: Calendar event category
+Select Exception Name | select | xpath | //label[text()='Name']/../select[contains(@id, 'table2')] | unstale
+resume esac
+:Post-Steps
+Submit | button-enter | xpath | //a[@accesskey='m']
+Submit OK | button | xpath | //button[contains(@id, 'confirm') and (text()='OK')]
+:Undo-Steps
+Cancel | button | xpath | //a[@accesskey='C']
+case: record KO
+Cancel Search | button | xpath | //button[contains(@id, 'table') and text()='Cancel']
+end esac
+case: ScheduleNotFound
+end esac
+
+[Manage Workforce Records Profile Option Values]
+:Properties
+Sheetname | Workforce Records ProfileOption
+Action | Search Task
+Recursive | true
+Data Name | Profile Option Code
+:Pre-Prep
+skip:
+:Pre-Steps
+WAIT UNTIL CLICKABLE | h1 | xpath | //span[text()='$.sProfile Option Code']/..
+:Fields
+setExcelRow: Workforce Records Employment Profiles
+array non-identical | 0
+Add New Profile | button | xpath | //img[@title='New']/.. | locate
+Profile Level | select | xpath | //label[text()='Profile Level']/../select[not(@title)] | unstale,locate
+Product Name | span | xpath | //span[contains(@id,'soc1')]/span/../.. | locate
+//User Name | textbox | xpath | //input[contains(@id,'userLevelValue')] | locate
+User Name Search | button-enter | xpath | //a[contains(@id,'userLevelValueId')][@title='Search'] | locate
+Find... | jsbutton | xpath | //table[contains(@id,'userLevelValue')]//a[text()='Search...']
+WAIT UNTIL CLICKABLE | h1 | xpath | //table[contains(@id,'userLevelValue')]//div[text()='Search and Select: User Name']
+Search User Name2 | textbox-enter | xpath | //table[contains(@id,'userLevelValue')]//label[text()='User Name']/../..//input
+Pick User Name | button | xpath | //table[contains(@id,'userLevelValue')]//td[text()='$.sUser Name']/.. | unstale,throws UserNameNotFound
+OK | button | xpath | //table[contains(@id,'userLevelValue')]//button[text()='OK'] | wait 12 -c :
+WAIT UNTIL CLICKABLE | h1 | xpath | //h3[contains(text(),'Profile Values')] | locate
+Profile Value | select | xpath | //label[text()='Profile Value']/../select[not(@title)] | unstale,locate
+WAIT UNTIL CLICKABLE | h1 | xpath | //h3[contains(text(),'Profile Values')] | locate
+Save | button | xpath | //button[text()='Save']
+WAIT TO DISAPPEAR | button | xpath | //button[text()='Save'][contains(@class,'Disabled')]
+stop non-identical
+:Post-Steps
+Save and Close | button | xpath | //button[@accesskey='S']
+Header | h1 | xpath | //h1[text()='Search']
+:Undo-Steps
+Cancel | button | xpath | //button[@accesskey='C']
+Header | h1 | xpath | //h1[text()='Search']
+case: UserNameNotFound
+Close | button | xpath | //table[contains(@id,'userLevelValue')]//a[@title='Close']
+Cancel | button | xpath | //button[@accesskey='C']
+Header | h1 | xpath | //h1[text()='Search']
+end esac
+
+:Set#13
+
+[Manage Consolidation Groups]
+:Properties
+Sheetname | Manage Consolidation Set
+Action | Search Task
+Recursive | false
+Data Name | Name
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button-enter | xpath | //img[@title='Add Row']/..
+:Fields
+Name | textbox | xpath | //label[text()='Name']/../input[not(@value)]
+LDG | select | xpath | //label[text()='Legislative Data Group']/../select[not(@title)] | unstale
+Description | textbox | xpath | //label[text()='Description']/../textarea[not(@value)]
+:Post-Steps
+Save | button | xpath | //span[text()='Save']/..
+WAIT TO DISAPPEAR | button | xpath | //div[contains(@class,'Disabled')]//span[text()='Save']/..
+Header | h1 | xpath | //h1[text()='Search Results']
+:Undo-Steps
+Cancel | button | xpath | //span[text()='C']/../..
+WAIT TO DISAPPEAR | button | xpath | //div[contains(@class,'Disabled')]//span[text()='C']/../..
+
+[Manage Common Lookups]
+:Properties
+Sheetname | Manage Common Lookups
+Action | Search Task
+Recursive | true
+Data Name | Name
+:Pre-Prep
+Hide Search Bar | button | xpath | //a[@title='Collapse Search']
+:Pre-Steps
+Create Lookup Type | button-enter | xpath | //div[contains(@id,'create') and not(contains(@class,'Disabled'))]/a/img[@title='New']
+:Fields
+Lookup Type | textbox | xpath | //label[text()='Lookup Type']/../input[not(@title)]
+Meaning | textbox | xpath | //label[text()='Meaning']/../input[not(@title)]
+Description | textbox | xpath | //label[text()='Description']/../input[not(@title)]
+Module | textbox | xpath | //input[contains(@id,'userModuleName')][not(@title)]
+Customization Level | span | xpath | //span[contains(@id,'soc1')][text()='$.sCustomization Level'] | wait 12 -c : 
+Save | button | xpath | //button[text()='Save']
+WAIT TO DISAPPEAR | tag | xpath | //button[text()='Save'][contains(@class,'Disabled')]
+setExcelRow: PER_BANK TYPE: Lookup Codes
+array non-identical | 0
+Create Lookup Codes | button-enter | xpath | //h2[contains(text(),'Lookup Codes')]/../../../../../../..//a/img[@title='New']
+Lookup Code | textbox | xpath | //label[text()='Lookup Code']/../input[@value='']
+Display Sequence | textbox | xpath | //label[text()='Display Sequence']/../input[@value='']
+Enabled | checkbox | xpath | //input[contains(@id,'sbc1')]
+Start Date | textbox | xpath | //label[text()='Start Date']/../input[@value='']
+End Date | textbox | xpath | //label[text()='End Date']/../input[@value='']
+Meaning | textbox | xpath | //h2[contains(text(),'Lookup Codes')]/../../../../../../..//label[text()='Meaning']/../input[@value='']
+Description | textbox | xpath | //h2[contains(text(),'Lookup Codes')]/../../../../../../..//label[text()='Description']/../input[@value='']
+Tag | textbox | xpath | //h2[contains(text(),'Lookup Codes')]/../../../../../../..//label[text()='Tag']/../input[@value='']
+stop non-identical
+:Post-Steps
+Save and Close | button | xpath | //button[@accesskey='S']
+WAIT TO DISAPPEAR | button | xpath | //button[@accesskey='S'][contains(@class,'Disabled')]
+Flag | td | xpath | //a[text()='Manage Common Lookups']/../../td[2]
+:Undo-Steps
+Cancel | button | xpath | //button[@accesskey='C']
+WAIT TO DISAPPEAR | button | xpath | //button[@accesskey='C']
+Flag | td | xpath | //a[text()='Manage Common Lookups']/../../td[2]
+
+[Manage Role Provisioning Rules]
+:Properties
+Sheetname | Manage HCM Role Provision Rules
+Action | Search Task
+Recursive | false
+Data Name | Mapping Name
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button-enter | xpath | //img[@title='Create']/..
+:Fields
+setExcelRow: Setup and Maintenance > Implementation Projects > Workforce Deployment > Define Security for HCM > Manage Role Provisioning Rules
+Header | button | xpath | //h1[text()='Create Role Mapping']
+Mapping Name | textbox | xpath | //label[text()='Mapping Name']/../..//input
+From Date | textbox | xpath | //label[text()='From Date']/../..//input
+To Date | textbox | xpath | //label[text()='To Date']/../..//input
+Legal Employer | textbox | xpath | //label[text()='Legal Employer']/../..//input
+Close Legal Emp | button | xpath | //table[contains(@id,'legalEmployerName')]//a[@title='Close'] | wait 12 -c :
+Business Unit | textbox | xpath | //label[text()='Business Unit']/../..//input
+Close BU | button | xpath | //table[contains(@id,'businessUnitName')]//a[@title='Close'] | wait 12 -c :
+Random Click | button | xpath | //label[text()='Legal Employer']/../..//input
+Department | textbox | xpath | //label[text()='Department']/../..//input
+Close Dept | button | xpath | //table[contains(@id,'departmentName')]//a[@title='Close'] | wait 12 -c :
+Random Click | button | xpath | //label[text()='Legal Employer']/../..//input
+Job | textbox | xpath | //label[text()='Job']/../..//input
+Close Job | button | xpath | //table[contains(@id,'jobName')]//a[@title='Close'] | wait 12 -c :
+Random Click | button | xpath | //label[text()='Legal Employer']/../..//input
+Position | textbox | xpath | //label[text()='Position']/../..//input
+Close Pos | button | xpath | //table[contains(@id,'positionName')]//a[@title='Close'] | wait 12 -c :
+Random Click | button | xpath | //label[text()='Legal Employer']/../..//input
+Grade | textbox | xpath | //label[text()='Grade']/../..//input
+Close Grade | button | xpath | //table[contains(@id,'gradeName')]//a[@title='Close'] | wait 12 -c :
+Random Click | button | xpath | //label[text()='Legal Employer']/../..//input
+Location | textbox | xpath | //label[text()='Location']/../..//input
+Close Loc | button | xpath | //table[contains(@id,'locationName')]//a[@title='Close'] | wait 12 -c :
+Random Click | button | xpath | //label[text()='Legal Employer']/../..//input
+Assignment Type | textbox | xpath | //label[text()='Assignment Type']/../..//input
+Close Assgn Type | button | xpath | //table[contains(@id,'uiAssignmentType')]//a[@title='Close'] | wait 12 -c :
+System Person Type | textbox | xpath | //label[text()='System Person Type']/../..//input
+Close SP Type | button | xpath | //table[contains(@id,'uiSystemPersonType')]//a[@title='Close'] | wait 12 -c :
+User Person Type | textbox | xpath | //label[text()='User Person Type']/../..//input[not(@disabled)] | wait 12 -c :
+Close P Type | button | xpath | //table[contains(@id,'userPersonType')]//a[@title='Close'] | wait 12 -c :
+HR Assignment Status | select | xpath | //label[text()='HR Assignment Status']/../..//select | unstale
+Assignment Status  | select | xpath | //label[text()='Assignment Status']/../..//select | unstale
+Resource Role | select | xpath | //label[text()='Resource Role']/../..//select | unstale
+Party Type Usage | select | xpath | //label[text()='Party Type Usage']/../..//select | unstale
+Manager with Reports | select | xpath | //label[text()='Manager with Reports']/../..//select | unstale
+Manager Type | select | xpath | //label[text()='Manager Type']/../..//select | unstale
+Save | button | xpath | //button[text()='Save']
+OK | button | xpath | //td[contains(@id,'confirmD')]//button[@accesskey='K']
+WAIT TO DISAPPEAR | tag | xpath | //td[contains(@id,'confirmD')]//button[@accesskey='K']
+setExcelRow: Associated Roles
+Check Associated Row | h2 | xpath | //h2[text()='Associated Roles'] | 'case AddAsocRow'
+case: AddAsocRow
+Add Row | button | xpath | //div[not(contains(@class,'Disabled'))]//img[@title='Add Row']/..
+Role Name | textbox | xpath | //input[contains(@id,'uiRoleName')][@value='']
+Delegate Allowed | td | xpath | //input[contains(@id,'uiRoleName')]/../../../../../td[2]
+Requestable | checkbox | xpath | //input[contains(@id,'chkRequestable')]
+Self-requestable | checkbox | xpath | //input[contains(@id,'chkSelfRequestable')]
+AutoProvision | checkbox | xpath | //input[contains(@id,'chkUseForAutoProvisioning')]
+resume esac
+setExcelRow: Setup and Maintenance > Implementation Projects > Workforce Deployment > Define Security for HCM > Manage Role Provisioning Rules
+:Post-Steps
+Save and Close | button | xpath | //button[@accesskey='S']
+WAIT TO DISAPPEAR | button | xpath | //button[@accesskey='S'][contains(@class,'Disabled')]
+OK | button | xpath | //button[contains(@id,'ok')][@accesskey='K']
+Header | h1 | xpath | //h1[text()='Manage Role Mappings']
+:Undo-Steps
+Cancel | button | xpath | //button[@accesskey='C']
+Yes | button | xpath | //button[contains(@id,'cnclY')][@accesskey='Y']
+Header | h1 | xpath | //h1[text()='Manage Role Mappings']
+
+[Manage Fast Formulas]
+:Properties
+Sheetname | Fast Formulas
+Action | Search Task
+Recursive | false
+Data Name | *Formula Name
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | //img[@title='Create']/..
+:Fields
+WAIT UNTIL CLICKABLE | div | xpath | //div[contains(@id,'Testpop')]//div[contains(text(),'Create Fast Formula')]
+Formula Name | textbox | xpath | //div[contains(@id,'Testpop')]//label[text()='Formula Name']/../..//input | save
+Type | select | xpath | //div[contains(@id,'Testpop')]//label[text()='Type']/../..//select | unstale,save
+Description | textbox | xpath | //div[contains(@id,'Testpop')]//label[text()='Description']/../..//input
+LDG | select | xpath | //div[contains(@id,'Testpop')]//label[text()='Legislative Data Group']/../..//select | select,save,throws invalidLDG
+Effective Start Date | textbox | xpath | //div[contains(@id,'Testpop')]//label[text()='Effective Start Date']/../..//input | throws invalidEffDate
+Type of Editor | label | xpath | //div[contains(@id,'Testpop')]//label[text()='Type of Editor'][contains(@class,'inputText')] | wait 12 -c :
+Continue | button | xpath | //div[contains(@id,'Testpop')]//button[@title='Continue']
+Header | button | xpath | //h1[contains(text(),'Create Fast Formula')] | wait 30 -c :throws existingFormulaName
+setExcelRow: Copy the below in Formula Text -> Save -> Submit -> Compile
+Formula Text | textbox-serial | xpath | //div[contains(@id,'Manua')]//textarea[1]
+Save | button | xpath | //span[text()='Save']/..
+:Post-Steps
+WAIT TO DISAPPEAR | span | xpath | //div[contains(@class,'Disabled')]//span[text()='Save']/..
+Compile | button | xpath | //span[text()='Compile']/..
+OK | button | xpath | //button[text()='OK'][contains(@id,'compileResponseDialoue')]
+Done | button | xpath | //a[@accesskey='o']
+:Undo-Steps
+case: Formula Name,Type,invalidLDG,invalidEffDate
+Close Popup | button | xpath | //div[contains(@id,'Testpop')]//a[@title='Close']
+WAIT UNTIL CLICKABLE | h1 | xpath | //h1[text()='Manage Fast Formulas']
+end esac
+case: existingFormulaName
+end esac
+
+[Manage Elements]
+:Properties
+Sheetname | Manage Elements
+Action | Search Task
+Recursive | false
+Data Name | *Name
+:Pre-Prep
+skip:
+:Pre-Steps
+//Create | button | xpath | //img[@title='Create']/..
+skip:
+:Fields
+WAIT UNTIL CLICKABLE | div | xpath | //table[contains(@id,'QuickCreatePop')]//div[text()='Create Element']
+LDG | select | xpath | //table[contains(@id,'QuickCreatePop')]//label[text()='Legislative Data Group']/../..//select | unstale,throws invalidLDG
+Triggered PClass | nullable | xpath |  //table[contains(@id,'QuickCreatePop')]//label[text()='Primary Classification']/../..//select/option
+Primary Classification | select | xpath | //table[contains(@id,'QuickCreatePop')]//label[text()='Primary Classification']/../..//select | unstale,throws invalidPC
+Triggered SClass | nullable | xpath |  //table[contains(@id,'QuickCreatePop')]//label[text()='Secondary Classification']/../..//select/option
+Secondary Classification | select | xpath | //table[contains(@id,'QuickCreatePop')]//label[text()='Primary Classification']/../..//select | unstale,throws invalidSC
+Category | label | xpath | //table[contains(@id,'QuickCreatePop')]//label[text()='Category']/../..//td[2]/span[text()='$.sCategory'] | wait 12 -c :
+Continue | button | xpath | //table[contains(@id,'QuickCreatePop')]//button[@accesskey='u']
+Name | textbox | xpath | //label[text()='Name']/../..//input | throws invalidOptions
+Reporting Name | textbox | xpath | //label[text()='Reporting Name']/../..//input
+Description | textbox | xpath | //label[text()='Description']/../..//label
+Element Classification Name | label | xpath | //label[text()='Element Classification Name']
+LDG | label | xpath | //label[text()='Legislative Data Group']
+Effective Date | textbox | xpath | //label[text()='Effective Date']/../..//input
+Input Currency | select | xpath | //label[text()='Input Currency']/../..//select | unstale
+Employment Level | radio | xpath | //label[text()='$.sEmployment Level']
+Recurring Element | radio | xpath | //label[text()='$.sRecurring Element']
+Processing Element once in each payroll period | radio | xpath | //table[contains(@id,'Rule300000000124921')]//label[text()='$.sProcessing Element once in each payroll period']
+More than one entry of element | radio | xpath | //table[contains(@id,'Rule300000000124919')]//label[text()='$.sMore than one entry of element']
+Process and Pay Element | radio | xpath | //label[text()='$.sProcess and Pay Element']
+Automatic Element Eligibility | radio | xpath | //table[contains(@id,'Rule300000000124904')]//label[text()='$.sAutomatic Element Eligibility']
+Earliest Entry Date | select | xpath | //table[contains(@id,'Role300000000124915')]//select | unstale
+Latest Entry Date | select | xpath | //table[contains(@id,'Role300000000124953')]//select | unstale
+Next | button | xpath | //button[@accesskey='x']
+Header | button | xpath | //h1[contains(text(),'Additional Details')] | throws firstPageError
+Calculation Rate | radio | xpath | //table[contains(@id,'Rule300000000124906')]//label[text()='$.sCalculation Rate']
+Proration | radio | xpath | //table[contains(@id,'Rule300000000124935')]//label[text()='$.sProration']
+Retroactive changes | radio | xpath | //table[contains(@id,'Rule300000000124946')]//label[text()='$.sRetroactive changes']
+Element included in EARNINGS of FLSA overtime base rate | radio | xpath | //table[contains(@id,'Rule300000000099440')]//label[text()='$.sElement included in EARNINGS of FLSA overtime base rate']
+Element included in HOURS of FLSA overtime base rate | radio | xpath | //table[contains(@id,'Rule300000000099441')]//label[text()='$.sElement included in HOURS of FLSA overtime base rate']
+Next | button | xpath | //button[@accesskey='x']
+Header | button | xpath | //h1[contains(text(),'Review')] | throws secondPageError
+Submit | button | xpath | //div[not(contains(@class,'Disabled'))]/a/span[text()='Submit']/..
+Header | button | xpath | //h1[contains(text(),'Element Summary')] | wait 300 -c :throws thirdPageError
+Element Eligibility Name | button | xpath | //h1[text()='Element Overview']/../../../../../../../..//span[text()='Element Eligibility']
+Action | button | xpath | //h1[text()='Element Overview']/../../../../../../../..//a[text()='Actions']
+Pick Action | jsbutton | xpath | //table[contains(@id,'ScrollContent')]//td[text()='Create Element Eligibility']
+Element Eligibility name | textbox | xpath | //label[text()='Element Eligibility Name']/../..//input
+:Post-Steps
+Submit | button | xpath | //button[@accesskey='m']
+Submit Trigger | button | xpath | //span[text()='Edit']/../../..//td[2]//a
+Done | button | xpath | //a[@accesskey='o']
+Header | h1 | xpath | //h1[text()='Manage Elements']
+:Undo-Steps
+Cancel | button | xpath | //button[@accesskey='C']
+Done | button | xpath | //a[@accesskey='o']
+Header | h1 | xpath | //h1[text()='Manage Elements']
+case: firstPageError
+ClickRequired1 | button | xpath | //table[contains(@id,'Role300000000124915')]//select
+fillRequired1 | button | xpath | //table[contains(@id,'Role300000000124915')]//select/option[1]
+ClickRequired1 | button | xpath | //table[contains(@id,'Role300000000124915')]//select
+fillRequired2 | button | xpath | //table[contains(@id,'Role300000000124953')]//select/option[1]
+Cancel | button | xpath | //span[text()='C']/../..
+end esac
+case: secondPageError,thirdPageError
+Cancel | button | xpath | //span[text()='C']/../..
+end esac
+case: invalidLDG,invalidPC,invalidSC,invalidOptions
+Close | button | xpath | //table[contains(@id,'QuickCreatePop')]//a[@title='Close']
+WAIT UNTIL CLICKABLE | h1 | xpath | //h1[text()='Manage Elements']
+end esac
+

@@ -61,16 +61,24 @@ public class TextUtility {
 		
 		Enumeration<String> elements = lines.elements();
 		
-		while(elements.hasMoreElements()) {
+		collectionloop: while(elements.hasMoreElements()) {
 			String current = elements.nextElement();
 			
 			if(foundSr) {
 				if(current.contentEquals(caseType)){
 					foundSec = true;
 				}
-				if(current.startsWith("case:") && current.contains(caseItem) && foundSec) {
-					foundCase = true;
-					continue;
+				if(current.startsWith("case:") && foundSec) {
+					String[] caseArguments = current.replace("case: ", "").split(",");
+					for(String caseArg : caseArguments){
+						if(caseArg.contentEquals(caseItem)){
+							foundCase = true;
+							continue collectionloop;
+						}
+					}
+					//&& current.contains(caseItem)
+					//foundCase = true;
+					//continue;
 				}
 				if(current.startsWith("[") || current.startsWith(":") || current.startsWith("case:")) {
 				{

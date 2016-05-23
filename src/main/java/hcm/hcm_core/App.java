@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import org.apache.commons.cli.CommandLine;
@@ -26,6 +28,7 @@ public class App
 {
     public static void main( String[] args ) throws Exception{
     	
+    	Map <String,String> srMap = new HashMap<String, String>();
     	Options options = new Options();
     	options.addOption("r", true, "service request number");
     	options.addOption("w", true, "current workspace");
@@ -33,6 +36,7 @@ public class App
     	String dataObject = null;
     	String workspace = null;
 		String excel = null;
+		srMap.put("sumMsg", "");
     	
     	CommandLineParser parser = new DefaultParser();
     	try {
@@ -51,17 +55,13 @@ public class App
 		}
     	
     	//String businessObject = "Manage Data Role and Security Profiles";
-    	//String businessObject = "Manage Common Lookups";    
-    	//String businessObject = "Manage Value Sets";  
-    	//String businessObject = "Manage Legal Entity"; 
-    	//String businessObject = "Manage Descriptive Flexfields";
-    	//String businessObject = "Manage Divisions";
-    	//String businessObject = "Manage Legislative Data Groups";
     	
     	SeleniumDriver sel = new SeleniumDriver();
     	
     	System.out.println("Initializing drivers...");
     	sel.initializeDriver("http://selenium-hub:4444/wd/hub", "firefox", workspace, excel);
+    	System.out.print("Validating argument before startup");
+    	sel.validateArgument(dataObject, workspace, excel);
 		System.out.println("Running Test in FireFox");
 		
     	//sel.initializeDriver("http://10.251.120.22:4444/wd/hub", "firefox", workspace, excel);
@@ -73,8 +73,9 @@ public class App
     	sel.setupAndMaintenance();
     	    	  	
     	try{
-	    		sel.runServiceRequest(dataObject);    	
+	    		srMap = sel.runServiceRequest(dataObject, srMap);    	
 	    		Thread.sleep(10000);
+	    		System.out.println(srMap.get("sumMsg"));
 	        	sel.dispose();
 	        	System.out.println("Service Request has been managed successfully.");
 	    	} catch(Exception e){

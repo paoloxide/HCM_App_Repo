@@ -3,7 +3,9 @@ package hcm.common;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import hcm.seldriver.SeleniumDriver;
 import hcm.utilities.ExcelReader;
@@ -59,11 +61,11 @@ public class ArgumentHandler {
 		if(step[4].contains("locate")){
 			Thread.sleep(3500);
 			TaskUtilities.scrollDownToElement(false, "big");
-			Thread.sleep(1500);
 			TaskUtilities.customWaitForElementVisibility(step[2], step[3], 60, new CustomRunnable() {
 				
 				public void customRun() throws Exception {
 					// TODO Auto-generated method stub
+					TaskUtilities.jsCheckMessageContainer();
 					isScrollingDown = TaskUtilities.scrollDownToElement(isScrollingDown, "big");
 				}
 			});
@@ -212,5 +214,35 @@ public class ArgumentHandler {
 		}
 		
 		return current;
+	}
+	public static Map<String, String> executeFailedArrayRow(ExcelReader excelReader, boolean hasArray, boolean isNonIdenticalArray, int rowInputs, int rowNum, int nextPivotIndex, int trueNextPivotIndex){
+		Map<String, String> rowHolder = new HashMap<String, String>();
+		
+		if(hasArray){
+			if(!isNonIdenticalArray){
+				while(excelReader.getCellData(rowNum, 0).contentEquals(excelReader.getCellData(rowNum+1, 0))){
+					rowNum += 1;
+					//nextPivotIndex += 1;
+					if(rowInputs > 0) rowInputs += 1;
+				}
+			}else{
+				while(excelReader.getCellData(rowNum, 0).length()>0){
+					rowNum += 1;
+					//nextPivotIndex += 1;
+					if(rowInputs > 0) rowInputs += 1;
+				}
+			}
+			if(rowInputs > 0){
+					trueNextPivotIndex = rowInputs;
+				}else{
+					trueNextPivotIndex = nextPivotIndex;
+				}
+			nextPivotIndex = 0;
+		}
+		
+		rowHolder.put("rowNum", ""+rowNum);
+		rowHolder.put("nextPivotIndex", ""+nextPivotIndex);
+		rowHolder.put("trueNextPivotIndex", ""+trueNextPivotIndex);
+		return rowHolder;
 	}
 }
