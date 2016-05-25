@@ -1999,6 +1999,91 @@ case: IgnoreError
 OK | button | xpath | //button[contains(@id,'msgDlg')][contains(@id,'cancel')][text()='OK']
 resume esac
 
+:SET#9and10
+
+[Manage Profile Content Items]
+:Properties
+Sheetname | Manage Profile Content Items
+Action | Search Task
+Recursive | false
+Data Name | *Name
+:Pre-Prep
+skip:
+:Pre-Steps
+Header | h1 | xpath | //h1[text()='Manage Content Items']
+Create | button-enter | xpath | //span[text()=' Create']/..
+Header | h1 | xpath | //div[text()='Create Content Item'] | wait 5
+:Fields
+*Content Type | select | xpath | //label[text()='Name']/../..//select | unstale
+*Content Item | textbox | xpath | //td[contains(@id,'contentContainer')]//input
+Continue | button | xpath | //span[text()='u']/.. | wait 5
+Header | button | xpath | //h1[contains(text(),'Create Content Item :')] | wait 5
+Header | h1 | xpath | //h1[contains(text(),'Create Content Item :')]
+Item Code | textbox | xpath | //label[text()='Item Code']/../..//input
+Header | h1 | xpath | //h1[contains(text(),'Create Content Item :')]
+*From Date | textbox | xpath | //label[text()='From Date']/../..//input
+To Date | textbox | xpath | //label[text()='To Date']/../..//input
+Header | h1 | xpath | //h1[contains(text(),'Create Content Item :')]
+Rating Model | select | xpath | //label[text()='Rating Model']/../..//select | unstale
+Descriptiom | textbox | xpath | //label[text()='Description']/../..//textarea
+Certification Required | textbox | xpath | //label[text()='Certification Required']/../..//input
+Evaluation Method | textbox | xpath | //label[text()='Evaluation Method']/../..//input
+Renewal Period Units | textbox | xpath | //label[text()='Renewal Period Units']/../..//input
+Satisfaction Method | select | xpath | //label[text()='Satisfaction Method']/../..//select | unstale
+Category | select | xpath | //label[text()='Category']/../..//select
+Renewal Period Frequency | textbox | xpath | //label[text()='Renewal Period Frequency']/../..//input
+Capability Alias | textbox | xpath | //label[text()='Capability Alias']/../..//input
+Short Description | textbox | xpath | //label[text()='Short Description']/../..//input
+Behavioural Indicator | textbox | xpath | //label[text()='Behavioral Indicator']/../..//textarea
+Long Description | textbox | xpath | //label[text()='Long Description']/../..//textarea
+//WAIT UNTIL CLICKABLE | button | xpath | //button[text()='OK'][contains(@id,'cancel')] | throws OKNotShown
+//case: clickOK
+//OK | button | xpath | //button[text()='OK'][contains(@id,'cancel')] | wait 30 -c :
+//resume esac
+:Post-Steps
+Save and Close | button | xpath | //span[text()='S']/.. | wait 10
+Header | h1 | xpath | //h1[text()='Manage Content Items']
+:Undo-Steps
+Cancel | button | xpath | //span[text()='C']/.. | wait 5
+Header | h1 | xpath | //h1[text()='Manage Content Items']
+//case: OKNotShown
+//resume esac
+
+[Manage Instance Qualifiers]
+:Properties
+Sheetname | Manage Instance Qualifiers
+Action | Search Task
+Recursive | False
+Data Name | *Instance Qualifier Set
+:Pre-Prep
+skip:
+:Pre-Steps
+Header | h1 | xpath | //h1[text()='Manage Instance Qualifiers']
+Create | button-enter | xpath | //span[text()=' Create']/..
+:Fields
+*Instance Qualifier Set | textbox | xpath | //label[text()='Instance Qualifier Set']/../..//input
+*Content Type | select | xpath | //label[text()='Content Type']/../..//select | unstale
+Description1 | textbox | xpath | //label[text()='Description']/../..//input | wait 5
+Header | h1 | xpath | //h1[text()='Create Instance Qualifier Set']
+Source of Instance Qualifier Values | button | xpath | //label[text()='Choice List Values']
+array | 4
+Create | button | xpath | //span[text()='Create']/.. | wait 5
+Priority | textbox | xpath | //label[text()='Priority']/..//input | wait 5
+Code | textbox | xpath | //label[text()='Code']/..//input | wait 5
+Description2 | textbox | xpath | //label[text()='Description']/..//input | wait 5
+Employee View | checkbox | xpath | //table[@summary='Instance Qualifiers']/tbody/tr[1]//input[contains(@id,'it1')][@type='checkbox']
+Manager View | checkbox | xpath | //table[@summary='Instance Qualifiers']/tbody/tr[1]//input[contains(@id,'it5')][@type='checkbox']
+Searchable | checkbox | xpath | //table[@summary='Instance Qualifiers']/tbody/tr[1]//input[contains(@id,'it7')][@type='checkbox']
+Employee Default | checkbox | xpath | //table[@summary='Instance Qualifiers']/tbody/tr[1]//input[contains(@id,'it4')][@type='radio']
+Manager Default | checkbox | xpath | //table[@summary='Instance Qualifiers']/tbody/tr[1]//input[contains(@id,'it6')][@type='radio']
+stop
+:Post-Steps
+Save and Close | button | xpath | //span[text()='ave and Close']/..
+Header | button | xpath | //h1[text()='Manage Instance Qualifiers']
+:Undo-Steps
+Cancel | button | xpath | //span[text()='ancel']/..
+Yes | button | xpath | //span[text()='Y']/../..//button[contains(@id,'cancelOKBtn')]
+
 :SET#11
 [Manage Person Name Formats]
 :Properties
