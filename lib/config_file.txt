@@ -2084,6 +2084,35 @@ Header | button | xpath | //h1[text()='Manage Instance Qualifiers']
 Cancel | button | xpath | //span[text()='ancel']/..
 Yes | button | xpath | //span[text()='Y']/../..//button[contains(@id,'cancelOKBtn')]
 
+[Manage Calendar Events]
+:Properties
+Sheetname | Manage Calendar Events
+Action | Search Task
+Recursive | false
+Redirect-Enabled | false
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:0:appspanel1:AT1:_ATp:commandToolbarButton11']/a/span
+:Fields
+*Name | textbox | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:inputText1::content'] | save
+*Category | select | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:selectOneChoice1::content'] | unstale,save
+*Start Date | textbox | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:inputDate1::content'] | save
+*End Date | textbox | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:inputDate2::content'] | save
+*Short Code | textbox | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:inputText2::content'] | save
+Description | textbox | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:inputText3::content'] | save
+Hierarchy Type | select | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:choice1::content'] | unstale,save
+:Post-Steps
+Submit | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:Tbut2']/a
+OK | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:confirmD::ok']
+:Undo-Steps
+Cancel | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:Tbut3']/a/span
+Yes | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:cb2']
+case: Name,Category,Start Date,End Date,Short Code,Description,Hierarchy Type
+Cancel | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:Tbut3']/a/span
+Yes | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:cb2']
+end esac
+
 :SET#11
 [Manage Person Name Formats]
 :Properties
