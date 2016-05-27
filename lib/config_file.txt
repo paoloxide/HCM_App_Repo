@@ -2217,6 +2217,180 @@ Header | h1 | xpath | //h1[text()='Manage Profile Rating Models']
 :Undo-Steps
 Cancel | button | xpath | //span[text()='C']/..
 
+[Manage Position Trees]
+:Properties
+Sheetname | Manage Position Trees
+Action | Navigate
+Recursive | false
+Redirect-Enabled | false
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:0:pt1:AP1:ATT2:_ATTp:commandToolbarButton1::icon']
+:Fields
+setExcelRow: Setup and Maintenance > Implementation Projects > Workforce Deployment > Define Common Applications Configuration for HCM > Define Enterprise Structures for Human Capital Management > Define Workforce Structures > Define Jobs and Positions > Manage Position Trees
+*Name | textbox | xpath | //label[text()='Name']/../..//input
+*Code | textbox | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:pt1:AP1:DefCode_Create::content']
+Tree Structure | textbox | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:2:pt1:AP1:panelLabelAndMessage2']/td[2]
+Description | textbox | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:pt1:AP1:DefDesc_Create::content']
+Next | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:pt1:AP1:tbb1:1:cni2']
+Next | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:2:pt1:AP1:tbb1:1:cni2']
+Submit | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:3:pt1:AP1:APsb']/table/tbody/tr/td[1]/a
+setExcelRow: Specify Definition
+Tree Name | textbox | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:0:pt1:AP1:q2:value10::content']
+Tree Code | textbox | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:0:pt1:AP1:q2:value00::content']
+Search | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:0:pt1:AP1:q2::search']
+select | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:0:pt1:AP1:ATT2:_ATTp:fndTreeSearchVCQueryResultId::db']/table/tbody/tr/td[2]/div/table/tbody/tr/td[2] | wait
+Create | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:0:pt1:AP1:ATT2:_ATTp:commandToolbarButton1::popEl']
+Create | jsbutton | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:0:pt1:AP1:ATT2:_ATTp:cmp2']/td[2]
+*Name | textbox | xpath | //label[text()='Name']/../..//input
+*Effective Start Date | textbox | xpath | //label[text()='Effective Start Date']/../..//input
+Note | textbox | xpath | //label[text()='Note']/../..//textarea 
+Description | textbox | xpath | //label[text()='Description']/../..//textarea 
+*Effective End Date | textbox | xpath | //label[text()='Effective End Date']/../..//input
+Next | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:4:pt1:AP1:tbb1:1:cni2']
+OK | button | xpath | //button[contains(text(),'OK')]
+Add | button | xpath | //img[@title='Add']
+Specific Value | radio | xpath | //label[text()='Specific value'] | wait 12 -c
+*Data Source | select2 | xpath | .//*[@title='Position Tree Data Source'] | unstale
+Search | button | xpath | //button[text()='Search']
+Name | textbox-enter | xpath | //label[text()='Name']/../..//input
+Pick POS | button | xpath | //table[@summary='Search Results']//td[text()='$.sAdd Tree Node[i]']
+Add Tree Node | button | xpath | //button[text()='Add Tree Node']
+wait to disappear | button | xpath | //button[text()='Add Tree Node']
+select | button | xpath | //table[@summary='Tree Node Details']//div[contains(text(),'$.sAdd Tree Node[i]')]
+Add | button | xpath | //img[@title='Add']
+Specific Value | radio | xpath | //label[text()='Specific value'] | wait 12 -c
+Tree Node Details | h1 | xpath | //h1[text()='Tree Node Details']
+*Data Source | select2 | xpath | .//*[@title='Position Tree Data Source'] | unstale
+Search | button | xpath | //button[text()='Search']
+Name | textbox-enter | xpath | //label[text()='Name']/../..//input
+Pick POS | button | xpath | //table[@summary='Search Results']//td[text()='$.sAdd Tree Node[i]'] | throws NoPOSFound
+Add Tree Node | button | xpath | //button[text()='Add Tree Node']
+wait to disappear | button | xpath | //button[text()='Add Tree Node']
+:Post-Steps
+Submit | button | xpath | //button[@accesskey='m']
+OK | button | xpath | //button[@_afrpdo='cancel']
+:Undo-Steps
+Cancel | button | xpath | //button[text()='ancel'] 
+case: *Name,*Code,*Effective Start Date,Name
+Cancel | button | xpath | //button[text()='ancel']
+end esac
+case: NoPOSFound
+Close Search | button | xpath | //table[contains(@id,'addView')]//a[@title='Close'][contains(@id,'pnWnd')]
+Close Tree Node | button | xpath |  //table[contains(@id,'addView')]//a[@title='Close'][contains(@id,'addDiag')]
+Cancel | button | xpath | //button[text()='ancel']
+Header | h1 | xpath | //h1[text()='Manage Position Trees']
+end esac
+
+[Manage Profile Types]
+:Properties
+Sheetname | Manage Profile Types
+Action | Navigate
+Recursive | false
+Redirect-Enabled | false
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button-enter | xpath | //span[contains(text(),' Create')]/..
+:Fields
+setExcelRow: Setup and Maintenance > Implementation Projects > Workforce Deployment > Define Common Applications Configuration for Human Capital Management > Define Workforce Profiles > Define Talent Profiles > Manage Profile Types
+*Code | textbox | xpath | //tr[contains(@id,'inputText1')]//input[contains(@id,'inputText1')] | save,wait 12 -c
+*Name | textbox | xpath | //tr[contains(@id,'inputText2')]//input[contains(@id,'inputText2')] | save,wait 12 -c
+*From Date | textbox | xpath | //tr[contains(@id,'inputDate1')]//input[contains(@id,'inputDate1')] | save,wait 12 -c
+To Date | textbox | xpath | //tr[contains(@id,'inputDate2')]//input[contains(@id,'inputDate2')] | save,wait 12 -c
+Description | textbox | xpath | //tr[contains(@id,'inputText3')]//textarea[contains(@id,'inputText3')] | save,wait 12 -c
+*Usage | select | xpath | //tr[contains(@id,'c_us')]//select[contains(@id,'c_us')] | save,wait 12 -c
+array | 6
+setExcelCol: *Workforce Structure
+Add | button | xpath | //div[contains(@id,'cb1')]//span[contains(text(),'Add')] | wait 12 -c
+*Workforce Structure | select | xpath | //select[@title=''] | save,wait 12 -c,unstale
+stop
+Content Sections | button | xpath | //div[contains(@id,'ti')]//a[contains(text(),'Content Sections')] | wait 12 -c
+array | 7
+setExcelCol: AddContentSection
+Add Content Section | button | xpath | //span[contains(text(),'Add Content Section')] | wait 12 -c
+Add Content Section | button | xpath | //a[text()='$.sAddContentSection'] | unstale,wait 12 -c
+stop
+:Post-Steps
+Save and Close | button | xpath | //a[@accesskey='S']
+Header | h1 | xpath | //div[@title='Manage Profile Types']//h1[contains(text(),'Manage Profile Types')]
+:Undo-Steps
+Cancel | button | xpath | //a[@accesskey='C']
+Header | h1 | xpath | //div[@title='Manage Profile Types']//h1[contains(text(),'Manage Profile Types')]
+case: *Code,Add,*Name,From Date,*Usage,*Workforce Structure
+Cancel | button | xpath | //a[@accesskey='C']
+Header | h1 | xpath | //div[@title='Manage Profile Types']//h1[contains(text(),'Manage Profile Types')]
+end esac
+
+[Manage Educational Establishments]
+:Properties
+Sheetname | Manage EducationalEstab
+Action | Navigate
+Recursive | false
+Redirect-Enabled | false
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | //span[contains(text(),'Create')]
+:Fields
+setExcelRow: Setup and Maintenance > Implementation Projects > Workforce Deployment > Define Common Applications Configuration for Human Capital Management > Define Workforce Profiles > Define Talent Profile Content > Manage Educational Establishments
+*Code | textbox | xpath | //tr[contains(@id,'inputText4')]//input[contains(@id,'inputText4')] | save
+*Name | textbox | xpath | //tr[contains(@id,'inputText1')]//input[contains(@id,'inputText1')] | save
+*Description | textbox | xpath | //tr[contains(@id,'inputText2')]//input[contains(@id,'inputText2')] | save
+Country | select | xpath | //tr[contains(@id,'CountryId')]//select[contains(@id,'CountryId')] | unstale,save
+State or Province | select | xpath | //tr[contains(@id,'selectOneChoice1')]//select[contains(@id,'selectOneChoice1')] | unstale,save
+Location | textbox | xpath | //tr[contains(@id,'inputText3')]//input[contains(@id,'inputText3')]
+:Post-Steps
+Save and Close | button | xpath | //button[@accesskey='S']
+Header | button | xpath | //h1[text()='Manage Educational Establishments']
+:Undo-Steps
+Cancel | button | xpath | //button[@accesskey='C']
+Yes | button | xpath | //button[@accesskey='Y']
+case: *Code,*Name,*Description,Country,State or Province
+Cancel | button | xpath | //button[@accesskey='C']
+Yes | button | xpath | //button[@accesskey='Y']
+end esac
+
+[Manage Profile Content Types]
+:Properties
+Sheetname | Manage Profile Content Types
+Action | Navigate
+Recursive | false
+Redirect-Enabled | false
+:Pre-Prep
+skip:
+:Pre-Steps
+Create | button | xpath | //span[contains(text(),'Create')] 
+:Fields
+setExcelRow: Setup and Maintenance > Implementation Projects > Workforce Deployment > Define Common Applications Configuration for Human Capital Management > Define Workforce Profiles > Define Talent Profile Content > Manage Profile Content Types
+*Code | textbox | xpath | //tr[contains(@id,'panelLabelAndMessage2')]//input[contains(@id,'inputText1')] | save
+*Name | textbox | xpath | //tr[contains(@id,'inputText2')]//input[contains(@id,'inputText2')] | save
+Description | textbox | xpath | //tr[contains(@id,'inputText3')]//textarea[contains(@id,'inputText3')]	
+Free-Form Type | checkbox | xpath | //table[contains(@id,'ffFlag')]//label[text()='Free-Form Type']/..//input[contains(@id,'ffFlag')]
+array | 4
+setExcelCol: Field Name
+Add | button | xpath | //span[contains(text(),'Add')] | wait 12
+*Field Name | select | xpath | //table[@summary='Summary']//label[text()='Field Name']/..//select[contains(@id,'fieldNameLOV')][not(@title)] | unstale,save
+Dummy Label | button | xpath | //table[@summary='Summary']/tbody/tr[contains(@class,'Selected')]//label[text()='Label']/..//input[contains(@id,'inputText8')][@value] | wait 12 -c :
+*Label | textbox | xpath | //label[text()='Label']/..//input[contains(@id,'inputText8')] | save
+Default Value | textbox | xpath | //table[@summary='Summary']//label[text()='Default Value']/..//input[contains(@id,'inputText10')] wait 12 -c
+//Required | checkbox | xpath | //tr[@_afrrk='5']//input[contains(@id,'selectBooleanCheckbox2')]
+Required | checkbox | xpath | //table[@summary='Summary']/tbody/tr[contains(@class,'Selected')]//input[contains(@id,'selectBooleanCheckbox2')]
+Display | select | xpath | //table[@_afrit='1']//select[contains(@id,'selectOneChoice2')] | unstale
+Source | textbox | xpath | //td[@title='View Attribute']//input[contains(@id,'inputText12')]
+stop
+:Post-Steps
+Save and Close | button | xpath | //button[contains(@id,'saveclosebtn')]
+Header | h1 | xpath | //h1[text()='Manage Content Types']
+:Undo-Steps
+Cancel | button | xpath | //button[@accesskey='C']
+Header | button | xpath | //h1[text()='Manage Content Types']
+case: *Code,*Name,*Field Name,*Label
+Cancel | button | xpath | //button[@accesskey='C']
+Header | button | xpath | //h1[text()='Manage Content Types']
+end esac
+
 :SET#11
 [Manage Person Name Formats]
 :Properties
