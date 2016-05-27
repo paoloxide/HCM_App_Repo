@@ -166,33 +166,31 @@ public class ArgumentHandler {
 			String[] Sarg = current.split("'");
 			for (String arg : Sarg) {
 				if (arg.contains("$.s") && !arg.contains("\"")){
-					if(arg.contains("[i]")) colNum = truecolNum-1;
-					if(colNum < 0) colNum = 0;
 					argHolder.add(arg.substring(arg.indexOf("$.s")));
 				}
 			}
 			String[] Sarg2 = current.split("\"");
 			for (String arg : Sarg2) {
 				if (arg.contains("$.s") && !arg.contains("'")){
-					if(arg.contains("[i]")) colNum = truecolNum-1;
-					if(colNum < 0) colNum = 0;
 					argHolder.add(arg.substring(arg.indexOf("$.s")));
 				}
 			}
 			
 			for(String strArg : argHolder){
+				colNum = 0;
+				if(strArg.contains("[i]")) colNum = truecolNum-1;
 				
 				System.out.println("Now holding: " + strArg);
 				System.out.print("Appropriate data search in progress");
 				
 				inputloop: while (excelReader.getCellData(rowGroup+1, colNum).length() > 0) {
 					System.out.print(".");
-					if(excelReader.getCellData(SeleniumDriver.defaultLabelRow, colNum).trim().contentEquals(strArg.replaceAll("\\$\\.s", ""))){
+					if(excelReader.getCellData(SeleniumDriver.defaultLabelRow, colNum).trim()
+							.contentEquals(strArg.replaceAll("\\$\\.s", "").replaceAll("\\[i\\]", ""))){
 						System.out.println("DONE.\nFormerly "+ current);
 						current = current.replace(strArg, excelReader.getCellData(rowNum,colNum));
 						step = current.split(" \\| ");
 						System.out.println(" is now: " + current);
-						colNum = 0;
 						break inputloop;
 					}
 					if(excelReader.getCellData(rowGroup+1, colNum+1).isEmpty()){
@@ -203,7 +201,6 @@ public class ArgumentHandler {
 					colNum += 1;
 				}
 			}
-			
 			//colNum = trueColNum;
 		}
 		if (step[3].contains("$String")) {
@@ -215,7 +212,6 @@ public class ArgumentHandler {
 				System.out.print(".");
 				if (excelReader.getCellData(SeleniumDriver.defaultLabelRow,colNum).contentEquals(step[0])) {
 					System.out.print("DONE. Formerly "+ step[3]);
-					//step[3] = step[3].replace("$String",excelReader.getCellData(rowNum,colNum));
 					current = current.replace("$String",excelReader.getCellData(rowNum,colNum));
 					System.out.println(" is now: " + step[3]);
 					break inputloop;

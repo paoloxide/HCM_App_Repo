@@ -64,7 +64,7 @@ public class SeleniumDriver {
 	//private String excelPath = "hcm-configurations_bak.xlsx";
 	private String excelPath = "HCM_Core-Configurations.xlsx";
 	//private String configPath = "lib/config_file_hcm_set4.txt"; //config_file_hcm_set4
-	private String configPath = "lib/config_file.txt";
+	private String configPath = "lib/config_file.txt;
 	private String screenShotPath = "target/screenshots/";
 	
 	public void initializeDriver(String hubURL, String browser,	String workspace, String excel) throws Exception{
