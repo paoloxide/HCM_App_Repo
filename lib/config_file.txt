@@ -2189,7 +2189,7 @@ Data Name | *Code
 skip:
 :Pre-Steps
 Header | h1 | xpath | //h1[text()='Manage Profile Rating Models']
-Create | button | xpath | //span[text()=' Create']/../../..
+Create | button | xpath | //span[text()=' Create']/..
 Header | h1 | xpath | //h1[text()='Create Rating Model']
 :Fields
 *Code | textbox | xpath | //label[text()='Code']/../..//input

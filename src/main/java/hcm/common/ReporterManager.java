@@ -43,6 +43,7 @@ public class ReporterManager {
 		return errMsg;
 	}
 	public static String processFailedSR(ExcelReader excelReader, Exception e, String sumMsg, String errMsg, String dataType, String dataName, int rowNum){
+		//errMsg = formatErrorMessage("logger",""+e);
 		errMsg += trimErrorMessage(e+errMsg);
 		errMsg = errMsg+"\n";
 		sumMsg += "[FAILED] Unable to create "+dataType+": "+dataName+"..."+errMsg;

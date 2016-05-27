@@ -162,6 +162,11 @@ public class ArgumentExecutor {
 				if(excelReader.getCellData(rowNum+2, SeleniumDriver.defaulColNum).length()>0){
 					rowNum += 1;
 				}
+				if(excelReader.getCellData(rowNum+2, SeleniumDriver.defaulColNum).isEmpty()){
+					if(excelReader.getCellData(rowNum+3, SeleniumDriver.defaulColNum).length()>0){
+						rowNum += 2;
+					}
+				}
 			}
 			
 			rowNum += 1;

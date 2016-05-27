@@ -420,6 +420,7 @@ public class TaskUtilities{
 	
 	public static void jsFindThenClick(String type, String locator) throws Exception{
 		String text = "", tag = "", id = "";
+		locator = locator.replaceAll("\"", "\\\\\\\"");
 		String by = null;
 		
 		if(type.contentEquals("id")) by = "getElementById";
@@ -478,7 +479,8 @@ public class TaskUtilities{
 
 	public static void jsScrollIntoView(String type, String value) throws Exception{
 		//System.out.println("Adjusting view...");
-		
+
+		value = value.replaceAll("\"", "\\\\\\\"");
 		String jsLocator = getJsLocator(type, value);
 		
 		JavascriptExecutor js = (JavascriptExecutor)driver;
@@ -527,6 +529,7 @@ public class TaskUtilities{
 	
 	public static String jsGetInputValue(String type, String locator) throws Exception{
 		String value ="";
+		locator = locator.replaceAll("\"", "\\\\\\\"");
 		String jsLocator = getJsLocator(type, locator);
 		
 		JavascriptExecutor js = (JavascriptExecutor)driver;
@@ -544,6 +547,7 @@ public class TaskUtilities{
 	//Input Box Utilities...
 	public static boolean jsGetCheckboxTickStatus(String type, String value) throws NoSuchAttributeException{
 		boolean isChecked = false;
+		value = value.replaceAll("\"", "\\\\\\\"");
 		String jsLocator = getJsLocator(type, value);
 		
 		JavascriptExecutor js = (JavascriptExecutor)driver;

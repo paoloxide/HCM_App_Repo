@@ -1,6 +1,8 @@
 package hcm.common;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -155,42 +157,53 @@ public class ArgumentHandler {
 
 	public static String executeArgumentConverter(String current, ExcelReader excelReader, int rowNum, int rowGroup, int truecolNum) throws Exception{
 		int colNum = 0;
+		List<String> argHolder = new ArrayList<String>();
 		String[] step = current.split(" \\| ");
 		
 		if (current.contains("$.s")) {
 			System.out.println("Argument type: String");
-			//int trueColNum = colNum;
 			colNum = 0;
-			String strArg = "";
 			String[] Sarg = current.split("'");
 			for (String arg : Sarg) {
-				if (arg.contains("$.s")){
+				if (arg.contains("$.s") && !arg.contains("\"")){
 					if(arg.contains("[i]")) colNum = truecolNum-1;
 					if(colNum < 0) colNum = 0;
-					strArg = arg.replace("case ", "");
+					argHolder.add(arg.substring(arg.indexOf("$.s")));
 				}
 			}
-			System.out.println("Now holding: " + strArg);
-			System.out.print("Appropriate data search in progress");
-			inputloop: 
-				//while (excelReader.getCellData(SeleniumDriver.defaultLabelRow, colNum).length() > 0) {
-				while (excelReader.getCellData(rowGroup+1, colNum).length() > 0) {
-				System.out.print(".");
-				//if (excelReader.getCellData(SeleniumDriver.defaultLabelRow, colNum).trim().contentEquals(strArg.replaceAll("\\$\\.s", ""))) {
-				if (excelReader.getCellData(rowGroup+1, colNum).trim().contentEquals(strArg.replaceAll("\\$\\.s", "").replaceAll("\\[i\\]", ""))) {
-					System.out.print("DONE. Formerly "+ current);
-					current = current.replace(strArg, excelReader.getCellData(rowNum,colNum));
-					step = current.split(" \\| ");
-					System.out.println(" is now: " + current);
-					break inputloop;
+			String[] Sarg2 = current.split("\"");
+			for (String arg : Sarg2) {
+				if (arg.contains("$.s") && !arg.contains("'")){
+					if(arg.contains("[i]")) colNum = truecolNum-1;
+					if(colNum < 0) colNum = 0;
+					argHolder.add(arg.substring(arg.indexOf("$.s")));
 				}
-				if(excelReader.getCellData(rowGroup+1, colNum+1).isEmpty()){
-					if(excelReader.getCellData(rowGroup+1, colNum+2).length()>0){
-						colNum += 1;
+			}
+			
+			for(String strArg : argHolder){
+				
+				System.out.println("Now holding: " + strArg);
+				System.out.print("Appropriate data search in progress");
+				
+				inputloop: while (excelReader.getCellData(rowGroup+1, colNum).length() > 0) {
+					System.out.print(".");
+					if(excelReader.getCellData(SeleniumDriver.defaultLabelRow, colNum).trim().contentEquals(strArg.replaceAll("\\$\\.s", ""))){
+						System.out.println("DONE.\nFormerly "+ current);
+						current = current.replace(strArg, excelReader.getCellData(rowNum,colNum));
+						step = current.split(" \\| ");
+						System.out.println(" is now: " + current);
+						colNum = 0;
+						break inputloop;
 					}
+					if(excelReader.getCellData(rowGroup+1, colNum+1).isEmpty()){
+						if(excelReader.getCellData(rowGroup+1, colNum+2).length()>0){
+							colNum += 1;
+						}
+					}
+					colNum += 1;
 				}
-				colNum += 1;
 			}
+			
 			//colNum = trueColNum;
 		}
 		if (step[3].contains("$String")) {
@@ -198,8 +211,7 @@ public class ArgumentHandler {
 			colNum = 0;
 			System.out.println("element has a String argument: ");
 			System.out.print("Looking for appropriate data");
-			inputloop: 
-			while (excelReader.getCellData(SeleniumDriver.defaultLabelRow, colNum).length() > 0) {
+			inputloop: while (excelReader.getCellData(SeleniumDriver.defaultLabelRow, colNum).length() > 0) {
 				System.out.print(".");
 				if (excelReader.getCellData(SeleniumDriver.defaultLabelRow,colNum).contentEquals(step[0])) {
 					System.out.print("DONE. Formerly "+ step[3]);
