@@ -46,7 +46,7 @@ Header | h1 | xpath | //h1[text()='Implementation Projects']
 :Undo-Steps
 Cancel | button | xpath | //button[text()='ancel']
 Header | h1 | xpath | //h1[text()='Implementation Projects']
-case: Exist*Name or Exist*Code
+case: *Name,*Code
 Cancel | button | xpath | //button[text()='ancel']
 Header | h1 | xpath | //h1[text()='Implementation Projects']
 end esac
@@ -2112,6 +2112,110 @@ case: Name,Category,Start Date,End Date,Short Code,Description,Hierarchy Type
 Cancel | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:Tbut3']/a/span
 Yes | button | xpath | .//*[@id='pt1:r1:0:rt:1:r2:0:dynamicRegion1:1:appspanel2:cb2']
 end esac
+
+[Manage Work Shifts]
+:Properties
+Sheetname | Manage Work Shifts
+Action | Search Task
+Recursive | false
+Data Name | * Name
+:Pre-Prep
+skip:
+:Pre-Steps
+WAIT UNTIL CLICKABLE | h1 | xpath | //h1[text()='Manage Work Shifts']
+Create | button | xpath | //img[contains(@title,'Create Shift')]
+WAIT UNTIL CLICKABLE | h1 | xpath | //div[text()='Create Time Shift']
+:Fields
+*Name | textbox | xpath | //label[text()='Name']/../..//input
+Description | textbox | xpath | //label[text()='Description']/../..//textarea
+Code | textbox | xpath | //label[text()='Code']/../..//input
+*Start Time | textbox | xpath | //label[text()='Start Time']/../..//input
+*Duration | textbox | xpath | //label[text()='Duration']/../..//input
+*Duration2 | select | xpath | //label[text()='Duration']/../..//select | wait,unstale
+Category | select | xpath | //label[text()='Category']/../..//select | wait,unstale
+*Shift Detail Type | select | xpath | //label[text()='Shift Detail Type']/../..//select[not(@title='')] | unstale
+WAIT UNTIL CLICKABLE | h1 | xpath | //h1[text()='Shift Details']
+Create | button | xpath | //img[contains(@title,'Add Row')]
+//Name | select | xpath | //label[text()='Name']/../..//select | wait 10,unstale
+Name | select | xpath | //label[text()='Name']/../..//select | unstale
+Day | textbox | xpath | //label[text()='Day']/../..//input
+Start Time | textbox | xpath | //input[contains(@id,'it4::content')] 
+Duration | textbox | xpath | //input[contains(@id,'inputText11::content')]
+Duration Unit | select | xpath | //label[text()='Duration Unit']/../..//select | wait,unstale
+Minimum Break minutes | textbox | xpath | //label[text()='Minimum Break Minutes']/../..//input
+Maximum Break Minutes | textbox | xpath | //label[text()='Maximum Break Minutes']/../..//input
+Core Work | textbox | xpath | //label[text()='Core Work']/../..//input
+//SaC | button | xpath | //button[contains(text(),'ave and Close')] | wait 10
+SaC | button | xpath | //button[contains(text(),'ave and Close')]
+:Post-Steps
+WAIT TO DISAPPEAR | h1 | xpath | //button[contains(text(),'ave and Close')]
+WAIT UNTIL CLICKABLE | h1 | xpath | //h1[text()='Manage Work Shifts']
+:Undo-Steps
+Cancel | button | xpath | //button[contains(@accesskey,'C')]
+
+
+[Manage Talent Notifications]
+:Properties
+Sheetname | Manage Talent Notifications
+Action | Search Task
+Recursive | false
+Redirect-Enabled | false
+Data Name | Module
+:Pre-Prep
+skip:
+:Pre-Steps
+HeaderTN | h1 | xpath | //h1[text()='Manage Talent Notifications'] | wait
+:Fields
+Module Tab | radio | xpath | //a[text()="$.sModule"] | wait
+array | 1
+Notification | td | xpath | //td[text()="$.sNotification"]
+Description | td | xpath | //table[not(@summary="")]//td[text()="$.sDescription"]
+Enabled | checkbox | xpath | //table[not(@summary="")]//td[text()="$.sDescription"]/..//input[@type='checkbox'] | wait 1
+stop
+:Post-Steps
+Save and Close | button | xpath | //span[text()='ave and Close']
+HeaderSearch | h1 | xpath | //h1[text()='Search']
+Manage Talent Notifications | button | xpath | //a[text()='Manage Talent Notifications']
+:Undo-Steps
+skip:
+
+[Manage Profile Rating Models]
+:Properties
+Sheetname | Manage Profile Rating Models
+Action | Search Task
+Recursive | false
+Data Name | *Code
+:Pre-Prep
+skip:
+:Pre-Steps
+Header | h1 | xpath | //h1[text()='Manage Profile Rating Models']
+Create | button | xpath | //span[text()=' Create']/../../..
+Header | h1 | xpath | //h1[text()='Create Rating Model']
+:Fields
+*Code | textbox | xpath | //label[text()='Code']/../..//input
+*Name | textbox | xpath | //label[text()='Name']/../..//input
+Description | textbox | xpath | //label[text()='Description']/../..//input
+From Date | textbox | xpath | //label[text()='From Date']/../..//input
+To Date | textbox | xpath | //label[text()='To Date']/../..//input
+Distribution Threshold | textbox | xpath | //label[text()='Distribution Threshold']/../..//input
+array | 6
+Add | button | xpath | //span[text()=' Add']/../..
+//Select | jsbutton | xpath | //a[@title='Expand']/.. | wait 5
+//Select | button | xpath | //a[@title='Expand']/.. | wait 5
+Rating Level | button | xpath | //label[text()='Rating Level']/../..//input[not(@value)]
+Rating Level | textbox | xpath | //table[@summary='Rating Levels']//tr[contains(@class,'Selected')]//label[text()='Rating Level']/../..//input | wait
+Name | textbox | xpath | //table[@summary='Rating Levels']//tr[contains(@class,'Selected')]//label[text()='Name']/../..//input
+Description | textbox | xpath | //table[@summary='Rating Levels']//tr[contains(@class,'Selected')]//label[text()='Description']/../..//input
+Short Description | textbox | xpath | //table[@summary='Rating Levels']//tr[contains(@class,'Selected')]//label[text()='Short Description']/../..//input
+Star Rating | textbox | xpath | //table[@summary='Rating Levels']//tr[contains(@class,'Selected')]//label[text()='Star Rating']/../..//input
+Numeric Rating | textbox | xpath | //table[@summary='Rating Levels']//tr[contains(@class,'Selected')]//label[text()='Numeric Rating']/../..//input
+CSoD | select | xpath | //table[@summary='Rating Levels']//tr[contains(@class,'Selected')]//label[text()='Career Strength or Development']/../..//select | unstale
+stop
+:Post-Steps
+Save and Close | button | xpath | //span[text()='S']/../..//button[text()='ave and Close']
+Header | h1 | xpath | //h1[text()='Manage Profile Rating Models']
+:Undo-Steps
+Cancel | button | xpath | //span[text()='C']/..
 
 :SET#11
 [Manage Person Name Formats]
